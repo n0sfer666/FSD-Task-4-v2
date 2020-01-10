@@ -1,0 +1,54 @@
+{
+  "name": "simplerangeslider",
+  "version": "1.0.0",
+  "browserslist": [
+    "last 3 version"
+  ],
+  "scripts": {
+    "test": "karma start",
+    "css": "postcss ./src/Style/style.css -o ./dist/style.css --watch -env development",
+    "css:prod": "postcss ./src/Style/style.css -o ./dist/style.min.css --env production",
+    "plugin": "webpack --mode development --watch",
+    "plugin:prod": "webpack --mode production"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/n0sfer666/FSD-Task-4-v2.git"
+  },
+  "keywords": [
+    "range",
+    "slider",
+    "rangeslider"
+  ],
+  "author": "Khasanov Petr",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/n0sfer666/FSD-Task-4-v2/issues"
+  },
+  "homepage": "https://github.com/n0sfer666/FSD-Task-4-v2#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "@types/jasmine": "^3.5.0",
+    "@types/jquery": "^3.3.31",
+    "autoprefixer": "^9.7.3",
+    "cssnano": "^4.1.10",
+    "jasmine-core": "^3.5.0",
+    "jquery": "^3.4.1",
+    "karma": "^4.4.1",
+    "karma-chrome-launcher": "^3.1.0",
+    "karma-cli": "^2.0.0",
+    "karma-jasmine": "^2.0.1",
+    "karma-mocha-reporter": "^2.2.5",
+    "karma-webpack": "^4.0.2",
+    "postcss-cli": "^6.1.3",
+    "postcss-discard-comments": "^4.0.2",
+    "postcss-font-magician": "^2.3.1",
+    "postcss-import": "^12.0.1",
+    "postcss-nested": "^4.2.1",
+    "postcss-simple-vars": "^5.0.2",
+    "ts-loader": "^6.2.1",
+    "typescript": "^3.7.3",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10"
+  }
+}

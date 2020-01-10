@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../../dist/style.css">
+    
+    <script src="../../node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="../../dist/SimpleRangeSlider.js"></script>
+    <title>Page for manual tests</title>
+</head>
+<body>
+    <style>
+        #slideX {
+            width: 320px;
+        }   
+        #sliderY {
+            height: 320px;
+        } 
+    </style>
+    <div id="sliderX"></div>
+    <div id="sliderY"></div>
+    <script>
+        var slider_X = $('#sliderX').SimpleRangeSlider({});
+        var slider_Y = $('#sliderY').SimpleRangeSlider({
+            orientation: 'vertical',
+            range: [-100, 100],
+            start: [-61, 37],
+        })
+    </script>
+</body>
+</html>
