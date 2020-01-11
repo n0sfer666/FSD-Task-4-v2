@@ -8,26 +8,45 @@
     
     <script src="../../node_modules/jquery/dist/jquery.min.js"></script>
     <script src="../../dist/SimpleRangeSlider.js"></script>
+
     <title>Page for manual tests</title>
 </head>
 <body>
     <style>
-        #slideX {
-            width: 320px;
+        .slideX {
+            width: 300px;
         }   
-        #sliderY {
-            height: 320px;
+        .sliderY {
+            height: 30px;
         } 
     </style>
-    <div id="sliderX"></div>
-    <div id="sliderY"></div>
+    <div id='slider_X_1' class="sliderX"></div>
+    <hr>
+    <div id='slider_X_2' class="sliderX"></div>
+    <hr>
+    <div id='slider_Y_1' class="sliderY"></div>
+    <hr>
+    <div id='slider_Y_2' class="sliderY"></div>
     <script>
-        var slider_X = $('#sliderX').SimpleRangeSlider({});
-        var slider_Y = $('#sliderY').SimpleRangeSlider({
+        var slider_X_1 = $('#slider_X_1').SimpleRangeSlider({});
+
+        var Slider_X_2 = $('#slider_X_2').SimpleRangeSlider({
+            range: [-20000, 20000],
+            start: [-5000, 5000],
+            tooltip: true
+        });
+
+        var slider_Y_1 = $('#slider_Y_1').SimpleRangeSlider({
+            orientation: 'vertical'
+        });
+
+        var slider_Y_2 = $('#slider_Y_2').SimpleRangeSlider({
             orientation: 'vertical',
-            range: [-100, 100],
-            start: [-61, 37],
-        })
+            range: [-20000, 20000],
+            start: [-5000, 5000],
+            tooltip: true
+        });
+        
     </script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-interface I_Configuration {
+interface I_Configuration_User {
     readonly orientation: T_Configuration_Orientation; 
     readonly start: [number] | [number, number];
     readonly range: [number, number];
@@ -8,3 +8,7 @@ interface I_Configuration {
 }
 
 type T_Configuration_Orientation = 'horizontal' | 'vertical';
+
+interface I_Configuration_Model {
+
+}
