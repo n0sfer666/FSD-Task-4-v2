@@ -1,0 +1,172 @@
+/* Variables */
+
+/* Slider */
+$slider_width: 6px;
+$slider_background: #ffffff;
+$slider_border_size: 1px;
+$slider_border_color: rgba(31, 32, 65, 0.25);
+$slider_border_radius: calc($slider_width / 2);
+
+/* Thumbler */
+$thumbler_size: 16px;
+$thumbler_background: linear-gradient(180deg, #6FCF97 0%, #66D2EA 100%);
+$thumbler_border_size: 2px;
+$thumbler_border_color: #ffffff;
+$thumbler_border_radius: 50%;
+
+/* Connect */
+$connect_width: $slider_width;
+$connect_background_horizontal: linear-gradient(90deg, #6FCF97 0%, #66D2EA 100%);
+$connect_background_vertical: $thumbler_background;
+
+/* Tooltip */
+$tooltip_margin: 20px;
+$tooltip_padding: 2px;
+$tooltip_text_size: 10px;
+$tooltip_background: $thumbler_background;
+$tooltip_color: #ffffff;
+$tooltip_font: normal normal $tooltip_text_size/$tooltip_text_size Serif;
+
+.SRS__ {
+
+    &slider {
+
+        position: relative;
+
+        background: $slider_background;
+
+        border: $slider_border_size solid $slider_border_color;
+        border-radius: $slider_border_radius;
+        box-sizing: border-box;
+
+        &_horizontal {
+
+            width: 100%;
+            height: $slider_width;
+            margin: $tooltip_margin 0 $slider_width 0;
+
+        }
+
+        &_vertical {
+
+            width: $slider_width;
+            height: 100%;
+            margin: 0 $tooltip_margin 0 $slider_width;
+
+        }
+
+    }
+
+    &thumbler-container {
+
+        position: absolute;
+        z-index: 9;
+
+        background: transparent;
+
+        will-change: transform;
+
+        &_horizontal {
+
+            width: 10%;
+            height: 100%;
+
+        }
+
+        &_vertical {
+
+            width: 100%;
+            height: 10%;
+
+        }
+
+    }
+
+    &thumbler-decorator {
+
+        position: absolute;
+        z-index: 10;
+
+        background: $thumbler_background;
+
+        width: $thumbler_size;
+        height: $thumbler_size;
+
+        border: $thumbler_border_size solid $thumbler_border_color;
+        border-radius: $thumbler_border_radius;
+        box-sizing: border-box;
+
+        cursor: pointer;
+        outline: none;
+
+        &_horizontal {
+
+            top: -$slider_width;
+            left: calc( -$thumbler_size / 2 )
+
+        }
+
+        &_vertical {
+
+            left: -$slider_width;
+            top: calc( -$thumbler_size / 2 )
+
+        }
+
+    }
+
+    &connect {
+
+        position: absolute;
+        z-index: 5;
+
+        top: -$slider_border_size;
+        left: -$slider_border_size;
+
+        border-radius: $slider_border_radius;
+
+        &_horizontal {
+
+            background: $connect_background_horizontal;
+            height: $connect_width;
+
+        }
+
+        &_vertical {
+
+            background: $connect_background_vertical;
+            width: $connect_width;
+
+        }
+
+    }
+
+    &tooltip {
+
+        position: absolute;
+        z-index: 5;
+
+        padding: $tooltip_padding;
+        background: $tooltip_background;
+        border-radius: calc( $slider_width / 2 );
+
+        font: $tooltip_font;
+        color: $tooltip_color;
+
+        &_horizontal {
+
+            transform: translateX(-50%);
+            bottom: calc( $tooltip_text_size / 1.5 );
+
+        }
+
+        &_vertical {
+
+            transform: translateY(-50%);
+            left: $tooltip_text_size;
+
+        }
+
+    }
+
+}
