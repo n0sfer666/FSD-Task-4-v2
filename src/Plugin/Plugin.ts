@@ -22,7 +22,13 @@ export class SimpleRangeSlider {
             tooltip:     this.user_configuration.tooltip === undefined ? default_Configuration.tooltip : this.user_configuration.tooltip
         }
 
-        let view_configuration: object = {
+        let model_configuration: I_Configuration_Model = {
+            value_start: complete_configuration.start,
+            value_range: complete_configuration.range,
+            value_step:  complete_configuration.step,
+        }
+
+        let view_configuration: I_Configuration_View = {
             orientation: complete_configuration.orientation,
             value_start: complete_configuration.start,
             value_range: complete_configuration.range,
@@ -31,15 +37,6 @@ export class SimpleRangeSlider {
             is_connect:  complete_configuration.connect
         }
 
-        let model_configuration: object = {
-            value_start: complete_configuration.start,
-            value_range: complete_configuration.range,
-            value_step:  complete_configuration.step,
-        }
-
-
-
-        
     }
 
 }
