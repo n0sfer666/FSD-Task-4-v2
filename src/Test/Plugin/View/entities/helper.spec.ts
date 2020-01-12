@@ -23,7 +23,7 @@ describe('View -> entities -> class Helper', () => {
         });
         it('value is [-8, -4] on range [-10, 10]', () => {
             let to_expect: T_Value = [0.1, 0.3];
-            let value: T_Value = [-8, 4];             
+            let value: T_Value = [-8, -4];             
             let result: T_Value = helper.get_position_from_value(value, range);
 
             expect(to_expect).toEqual(result);

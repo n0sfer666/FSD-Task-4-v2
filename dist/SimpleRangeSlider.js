@@ -117,15 +117,28 @@ var SimpleRangeSlider = (function () {
             range: [0, 100],
             step: 1,
             connect: true,
-            tooltip: true
+            tooltip: false
         };
-        var configuration = {
+        var complete_configuration = {
             orientation: this.user_configuration.orientation === undefined ? default_Configuration.orientation : this.user_configuration.orientation,
             start: this.user_configuration.start === undefined ? default_Configuration.start : this.user_configuration.start,
             range: this.user_configuration.range === undefined ? default_Configuration.range : this.user_configuration.range,
             step: this.user_configuration.step === undefined ? default_Configuration.step : this.user_configuration.step,
             connect: this.user_configuration.connect === undefined ? default_Configuration.connect : this.user_configuration.connect,
             tooltip: this.user_configuration.tooltip === undefined ? default_Configuration.tooltip : this.user_configuration.tooltip
+        };
+        var model_configuration = {
+            value_start: complete_configuration.start,
+            value_range: complete_configuration.range,
+            value_step: complete_configuration.step,
+        };
+        var view_configuration = {
+            orientation: complete_configuration.orientation,
+            value_start: complete_configuration.start,
+            value_range: complete_configuration.range,
+            value_step: complete_configuration.step,
+            is_tooltip: complete_configuration.tooltip,
+            is_connect: complete_configuration.connect
         };
     }
     return SimpleRangeSlider;
