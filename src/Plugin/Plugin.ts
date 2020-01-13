@@ -1,4 +1,8 @@
+import { View } from './View/View';
+
 export class SimpleRangeSlider {
+
+    view: View;
 
     constructor(private container: JQuery, private user_configuration: I_Configuration_User) {
 
@@ -36,6 +40,8 @@ export class SimpleRangeSlider {
             is_tooltip:  complete_configuration.tooltip,
             is_connect:  complete_configuration.connect
         }
+
+        this.view = new View(slider_container, view_configuration);
 
     }
 

@@ -106,6 +106,7 @@ return /******/ (function(modules) { // webpackBootstrap
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
+var View_1 = __webpack_require__(/*! ./View/View */ "./src/Plugin/View/View.ts");
 var SimpleRangeSlider = (function () {
     function SimpleRangeSlider(container, user_configuration) {
         this.container = container;
@@ -140,6 +141,7 @@ var SimpleRangeSlider = (function () {
             is_tooltip: complete_configuration.tooltip,
             is_connect: complete_configuration.connect
         };
+        this.view = new View_1.View(slider_container, view_configuration);
     }
     return SimpleRangeSlider;
 }());
@@ -152,6 +154,85 @@ exports.SimpleRangeSlider = SimpleRangeSlider;
         }
     });
 }(jQuery));
+
+
+/***/ }),
+
+/***/ "./src/Plugin/View/View.ts":
+/*!*********************************!*\
+  !*** ./src/Plugin/View/View.ts ***!
+  \*********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var Helper_1 = __webpack_require__(/*! ./entities/Helper */ "./src/Plugin/View/entities/Helper.ts");
+var View = (function (_super) {
+    __extends(View, _super);
+    function View(container, configuration) {
+        var _this = _super.call(this) || this;
+        _this.container = container;
+        _this.configuration = configuration;
+        _this.position_scale = [0];
+        _this.is_tooltip = _this.configuration.is_tooltip;
+        _this.is_connect = _this.configuration.is_connect;
+        _this.orientation = _this.configuration.orientation;
+        _this.value_range = _this.configuration.value_range;
+        _this.position_current = _this.get_position_from_value(_this.configuration.value_start, _this.value_range);
+        _this.position_step = (_this.configuration.value_step - _this.value_range[0]) / (_this.value_range[1] - _this.value_range[0]);
+        do {
+            var i = 0;
+            var next = _this.position_scale[i] + _this.position_step;
+            _this.position_scale.push(next);
+            i++;
+        } while (_this.position_scale[_this.position_scale.length - 1] <= 1);
+        return _this;
+    }
+    return View;
+}(Helper_1.Helper));
+exports.View = View;
+
+
+/***/ }),
+
+/***/ "./src/Plugin/View/entities/Helper.ts":
+/*!********************************************!*\
+  !*** ./src/Plugin/View/entities/Helper.ts ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Helper = (function () {
+    function Helper() {
+    }
+    Helper.prototype.get_position_from_value = function (value, range) {
+        var result = [0];
+        for (var i = 0; i < value.length; i++) {
+            result[i] = (value[i] - range[0]) / (range[1] - range[0]);
+        }
+        return result;
+    };
+    return Helper;
+}());
+exports.Helper = Helper;
 
 
 /***/ })
