@@ -26,8 +26,8 @@ export class View extends Helper {
         this.position_current = this.get_position_from_value( this.configuration.value_start, this.value_range );
         this.position_step = ( this.configuration.value_step - this.value_range[0] ) / ( this.value_range[1] - this.value_range[0] );
 // console.log(this.position_scale[ this.position_scale.length - 1 ] <= 1)
-        while( this.position_scale[ this.position_scale.length - 1 ] <= 1000 ) {
-            this.position_scale.push( Math.floor(this.position_scale[ this.position_scale.length - 1 ] + this.position_step) );
+        while( this.position_scale[ this.position_scale.length - 1 ] < 1 ) {
+            this.position_scale.push( this.position_scale[ this.position_scale.length - 1 ] + this.position_step );
         }
         // do {
         //     let i: number = 0;
