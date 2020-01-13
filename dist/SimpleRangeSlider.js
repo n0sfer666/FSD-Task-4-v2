@@ -195,12 +195,9 @@ var View = (function (_super) {
         _this.value_range = _this.configuration.value_range;
         _this.position_current = _this.get_position_from_value(_this.configuration.value_start, _this.value_range);
         _this.position_step = (_this.configuration.value_step - _this.value_range[0]) / (_this.value_range[1] - _this.value_range[0]);
-        do {
-            var i = 0;
-            var next = _this.position_scale[i] + _this.position_step;
-            _this.position_scale.push(next);
-            i++;
-        } while (_this.position_scale[_this.position_scale.length - 1] <= 1);
+        while (_this.position_scale[_this.position_scale.length - 1] <= 1000) {
+            _this.position_scale.push(Math.floor(_this.position_scale[_this.position_scale.length - 1] + _this.position_step));
+        }
         return _this;
     }
     return View;
