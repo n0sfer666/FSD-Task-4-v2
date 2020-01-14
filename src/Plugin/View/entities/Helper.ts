@@ -4,10 +4,11 @@ export class Helper {
     coefficient_to_transform: number = 1e6;
 
     get_position_from_value(value: T_Value, range: T_Range): T_Position {
-        let result: T_Value = [0];
+        let result: T_Value = value;
 
         for( let i = 0; i < value.length; i++ ) {
             result[i] = ( value[i] - range[0] ) / ( range[1] - range[0] ) * this.coefficient;
+            result[i] =  Math.floor(result[i]);
         }
 
         return result;

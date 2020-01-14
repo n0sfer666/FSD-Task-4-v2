@@ -5,50 +5,28 @@ describe('View -> entities -> class Helper', () => {
     let helper = new Helper();
     describe('(F) get_position_from value(value, range)', () => {
 
-        let range: T_Range = [-10, 10];
+        let ranges: T_Range[] = [ [-10, 10], [-1000, 1000], [-10000, 10000], [-1000000, 1000000] ];
+        let values: T_Value[] = [ [-5], [-3.5], [-8, -4], [-6, 8], [4, 8], [3.5], [5] ];
 
-        it('value is [-5]     on range [-10, 10]', () => {
-            let to_expect: T_Value = [0.25];
-            let value: T_Value = [-5];
-            let result: T_Value = helper.get_position_from_value(value, range);
+        for( let i = 0; i < ranges.length; i++ ) {
+            for ( let j = 0; j < values.length; j++ ) {
+                it(`value: ${values[j]} on range: ${ranges[i]}`, () => {
+                    let value: T_Value = values[j];
+                    let range: T_Range = ranges[i];
 
-            expect(to_expect).toEqual(result);
-        });
-        it('value is [-3.5]   on range [-10, 10]', () => {
-            let to_expect: T_Value = [0.325];
-            let value: T_Value = [-3.5];
-            let result: T_Value = helper.get_position_from_value(value, range);
+                    let to_expect: T_Value = value;
 
-            expect(to_expect).toEqual(result);
-        });
-        it('value is [-8, -4] on range [-10, 10]', () => {
-            let to_expect: T_Value = [0.1, 0.3];
-            let value: T_Value = [-8, -4];             
-            let result: T_Value = helper.get_position_from_value(value, range);
+                    for( let k = 0; k < value.length; k++ ) {
+                        to_expect[k] = (value[k] - range[0]) / (range[1] - range[0]) * helper.coefficient;
+                        to_expect[k] = Math.floor(to_expect[k]);
+                    }
 
-            expect(to_expect).toEqual(result);
-        });
-        it('value is [5]      on range [-10, 10]', () => {
-            let to_expect: T_Value = [0.75];
-            let value: T_Value = [5];
-            let result: T_Value = helper.get_position_from_value(value, range);
-
-            expect(to_expect).toEqual(result);
-        });
-        it('value is [3.5]    on range [-10, 10]', () => {
-            let to_expect: T_Value = [0.675];
-            let value: T_Value = [3.5];
-            let result: T_Value = helper.get_position_from_value(value, range);
-
-            expect(to_expect).toEqual(result);
-        });
-        it('value is [4, 8]   on range [-10, 10]', () => {
-            let to_expect: T_Value = [0.7, 0.9];
-            let value: T_Value = [4, 8];
-            let result: T_Value = helper.get_position_from_value(value, range);
-
-            expect(to_expect).toEqual(result);
-        });
+                    let result: T_Value = helper.get_position_from_value(value, range);
+                    
+                    expect(to_expect).toEqual(result);
+                })
+            }
+        }
     });
 
     describe('(F) get_div_element_with_class(css_class, orientation)', () => {
@@ -70,5 +48,5 @@ describe('View -> entities -> class Helper', () => {
         };
 
     });
-    
+
 });
