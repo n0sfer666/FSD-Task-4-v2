@@ -230,6 +230,11 @@ var Helper = (function () {
         return result;
     };
     Helper.prototype.get_div_element_with_class = function (css_class, orientation) {
+        var str_class = 'SRS__' + css_class;
+        var css_class_without_orientation = str_class + ' ' + str_class + '_';
+        var element = document.createElement('div');
+        element.setAttribute('class', (css_class_without_orientation + orientation));
+        return element;
     };
     return Helper;
 }());
