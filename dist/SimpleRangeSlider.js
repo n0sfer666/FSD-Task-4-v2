@@ -194,8 +194,8 @@ var View = (function (_super) {
         _this.orientation = _this.configuration.orientation;
         _this.value_range = _this.configuration.value_range;
         _this.position_current = _this.get_position_from_value(_this.configuration.value_start, _this.value_range);
-        _this.position_step = (_this.configuration.value_step - _this.value_range[0]) / (_this.value_range[1] - _this.value_range[0]);
-        while (_this.position_scale[_this.position_scale.length - 1] < 1) {
+        _this.position_step = (_this.value_range[0] + _this.configuration.value_step - _this.value_range[0]) / (_this.value_range[1] - _this.value_range[0]) * _this.coefficient;
+        while (_this.position_scale[_this.position_scale.length - 1] < _this.coefficient) {
             _this.position_scale.push(_this.position_scale[_this.position_scale.length - 1] + _this.position_step);
         }
         return _this;
@@ -219,11 +219,12 @@ exports.View = View;
 Object.defineProperty(exports, "__esModule", { value: true });
 var Helper = (function () {
     function Helper() {
+        this.coefficient = 1e9;
     }
     Helper.prototype.get_position_from_value = function (value, range) {
         var result = [0];
         for (var i = 0; i < value.length; i++) {
-            result[i] = (value[i] - range[0]) / (range[1] - range[0]);
+            result[i] = (value[i] - range[0]) / (range[1] - range[0]) * this.coefficient;
         }
         return result;
     };
