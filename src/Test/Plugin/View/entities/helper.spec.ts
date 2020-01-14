@@ -17,12 +17,14 @@ describe('View -> entities -> class Helper', () => {
                     let to_expect: T_Value = value;
 
                     for( let k = 0; k < value.length; k++ ) {
+
                         to_expect[k] = (value[k] - range[0]) / (range[1] - range[0]) * helper.coefficient;
-                        to_expect[k] = Math.floor(to_expect[k]);
+                        to_expect[k] = Math.round(to_expect[k]);
+
                     }
 
                     let result: T_Value = helper.get_position_from_value(value, range);
-                    
+
                     expect(to_expect).toEqual(result);
                 })
             }

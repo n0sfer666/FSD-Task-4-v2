@@ -226,7 +226,7 @@ var Helper = (function () {
         var result = value;
         for (var i = 0; i < value.length; i++) {
             result[i] = (value[i] - range[0]) / (range[1] - range[0]) * this.coefficient;
-            result[i] = Math.floor(result[i]);
+            result[i] = Math.round(result[i]);
         }
         return result;
     };
