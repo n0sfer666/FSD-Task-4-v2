@@ -1,7 +1,7 @@
 export class Helper {
 
     coefficient: number = 1e9;
-    // coefficient_to_translate: number = 1e6;
+    coefficient_to_transform: number = 1e6;
 
     get_position_from_value(value: T_Value, range: T_Range): T_Position {
         let result: T_Value = [0];
@@ -11,6 +11,10 @@ export class Helper {
         }
 
         return result;
+    }
+
+    get_div_element_with_class( css_class: T_CSS_Classes, orientation: T_Orientation ): HTMLElement {
+        
     }
 
 }

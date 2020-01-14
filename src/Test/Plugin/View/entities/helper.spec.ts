@@ -50,4 +50,25 @@ describe('View -> entities -> class Helper', () => {
             expect(to_expect).toEqual(result);
         });
     });
-})
+
+    describe('(F) get_div_element_with_class(css_class, orientation)', () => {
+
+        let elements: T_CSS_Classes[] = ['slider', 'thumbler', 'connect', 'tooltip'];
+        let orientations: T_Orientation[] = ['horizontal', 'vertical'];
+
+        for( let i = 0; i < elements.length; i++ ) {
+            for( let j = 0; j < orientations.length; j++ ) {
+                it(`class: ${elements[i]}, orientations: ${orientations[j]}`, () => {
+                    let to_expect: HTMLElement = document.createElement('div');
+                    to_expect.setAttribute('class', `SRS__${elements[i]} SRS__${elements[i]}_${orientations[j]}`);
+
+                    let result: HTMLElement = helper.get_div_element_with_class(elements[i], orientations[j]);
+
+                    expect(to_expect).toEqual(result);
+                });
+            };
+        };
+
+    });
+    
+});

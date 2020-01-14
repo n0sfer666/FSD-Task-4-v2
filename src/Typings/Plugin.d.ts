@@ -1,5 +1,6 @@
 // types
 type T_Orientation = 'horizontal' | 'vertical';
+type T_CSS_Classes = 'slider' | 'thumbler' | 'connect' | 'tooltip';
 type T_Range = [number, number];
 type T_Value = [number] | [number, number];
 type T_Position = [number] | [number, number];

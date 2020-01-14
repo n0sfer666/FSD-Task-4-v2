@@ -220,6 +220,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Helper = (function () {
     function Helper() {
         this.coefficient = 1e9;
+        this.coefficient_to_transform = 1e6;
     }
     Helper.prototype.get_position_from_value = function (value, range) {
         var result = [0];
@@ -227,6 +228,8 @@ var Helper = (function () {
             result[i] = (value[i] - range[0]) / (range[1] - range[0]) * this.coefficient;
         }
         return result;
+    };
+    Helper.prototype.get_div_element_with_class = function (css_class, orientation) {
     };
     return Helper;
 }());
