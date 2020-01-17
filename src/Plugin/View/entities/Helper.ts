@@ -1,13 +1,14 @@
 export class Helper {
 
-    coefficient: number = 1e9;
-    coefficient_to_transform: number = 1e6;
+    readonly TO_SAVE_INTEGER: number = 1e9;
+    readonly FROM_SAVE_INTEGER_TO_THUMBLER_POSITION: number = 1e6;
+    readonly FROM_SAVE_INTEGER_TO_CONNECT_UPDATE: number = 1e7;
 
     get_position_from_value(value: T_Value, range: T_Range): T_Position {
         let result: T_Value = value;
 
         for( let i = 0; i < value.length; i++ ) {
-            result[i] = ( value[i] - range[0] ) / ( range[1] - range[0] ) * this.coefficient;
+            result[i] = ( value[i] - range[0] ) / ( range[1] - range[0] ) * this.TO_SAVE_INTEGER;
             result[i] =  Math.round(result[i]);
         }
 

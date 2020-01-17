@@ -194,8 +194,9 @@ var View = (function (_super) {
         _this.orientation = _this.configuration.orientation;
         _this.value_range = _this.configuration.value_range;
         _this.position_current = _this.get_position_from_value(_this.configuration.value_start, _this.value_range);
-        _this.position_step = (_this.value_range[0] + _this.configuration.value_step - _this.value_range[0]) / (_this.value_range[1] - _this.value_range[0]) * _this.coefficient;
-        while (_this.position_scale[_this.position_scale.length - 1] < _this.coefficient) {
+        _this.position_step = (_this.value_range[0] + _this.configuration.value_step - _this.value_range[0])
+            / (_this.value_range[1] - _this.value_range[0]) * _this.TO_SAVE_INTEGER;
+        while (_this.position_scale[_this.position_scale.length - 1] < _this.TO_SAVE_INTEGER) {
             _this.position_scale.push(_this.position_scale[_this.position_scale.length - 1] + _this.position_step);
         }
         return _this;
@@ -219,13 +220,14 @@ exports.View = View;
 Object.defineProperty(exports, "__esModule", { value: true });
 var Helper = (function () {
     function Helper() {
-        this.coefficient = 1e9;
-        this.coefficient_to_transform = 1e6;
+        this.TO_SAVE_INTEGER = 1e9;
+        this.FROM_SAVE_INTEGER_TO_THUMBLER_POSITION = 1e6;
+        this.FROM_SAVE_INTEGER_TO_CONNECT_UPDATE = 1e7;
     }
     Helper.prototype.get_position_from_value = function (value, range) {
         var result = value;
         for (var i = 0; i < value.length; i++) {
-            result[i] = (value[i] - range[0]) / (range[1] - range[0]) * this.coefficient;
+            result[i] = (value[i] - range[0]) / (range[1] - range[0]) * this.TO_SAVE_INTEGER;
             result[i] = Math.round(result[i]);
         }
         return result;

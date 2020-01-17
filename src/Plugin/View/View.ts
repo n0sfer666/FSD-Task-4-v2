@@ -24,9 +24,10 @@ export class View extends Helper {
         this.value_range = this.configuration.value_range;
 
         this.position_current = this.get_position_from_value( this.configuration.value_start, this.value_range );
-        this.position_step = ( this.value_range[0] + this.configuration.value_step - this.value_range[0] ) / ( this.value_range[1] - this.value_range[0] ) * this.coefficient;
+        this.position_step = ( this.value_range[0] + this.configuration.value_step - this.value_range[0] ) 
+                             / ( this.value_range[1] - this.value_range[0] ) * this.TO_SAVE_INTEGER;
 
-        while( this.position_scale[ this.position_scale.length - 1 ] < this.coefficient ) {
+        while( this.position_scale[ this.position_scale.length - 1 ] < this.TO_SAVE_INTEGER ) {
             this.position_scale.push( this.position_scale[ this.position_scale.length - 1 ] + this.position_step );
         }
 
