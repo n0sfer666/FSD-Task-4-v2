@@ -1,8 +1,8 @@
 export class Helper {
 
     readonly TO_SAVE_INTEGER: number = 1e9;
-    readonly FROM_SAVE_INTEGER_TO_THUMBLER_POSITION: number = 1e6;
-    readonly FROM_SAVE_INTEGER_TO_CONNECT_UPDATE: number = 1e7;
+    readonly TO_THUMBLER_POSITION: number = 1e6;
+    readonly TO_CONNECT_UPDATE: number = 1e7;
 
     get_position_from_value(value: T_Value, range: T_Range): T_Position {
         let result: T_Value = value;

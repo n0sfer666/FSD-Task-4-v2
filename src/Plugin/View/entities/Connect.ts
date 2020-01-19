@@ -8,9 +8,22 @@ export class Connect extends Helper {
         super();
 
         this.element = this.get_div_element_with_class('connect', this.orientation);
+        this.set_connect_position(this.position_start, this.position_end, this.orientation)
     }
 
-    set_connect_position(position_start: number, position_end: number) {
-        
+    set_connect_position(position_start: number, position_end: number, orientation: T_Orientation) {
+
+        let start: number = position_start / this.TO_CONNECT_UPDATE;
+        let end: number = position_end / this.TO_CONNECT_UPDATE;
+
+        let style: string = position_start === 0
+                ? orientation === 'horizontal'
+                    ? `width: ${position_end}%;`
+                    : `height: ${position_end}%;`
+                : orientation === 'horizontal'
+                    ? `left: ${position_start}%; width: ${(position_end - position_start)}%;`
+                    : `top: ${position_start}%; height: ${(position_end - position_start)}%;`;
+
+        this.element.setAttribute('style', style);
     }
 }
