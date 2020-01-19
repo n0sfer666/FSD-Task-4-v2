@@ -18,7 +18,7 @@ describe('View -> entities -> class Helper', () => {
 
                     for( let k = 0; k < value.length; k++ ) {
 
-                        to_expect[k] = (value[k] - range[0]) / (range[1] - range[0]) * helper.coefficient;
+                        to_expect[k] = (value[k] - range[0]) / (range[1] - range[0]) * helper.TO_SAVE_INTEGER;
                         to_expect[k] = Math.round(to_expect[k]);
 
                     }
