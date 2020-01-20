@@ -4,8 +4,8 @@ export class Helper {
     readonly TO_THUMBLER_POSITION: number = 1e6;
     readonly TO_CONNECT_UPDATE: number = 1e7;
 
-    get_position_from_value(value: T_Value, range: T_Range): T_Position {
-        let result: T_Value = value;
+    get_position_from_value(value: number[], range: T_Range): number[] {
+        let result: number[] = value;
 
         for( let i = 0; i < value.length; i++ ) {
             result[i] = ( value[i] - range[0] ) / ( range[1] - range[0] ) * this.TO_SAVE_INTEGER;

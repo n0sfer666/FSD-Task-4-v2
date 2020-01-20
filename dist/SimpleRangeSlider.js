@@ -188,17 +188,12 @@ var View = (function (_super) {
         var _this = _super.call(this) || this;
         _this.container = container;
         _this.configuration = configuration;
-        _this.position_scale = [0];
         _this.is_tooltip = _this.configuration.is_tooltip;
         _this.is_connect = _this.configuration.is_connect;
         _this.orientation = _this.configuration.orientation;
         _this.value_range = _this.configuration.value_range;
-        _this.position_current = _this.get_position_from_value(_this.configuration.value_start, _this.value_range);
-        _this.position_step = (_this.value_range[0] + _this.configuration.value_step - _this.value_range[0])
-            / (_this.value_range[1] - _this.value_range[0]) * _this.TO_SAVE_INTEGER;
-        while (_this.position_scale[_this.position_scale.length - 1] < _this.TO_SAVE_INTEGER) {
-            _this.position_scale.push(_this.position_scale[_this.position_scale.length - 1] + _this.position_step);
-        }
+        _this.position = _this.get_position_from_value(_this.configuration.value_start, _this.value_range);
+        _this.step = _this.get_position_from_value([_this.configuration.value_step], _this.value_range);
         return _this;
     }
     return View;
