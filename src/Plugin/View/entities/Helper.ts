@@ -1,8 +1,14 @@
 export class Helper {
 
     readonly TO_SAVE_INTEGER: number = 1e9;
-    readonly TO_THUMBLER_POSITION: number = 1e6;
-    readonly TO_CONNECT_UPDATE: number = 1e7;
+    readonly TO_THUMBLER_POSITION: number;
+    readonly TO_CONNECT_UPDATE: number;
+
+    constructor() {
+
+        this.TO_THUMBLER_POSITION = this.TO_SAVE_INTEGER - (this.TO_SAVE_INTEGER / 1e3);
+        this.TO_CONNECT_UPDATE = this.TO_SAVE_INTEGER - (this.TO_SAVE_INTEGER / 1e2);
+    }
 
     get_position_from_value(value: number[], range: T_Range): number[] {
         let result: number[] = value;

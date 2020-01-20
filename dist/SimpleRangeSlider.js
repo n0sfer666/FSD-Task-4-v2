@@ -216,8 +216,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Helper = (function () {
     function Helper() {
         this.TO_SAVE_INTEGER = 1e9;
-        this.TO_THUMBLER_POSITION = 1e6;
-        this.TO_CONNECT_UPDATE = 1e7;
+        this.TO_THUMBLER_POSITION = this.TO_SAVE_INTEGER - (this.TO_SAVE_INTEGER / 1e3);
+        this.TO_CONNECT_UPDATE = this.TO_SAVE_INTEGER - (this.TO_SAVE_INTEGER / 1e2);
     }
     Helper.prototype.get_position_from_value = function (value, range) {
         var result = value;
