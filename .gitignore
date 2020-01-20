@@ -1,2 +1,4 @@
 node_modules
 src/Test/Plugin/View/entities/connect.spec.ts
+src/Test/Plugin/View/entities/helper.spec.ts
+src/Test/Plugin/View/entities/tooltip.spec.ts

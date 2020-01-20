@@ -6,15 +6,15 @@ describe('View -> entities -> class Helper', () => {
     describe('(F) get_position_from value(value, range)', () => {
 
         let ranges: T_Range[] = [ [-10, 10], [-1000, 1000], [-10000, 10000], [-1000000, 1000000] ];
-        let values: T_Value[] = [ [-5], [-3.5], [-8, -4], [-6, 8], [4, 8], [3.5], [5] ];
+        let values: number[][] = [ [-5], [-3.5], [-8, -4], [-6, 8], [4, 8], [3.5], [5] ];
 
         for( let i = 0; i < ranges.length; i++ ) {
             for ( let j = 0; j < values.length; j++ ) {
                 it(`value: ${values[j]} on range: ${ranges[i]}`, () => {
-                    let value: T_Value = values[j];
+                    let value: number[] = values[j];
                     let range: T_Range = ranges[i];
 
-                    let to_expect: T_Value = value;
+                    let to_expect: number[] = value;
 
                     for( let k = 0; k < value.length; k++ ) {
 
@@ -23,7 +23,7 @@ describe('View -> entities -> class Helper', () => {
 
                     }
 
-                    let result: T_Value = helper.get_position_from_value(value, range);
+                    let result: number[] = helper.get_position_from_value(value, range);
 
                     expect(to_expect).toEqual(result);
                 })
