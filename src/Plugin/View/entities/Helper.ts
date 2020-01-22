@@ -6,8 +6,8 @@ export class Helper {
 
     constructor() {
 
-        this.TO_THUMBLER_POSITION = this.TO_SAVE_INTEGER - (this.TO_SAVE_INTEGER / 1e3);
-        this.TO_CONNECT_UPDATE = this.TO_SAVE_INTEGER - (this.TO_SAVE_INTEGER / 1e2);
+        this.TO_THUMBLER_POSITION = this.TO_SAVE_INTEGER / 1e3;
+        this.TO_CONNECT_UPDATE = this.TO_SAVE_INTEGER / 1e2;
     }
 
     get_position_from_value(value: number[], range: T_Range): number[] {

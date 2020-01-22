@@ -192,8 +192,8 @@ var View = (function (_super) {
         _this.is_connect = _this.configuration.is_connect;
         _this.orientation = _this.configuration.orientation;
         _this.value_range = _this.configuration.value_range;
-        _this.position = _this.get_position_from_value(_this.configuration.value_start, _this.value_range);
-        _this.step = _this.get_position_from_value([_this.configuration.value_step], _this.value_range);
+        _this.position_safe_int = _this.get_position_from_value(_this.configuration.value_start, _this.value_range);
+        _this.step_safe_int = _this.get_position_from_value([_this.configuration.value_step], _this.value_range);
         return _this;
     }
     return View;
@@ -216,8 +216,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Helper = (function () {
     function Helper() {
         this.TO_SAVE_INTEGER = 1e9;
-        this.TO_THUMBLER_POSITION = this.TO_SAVE_INTEGER - (this.TO_SAVE_INTEGER / 1e3);
-        this.TO_CONNECT_UPDATE = this.TO_SAVE_INTEGER - (this.TO_SAVE_INTEGER / 1e2);
+        this.TO_THUMBLER_POSITION = this.TO_SAVE_INTEGER / 1e3;
+        this.TO_CONNECT_UPDATE = this.TO_SAVE_INTEGER / 1e2;
     }
     Helper.prototype.get_position_from_value = function (value, range) {
         var result = value;

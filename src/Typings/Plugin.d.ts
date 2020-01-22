@@ -4,6 +4,11 @@ type T_CSS_Classes = 'slider' | 'thumbler' | 'connect' | 'tooltip';
 type T_Range = [number, number];
 type T_Value = [number] | [number, number];
 type T_Position = [number] | [number, number];
+
+type T_Thumbler_Data = {
+    position_safe_int: number,
+    index: number
+}
 // interfaces
 interface I_Configuration_User {
     readonly orientation: T_Orientation; 
@@ -25,4 +30,7 @@ interface I_Configuration_View {
     value_step:  number;
     is_tooltip:  boolean;
     is_connect:  boolean;
+}
+interface I_Thumbler_State {
+    (thumbler_state: T_Thumbler_Data): void
 }

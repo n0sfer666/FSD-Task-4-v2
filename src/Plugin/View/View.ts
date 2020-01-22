@@ -2,8 +2,8 @@ import { Helper } from './entities/Helper';
 
 export class View extends Helper {
 
-    position: number[];
-    step: number[];
+    position_safe_int: number[];
+    step_safe_int: number[];
     // position_scale: number[] = [0];
 
     value_range: T_Range;
@@ -23,7 +23,7 @@ export class View extends Helper {
 
         this.value_range = this.configuration.value_range;
 
-        this.position = this.get_position_from_value( this.configuration.value_start, this.value_range );
-        this.step = this.get_position_from_value([this.configuration.value_step], this.value_range);
+        this.position_safe_int = this.get_position_from_value( this.configuration.value_start, this.value_range );
+        this.step_safe_int = this.get_position_from_value([this.configuration.value_step], this.value_range);
     }
 }
