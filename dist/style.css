@@ -27,7 +27,7 @@
 
         }
 
-.SRS__thumbler-container{
+.SRS__thumbler{
 
         position:absolute;
         z-index:9;
@@ -38,52 +38,53 @@
 
     }
 
-.SRS__thumbler-container_horizontal{
+.SRS__thumbler_horizontal{
 
             width:10%;
             height:100%;
 
         }
 
-.SRS__thumbler-container_vertical{
+.SRS__thumbler_vertical{
 
             width:100%;
             height:10%;
 
         }
 
-.SRS__thumbler-decorator{
+.SRS__thumbler:after{
 
-        position:absolute;
-        z-index:10;
+            content:'';
+            position:absolute;
+            z-index:10;
 
-        background:-webkit-gradient(linear, left top, left bottom, from(#6FCF97), to(#66D2EA));
+            background:-webkit-gradient(linear, left top, left bottom, from(#6FCF97), to(#66D2EA));
 
-        background:-o-linear-gradient(top, #6FCF97 0%, #66D2EA 100%);
+            background:-o-linear-gradient(top, #6FCF97 0%, #66D2EA 100%);
 
-        background:linear-gradient(180deg, #6FCF97 0%, #66D2EA 100%);
+            background:linear-gradient(180deg, #6FCF97 0%, #66D2EA 100%);
 
-        width:16px;
-        height:16px;
+            width:16px;
+            height:16px;
 
-        border:2px solid #ffffff;
-        border-radius:50%;
-        -webkit-box-sizing:border-box;
-                box-sizing:border-box;
+            border:2px solid #ffffff;
+            border-radius:50%;
+            -webkit-box-sizing:border-box;
+                    box-sizing:border-box;
 
-        cursor:pointer;
-        outline:none;
+            cursor:pointer;
+            outline:none;
+            
+        }
 
-    }
-
-.SRS__thumbler-decorator_horizontal{
+.SRS__thumbler_horizontal:after{
 
             top:-6px;
             left:calc( -16px / 2 )
 
         }
 
-.SRS__thumbler-decorator_vertical{
+.SRS__thumbler_vertical:after{
 
             left:-6px;
             top:calc( -16px / 2 )

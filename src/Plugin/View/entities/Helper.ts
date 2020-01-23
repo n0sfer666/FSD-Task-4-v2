@@ -11,7 +11,7 @@ export class Helper {
     }
 
     get_position_from_value(value: number[], range: T_Range): number[] {
-        let result: number[] = value;
+        let result: number[] = [];
 
         for( let i = 0; i < value.length; i++ ) {
             result[i] = ( value[i] - range[0] ) / ( range[1] - range[0] ) * this.TO_SAVE_INTEGER;

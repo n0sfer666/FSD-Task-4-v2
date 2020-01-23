@@ -57,7 +57,7 @@ $tooltip_font: normal normal $tooltip_text_size/$tooltip_text_size Serif;
 
     }
 
-    &thumbler-container {
+    &thumbler {
 
         position: absolute;
         z-index: 9;
@@ -80,33 +80,34 @@ $tooltip_font: normal normal $tooltip_text_size/$tooltip_text_size Serif;
 
         }
 
-    }
+        &:after {
 
-    &thumbler-decorator {
+            content: '';
+            position: absolute;
+            z-index: 10;
 
-        position: absolute;
-        z-index: 10;
+            background: $thumbler_background;
 
-        background: $thumbler_background;
+            width: $thumbler_size;
+            height: $thumbler_size;
 
-        width: $thumbler_size;
-        height: $thumbler_size;
+            border: $thumbler_border_size solid $thumbler_border_color;
+            border-radius: $thumbler_border_radius;
+            box-sizing: border-box;
 
-        border: $thumbler_border_size solid $thumbler_border_color;
-        border-radius: $thumbler_border_radius;
-        box-sizing: border-box;
+            cursor: pointer;
+            outline: none;
+            
+        }
 
-        cursor: pointer;
-        outline: none;
-
-        &_horizontal {
+        &_horizontal:after {
 
             top: -$slider_width;
             left: calc( -$thumbler_size / 2 )
 
         }
 
-        &_vertical {
+        &_vertical:after {
 
             left: -$slider_width;
             top: calc( -$thumbler_size / 2 )

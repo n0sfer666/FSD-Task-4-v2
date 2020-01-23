@@ -3,16 +3,12 @@ import { Helper } from "./Helper";
 export class Thumbler extends Helper {
 
     element: HTMLElement;
-    index: number = 0;
 
-    constructor( private position_safe_int: number, private step_safe_int: number, private orientation: T_Orientation, index?: number ) {
+    constructor( private position_safe_int: number, private step_safe_int: number, private orientation: T_Orientation, private index: number ) {
         super();
 
         this.element = this.get_div_element_with_class('thumbler', this.orientation);
-
-        if(index !== undefined) {
-            this.index = index;
-        }
+        this.set_new_position(position_safe_int);
 
     }
 
