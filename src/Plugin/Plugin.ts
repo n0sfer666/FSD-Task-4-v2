@@ -1,8 +1,12 @@
 import { View } from './View/View';
+import { Model } from './Model/Model';
+import { Presenter } from './Controller/Presenter';
 
 export class SimpleRangeSlider {
 
     view: View;
+    model: Model;
+    presenter: Presenter;
 
     constructor(private container: JQuery, private user_configuration: I_Configuration_User) {
 
@@ -36,12 +40,14 @@ export class SimpleRangeSlider {
             orientation: complete_configuration.orientation,
             value_start: complete_configuration.start,
             value_range: complete_configuration.range,
-            value_step:  complete_configuration.step,
             is_tooltip:  complete_configuration.tooltip,
             is_connect:  complete_configuration.connect
         }
 
         this.view = new View(slider_container, view_configuration);
+        this.model = new Model(model_configuration);
+        this.presenter = new Presenter(this.view, this.model);
+
 
     }
 

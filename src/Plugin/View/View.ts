@@ -5,11 +5,10 @@ import { Tooltip } from './entities/Tooltip';
 
 export class View extends Helper {
 
-    position_safe_int: number[];
-    step_safe_int: number[];
+    position_safe_int: T_Position = [0];
 
-    value_range: T_Range;
-    value_start: T_Value;
+    value_range_safe_int: T_Range;
+    value_start_safe_int: T_Value;
 
     orientation: T_Orientation;
 
@@ -29,16 +28,26 @@ export class View extends Helper {
 
         this.orientation = this.configuration.orientation;
 
-        this.value_range = this.configuration.value_range;
-        this.value_start = this.configuration.value_start;
+        this.value_range_safe_int = this.configuration.value_range;
+        for( let i= 0; i < this.value_range_safe_int.length; i++ ) {
+            this.value_range_safe_int[i] *= this.TO_SAVE_INTEGER;
+        };
 
-        this.position_safe_int = this.get_position_from_value( this.value_start, this.value_range );
-        this.step_safe_int = this.get_position_from_value([this.configuration.value_step], this.value_range);
+        this.value_start_safe_int = this.configuration.value_start;
+        for( let i= 0; i < this.value_start_safe_int.length; i++ ) {
+            this.value_start_safe_int[i] *= this.TO_SAVE_INTEGER;
+            
+            if(this.position_safe_int[i] === undefined) {
+                this.position_safe_int.push( this.get_position_from_value(this.value_start_safe_int[i], this.value_range_safe_int) );
+            } else {
+                this.position_safe_int[i] =  this.get_position_from_value(this.value_start_safe_int[i], this.value_range_safe_int);
+            }
+        }; 
 
         this.slider = this.get_div_element_with_class('slider', this.orientation);
 
         for( let i = 0; i < this.position_safe_int.length; i++ ) {
-            this.thumbler.push(new Thumbler(this.position_safe_int[i], this.step_safe_int[0], this.orientation, i))
+            this.thumbler.push(new Thumbler(this.position_safe_int[i], this.orientation, i))
         }
 
         if(this.is_connect) {
@@ -52,7 +61,7 @@ export class View extends Helper {
 
         if(this.is_tooltip) {
             for( let i = 0; i < this.thumbler.length; i++ ) {
-                this.tooltip.push( new Tooltip( this.value_start[i], this.orientation ) );
+                this.tooltip.push( new Tooltip( this.value_start_safe_int[i], this.orientation ) );
                 
                 this.thumbler[i].element.append(this.tooltip[i].element);
             }
@@ -63,5 +72,11 @@ export class View extends Helper {
         }
 
         this.container.append(this.slider);
+    }
+
+    on_thumbler_move(callback: I_Thumbler_State) {
+        for( let i= 0; i < this.thumbler.length; i++ ) {
+            this.thumbler[i].on_mouse_down_and_move(this.container, callback);
+        }
     }
 }

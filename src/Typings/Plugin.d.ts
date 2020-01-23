@@ -27,7 +27,6 @@ interface I_Configuration_View {
     orientation: T_Orientation,
     value_start: T_Value;
     value_range: T_Range;
-    value_step:  number;
     is_tooltip:  boolean;
     is_connect:  boolean;
 }

@@ -13,7 +13,7 @@
 </head>
 <body>
     <style>
-        .slideX {
+        .sliderX {
             width: 300px;
         }   
         .sliderY {
@@ -32,19 +32,21 @@
 
         var Slider_X_2 = $('#slider_X_2').SimpleRangeSlider({
             range: [-20000, 20000],
-            start: [-5000, 5000],
+            start: [-5000, 19800],
             tooltip: true
         });
 
         var slider_Y_1 = $('#slider_Y_1').SimpleRangeSlider({
             orientation: 'vertical',
+            range: [0, 1000],
+            // start: [10, 50],
             connect: false,
         });
 
         var slider_Y_2 = $('#slider_Y_2').SimpleRangeSlider({
             orientation: 'vertical',
-            range: [-20000, 20000],
-            start: [-5000, 5000],
+            range: [-200000, 200000],
+            start: [-15000, 15000],
             tooltip: true
         });
         

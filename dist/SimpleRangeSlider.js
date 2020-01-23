@@ -96,6 +96,68 @@ return /******/ (function(modules) { // webpackBootstrap
 /************************************************************************/
 /******/ ({
 
+/***/ "./src/Plugin/Controller/Presenter.ts":
+/*!********************************************!*\
+  !*** ./src/Plugin/Controller/Presenter.ts ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Presenter = (function () {
+    function Presenter(view, model) {
+        this.view = view;
+        this.model = model;
+        view.on_thumbler_move(function (thumbler_data) {
+            console.log(thumbler_data);
+            model.set_position(thumbler_data);
+        });
+    }
+    return Presenter;
+}());
+exports.Presenter = Presenter;
+
+
+/***/ }),
+
+/***/ "./src/Plugin/Model/Model.ts":
+/*!***********************************!*\
+  !*** ./src/Plugin/Model/Model.ts ***!
+  \***********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Model = (function () {
+    function Model(configuration) {
+        this.configuration = configuration;
+        this.TO_SAVE_INTEGER = 1e20;
+        this.position_safe_int = [NaN];
+        this.value_safe_int = this.configuration.value_start;
+        this.range_safe_int = this.configuration.value_range;
+        this.step_safe_int = this.configuration.value_step;
+        this.TO_THUMBLER_POSITION = this.TO_SAVE_INTEGER / 1e3;
+        this.TO_CONNECT_UPDATE = this.TO_SAVE_INTEGER / 1e2;
+    }
+    Model.prototype.set_position = function (thumbler_state) {
+        if (this.position_safe_int[thumbler_state.index] === undefined) {
+            this.position_safe_int.push(thumbler_state.position_safe_int);
+        }
+        else {
+            this.position_safe_int[thumbler_state.index] = thumbler_state.position_safe_int;
+        }
+    };
+    return Model;
+}());
+exports.Model = Model;
+
+
+/***/ }),
+
 /***/ "./src/Plugin/Plugin.ts":
 /*!******************************!*\
   !*** ./src/Plugin/Plugin.ts ***!
@@ -107,6 +169,8 @@ return /******/ (function(modules) { // webpackBootstrap
 
 Object.defineProperty(exports, "__esModule", { value: true });
 var View_1 = __webpack_require__(/*! ./View/View */ "./src/Plugin/View/View.ts");
+var Model_1 = __webpack_require__(/*! ./Model/Model */ "./src/Plugin/Model/Model.ts");
+var Presenter_1 = __webpack_require__(/*! ./Controller/Presenter */ "./src/Plugin/Controller/Presenter.ts");
 var SimpleRangeSlider = (function () {
     function SimpleRangeSlider(container, user_configuration) {
         this.container = container;
@@ -137,11 +201,12 @@ var SimpleRangeSlider = (function () {
             orientation: complete_configuration.orientation,
             value_start: complete_configuration.start,
             value_range: complete_configuration.range,
-            value_step: complete_configuration.step,
             is_tooltip: complete_configuration.tooltip,
             is_connect: complete_configuration.connect
         };
         this.view = new View_1.View(slider_container, view_configuration);
+        this.model = new Model_1.Model(model_configuration);
+        this.presenter = new Presenter_1.Presenter(this.view, this.model);
     }
     return SimpleRangeSlider;
 }());
@@ -191,19 +256,32 @@ var View = (function (_super) {
         var _this = _super.call(this) || this;
         _this.container = container;
         _this.configuration = configuration;
+        _this.position_safe_int = [0];
         _this.thumbler = [];
         _this.connect = [];
         _this.tooltip = [];
         _this.is_tooltip = _this.configuration.is_tooltip;
         _this.is_connect = _this.configuration.is_connect;
         _this.orientation = _this.configuration.orientation;
-        _this.value_range = _this.configuration.value_range;
-        _this.value_start = _this.configuration.value_start;
-        _this.position_safe_int = _this.get_position_from_value(_this.value_start, _this.value_range);
-        _this.step_safe_int = _this.get_position_from_value([_this.configuration.value_step], _this.value_range);
+        _this.value_range_safe_int = _this.configuration.value_range;
+        for (var i = 0; i < _this.value_range_safe_int.length; i++) {
+            _this.value_range_safe_int[i] *= _this.TO_SAVE_INTEGER;
+        }
+        ;
+        _this.value_start_safe_int = _this.configuration.value_start;
+        for (var i = 0; i < _this.value_start_safe_int.length; i++) {
+            _this.value_start_safe_int[i] *= _this.TO_SAVE_INTEGER;
+            if (_this.position_safe_int[i] === undefined) {
+                _this.position_safe_int.push(_this.get_position_from_value(_this.value_start_safe_int[i], _this.value_range_safe_int));
+            }
+            else {
+                _this.position_safe_int[i] = _this.get_position_from_value(_this.value_start_safe_int[i], _this.value_range_safe_int);
+            }
+        }
+        ;
         _this.slider = _this.get_div_element_with_class('slider', _this.orientation);
         for (var i = 0; i < _this.position_safe_int.length; i++) {
-            _this.thumbler.push(new Thumbler_1.Thumbler(_this.position_safe_int[i], _this.step_safe_int[0], _this.orientation, i));
+            _this.thumbler.push(new Thumbler_1.Thumbler(_this.position_safe_int[i], _this.orientation, i));
         }
         if (_this.is_connect) {
             if (_this.position_safe_int.length === 1) {
@@ -216,7 +294,7 @@ var View = (function (_super) {
         }
         if (_this.is_tooltip) {
             for (var i = 0; i < _this.thumbler.length; i++) {
-                _this.tooltip.push(new Tooltip_1.Tooltip(_this.value_start[i], _this.orientation));
+                _this.tooltip.push(new Tooltip_1.Tooltip(_this.value_start_safe_int[i], _this.orientation));
                 _this.thumbler[i].element.append(_this.tooltip[i].element);
             }
         }
@@ -226,6 +304,11 @@ var View = (function (_super) {
         _this.container.append(_this.slider);
         return _this;
     }
+    View.prototype.on_thumbler_move = function (callback) {
+        for (var i = 0; i < this.thumbler.length; i++) {
+            this.thumbler[i].on_mouse_down_and_move(this.container, callback);
+        }
+    };
     return View;
 }(Helper_1.Helper));
 exports.View = View;
@@ -299,16 +382,12 @@ exports.Connect = Connect;
 Object.defineProperty(exports, "__esModule", { value: true });
 var Helper = (function () {
     function Helper() {
-        this.TO_SAVE_INTEGER = 1e9;
+        this.TO_SAVE_INTEGER = 1e20;
         this.TO_THUMBLER_POSITION = this.TO_SAVE_INTEGER / 1e3;
         this.TO_CONNECT_UPDATE = this.TO_SAVE_INTEGER / 1e2;
     }
     Helper.prototype.get_position_from_value = function (value, range) {
-        var result = [];
-        for (var i = 0; i < value.length; i++) {
-            result[i] = (value[i] - range[0]) / (range[1] - range[0]) * this.TO_SAVE_INTEGER;
-            result[i] = Math.round(result[i]);
-        }
+        var result = ((value - range[0]) / (range[1] - range[0])) * this.TO_SAVE_INTEGER;
         return result;
     };
     Helper.prototype.get_div_element_with_class = function (css_class, orientation) {
@@ -351,10 +430,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Helper_1 = __webpack_require__(/*! ./Helper */ "./src/Plugin/View/entities/Helper.ts");
 var Thumbler = (function (_super) {
     __extends(Thumbler, _super);
-    function Thumbler(position_safe_int, step_safe_int, orientation, index) {
+    function Thumbler(position_safe_int, orientation, index) {
         var _this = _super.call(this) || this;
         _this.position_safe_int = position_safe_int;
-        _this.step_safe_int = step_safe_int;
         _this.orientation = orientation;
         _this.index = index;
         _this.element = _this.get_div_element_with_class('thumbler', _this.orientation);
@@ -377,11 +455,10 @@ var Thumbler = (function (_super) {
         var that = this;
         that.element.addEventListener('mousedown', function (event) {
             event.preventDefault();
-            that.element.setAttribute('style', 'z-index: 11;');
             var shift = _this.get_shift(that.element, event);
             document.addEventListener('mousemove', on_mouse_move);
             document.addEventListener('mouseup', on_mouse_up);
-            function on_mouse_move() {
+            function on_mouse_move(event) {
                 var new_position, new_position_in_percent, position_safe_int;
                 if (that.orientation === 'horizontal') {
                     new_position = event.clientX - shift - container.getBoundingClientRect().left;
@@ -392,33 +469,18 @@ var Thumbler = (function (_super) {
                     new_position_in_percent = new_position / container.offsetHeight;
                 }
                 position_safe_int = new_position_in_percent * that.TO_SAVE_INTEGER;
-                if (position_safe_int > that.position_safe_int + (that.step_safe_int / 2)) {
-                    if (that.position_safe_int + that.step_safe_int >= that.TO_SAVE_INTEGER) {
-                        that.position_safe_int = that.TO_SAVE_INTEGER;
-                        that.set_new_position(that.position_safe_int);
-                    }
-                    else {
-                        that.position_safe_int = that.position_safe_int + that.step_safe_int;
-                        that.set_new_position(that.position_safe_int);
-                    }
+                if (position_safe_int > that.TO_SAVE_INTEGER) {
+                    position_safe_int = that.TO_SAVE_INTEGER;
                 }
-                if (position_safe_int < that.position_safe_int - (that.step_safe_int / 2)) {
-                    if (that.position_safe_int - that.step_safe_int <= 0) {
-                        that.position_safe_int = 0;
-                        that.set_new_position(that.position_safe_int);
-                    }
-                    else {
-                        that.position_safe_int = that.position_safe_int - that.step_safe_int;
-                        that.set_new_position(that.position_safe_int);
-                    }
+                if (position_safe_int < 0) {
+                    position_safe_int = 0;
                 }
-                callback({ position_safe_int: that.position_safe_int,
+                callback({ position_safe_int: position_safe_int,
                     index: that.index });
             }
             function on_mouse_up() {
                 document.removeEventListener('mousemove', on_mouse_move);
                 document.removeEventListener('mouseup', on_mouse_up);
-                that.element.setAttribute('style', 'z-index: 10;');
             }
         });
     };
@@ -455,16 +517,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Helper_1 = __webpack_require__(/*! ./Helper */ "./src/Plugin/View/entities/Helper.ts");
 var Tooltip = (function (_super) {
     __extends(Tooltip, _super);
-    function Tooltip(value, orientation) {
+    function Tooltip(value_safe_int, orientation) {
         var _this = _super.call(this) || this;
-        _this.value = value;
+        _this.value_safe_int = value_safe_int;
         _this.orientation = orientation;
         _this.element = _this.get_div_element_with_class('tooltip', _this.orientation);
-        _this.set_inner_text(_this.value);
+        _this.set_inner_text(_this.value_safe_int);
         return _this;
     }
-    Tooltip.prototype.set_inner_text = function (value) {
-        this.element.innerText = String(value);
+    Tooltip.prototype.set_inner_text = function (value_safe_int) {
+        this.element.innerText = String(value_safe_int / this.TO_SAVE_INTEGER);
     };
     return Tooltip;
 }(Helper_1.Helper));

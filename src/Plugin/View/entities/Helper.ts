@@ -1,6 +1,6 @@
 export class Helper {
 
-    readonly TO_SAVE_INTEGER: number = 1e9;
+    readonly TO_SAVE_INTEGER: number = 1e20;
     readonly TO_THUMBLER_POSITION: number;
     readonly TO_CONNECT_UPDATE: number;
 
@@ -10,13 +10,9 @@ export class Helper {
         this.TO_CONNECT_UPDATE = this.TO_SAVE_INTEGER / 1e2;
     }
 
-    get_position_from_value(value: number[], range: T_Range): number[] {
-        let result: number[] = [];
+    get_position_from_value(value: number, range: T_Range): number {
 
-        for( let i = 0; i < value.length; i++ ) {
-            result[i] = ( value[i] - range[0] ) / ( range[1] - range[0] ) * this.TO_SAVE_INTEGER;
-            result[i] =  Math.round(result[i]);
-        }
+        let result: number =  ( ( value - range[0] ) / ( range[1] - range[0] ) ) * this.TO_SAVE_INTEGER;
 
         return result;
     }
