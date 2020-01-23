@@ -97,7 +97,7 @@ $tooltip_font: normal normal $tooltip_text_size/$tooltip_text_size Serif;
 
             cursor: pointer;
             outline: none;
-            
+
         }
 
         &_horizontal:after {
@@ -157,7 +157,7 @@ $tooltip_font: normal normal $tooltip_text_size/$tooltip_text_size Serif;
         &_horizontal {
 
             transform: translateX(-50%);
-            bottom: calc( $tooltip_text_size / 1.5 );
+            bottom: $tooltip_text_size;
 
         }
 
