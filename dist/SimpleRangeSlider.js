@@ -136,10 +136,35 @@ var Model = (function () {
     function Model(configuration) {
         this.configuration = configuration;
         this.TO_SAVE_INTEGER = 1e20;
-        this.position_safe_int = [NaN];
-        this.value_safe_int = this.configuration.value_start;
-        this.range_safe_int = this.configuration.value_range;
-        this.step_safe_int = this.configuration.value_step;
+        this.value_safe_int = [0];
+        this.range_safe_int = [0, 0];
+        this.step_safe_int = 0;
+        this.position_safe_int = [0];
+        this.step_safe_int = this.configuration.value_step * this.TO_SAVE_INTEGER;
+        for (var i = 0; i < this.range_safe_int.length; i++) {
+            if (this.range_safe_int[i] === undefined) {
+                this.range_safe_int.push(this.configuration.value_range[i] * this.TO_SAVE_INTEGER);
+            }
+            else {
+                this.range_safe_int[i] = this.configuration.value_range[i] * this.TO_SAVE_INTEGER;
+            }
+        }
+        ;
+        for (var i = 0; i < this.value_safe_int.length; i++) {
+            if (this.value_safe_int[i] === undefined) {
+                this.value_safe_int.push(this.configuration.value_start[i] * this.TO_SAVE_INTEGER);
+            }
+            else {
+                this.value_safe_int[i] = this.configuration.value_start[i] * this.TO_SAVE_INTEGER;
+            }
+            if (this.position_safe_int[i] === undefined) {
+                this.position_safe_int.push(this.get_position_from_value(this.value_safe_int[i], this.range_safe_int));
+            }
+            else {
+                this.position_safe_int[i] = this.get_position_from_value(this.value_safe_int[i], this.range_safe_int);
+            }
+        }
+        ;
         this.TO_THUMBLER_POSITION = this.TO_SAVE_INTEGER / 1e3;
         this.TO_CONNECT_UPDATE = this.TO_SAVE_INTEGER / 1e2;
     }
@@ -150,6 +175,10 @@ var Model = (function () {
         else {
             this.position_safe_int[thumbler_state.index] = thumbler_state.position_safe_int;
         }
+    };
+    Model.prototype.get_position_from_value = function (value, range) {
+        var result = ((value - range[0]) / (range[1] - range[0])) * this.TO_SAVE_INTEGER;
+        return result;
     };
     return Model;
 }());
@@ -257,20 +286,30 @@ var View = (function (_super) {
         _this.container = container;
         _this.configuration = configuration;
         _this.position_safe_int = [0];
+        _this.value_range_safe_int = [0, 0];
+        _this.value_start_safe_int = [0];
         _this.thumbler = [];
         _this.connect = [];
         _this.tooltip = [];
         _this.is_tooltip = _this.configuration.is_tooltip;
         _this.is_connect = _this.configuration.is_connect;
         _this.orientation = _this.configuration.orientation;
-        _this.value_range_safe_int = _this.configuration.value_range;
-        for (var i = 0; i < _this.value_range_safe_int.length; i++) {
-            _this.value_range_safe_int[i] *= _this.TO_SAVE_INTEGER;
+        for (var i = 0; i < _this.configuration.value_range.length; i++) {
+            if (_this.value_range_safe_int[i] === undefined) {
+                _this.value_range_safe_int.push(_this.configuration.value_range[i] * _this.TO_SAVE_INTEGER);
+            }
+            else {
+                _this.value_range_safe_int[i] = _this.configuration.value_range[i] * _this.TO_SAVE_INTEGER;
+            }
         }
         ;
-        _this.value_start_safe_int = _this.configuration.value_start;
-        for (var i = 0; i < _this.value_start_safe_int.length; i++) {
-            _this.value_start_safe_int[i] *= _this.TO_SAVE_INTEGER;
+        for (var i = 0; i < _this.configuration.value_start.length; i++) {
+            if (_this.value_start_safe_int[i] === undefined) {
+                _this.value_start_safe_int.push(_this.configuration.value_start[i] * _this.TO_SAVE_INTEGER);
+            }
+            else {
+                _this.value_start_safe_int[i] = _this.configuration.value_start[i] * _this.TO_SAVE_INTEGER;
+            }
             if (_this.position_safe_int[i] === undefined) {
                 _this.position_safe_int.push(_this.get_position_from_value(_this.value_start_safe_int[i], _this.value_range_safe_int));
             }

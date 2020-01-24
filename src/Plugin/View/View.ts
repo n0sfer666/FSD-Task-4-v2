@@ -7,8 +7,8 @@ export class View extends Helper {
 
     position_safe_int: T_Position = [0];
 
-    value_range_safe_int: T_Range;
-    value_start_safe_int: T_Value;
+    value_range_safe_int: T_Range = [0, 0];
+    value_start_safe_int: T_Value = [0];
 
     orientation: T_Orientation;
 
@@ -28,15 +28,22 @@ export class View extends Helper {
 
         this.orientation = this.configuration.orientation;
 
-        this.value_range_safe_int = this.configuration.value_range;
-        for( let i= 0; i < this.value_range_safe_int.length; i++ ) {
-            this.value_range_safe_int[i] *= this.TO_SAVE_INTEGER;
+        for( let i= 0; i < this.configuration.value_range.length; i++ ) {
+            if(this.value_range_safe_int[i] === undefined) {
+                this.value_range_safe_int.push(this.configuration.value_range[i] * this.TO_SAVE_INTEGER);
+            } else {
+                this.value_range_safe_int[i] = this.configuration.value_range[i] * this.TO_SAVE_INTEGER;
+            }
         };
 
-        this.value_start_safe_int = this.configuration.value_start;
-        for( let i= 0; i < this.value_start_safe_int.length; i++ ) {
-            this.value_start_safe_int[i] *= this.TO_SAVE_INTEGER;
+        for( let i= 0; i < this.configuration.value_start.length; i++ ) {
             
+            if(this.value_start_safe_int[i] === undefined) {
+                this.value_start_safe_int.push(this.configuration.value_start[i] * this.TO_SAVE_INTEGER);
+            } else {
+                this.value_start_safe_int[i] = this.configuration.value_start[i] * this.TO_SAVE_INTEGER;
+            }
+
             if(this.position_safe_int[i] === undefined) {
                 this.position_safe_int.push( this.get_position_from_value(this.value_start_safe_int[i], this.value_range_safe_int) );
             } else {
