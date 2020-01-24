@@ -1,60 +1,88 @@
 export class Model {
 
-    readonly TO_SAVE_INTEGER: number = 1e20;
-    readonly TO_THUMBLER_POSITION: number;
-    readonly TO_CONNECT_UPDATE: number;
 
-    value_safe_int: T_Value = [0];
-    range_safe_int: T_Range = [0, 0];
-    step_safe_int: number = 0;
-    position_safe_int: T_Position = [0];
+    value: T_Value = [0];
+    range: T_Range = [0, 0];
+    step: number = 0;
+    position: T_Position = [0];
+
+    index_of_active_thumbler: number = 0;
+
+    callback_list: I_Model_State[];
 
     constructor(private configuration: I_Configuration_Model) {
 
-        this.step_safe_int = this.configuration.value_step * this.TO_SAVE_INTEGER;
+        this.callback_list = [];
 
-        for( let i= 0; i < this.range_safe_int.length; i++ ) {
+        this.step = this.configuration.value_step;
 
-            if(this.range_safe_int[i] === undefined) {
-                this.range_safe_int.push(this.configuration.value_range[i] * this.TO_SAVE_INTEGER);
+        for( let i= 0; i < this.configuration.value_range.length; i++ ) {
+
+            if(this.range[i] === undefined) {
+                this.range.push(this.configuration.value_range[i]);
             } else {
-                this.range_safe_int[i] = this.configuration.value_range[i] * this.TO_SAVE_INTEGER;
+                this.range[i] = this.configuration.value_range[i];
             }
 
         };
 
-        for( let i= 0; i < this.value_safe_int.length; i++ ) {
+        for( let i= 0; i < this.configuration.value_start.length; i++ ) {
 
-            if(this.value_safe_int[i] === undefined) {
-                this.value_safe_int.push(this.configuration.value_start[i] * this.TO_SAVE_INTEGER);
+            if(this.value[i] === undefined) {
+                this.value.push(this.configuration.value_start[i]);
             } else {
-                this.value_safe_int[i] = this.configuration.value_start[i] * this.TO_SAVE_INTEGER;
+                this.value[i] = this.configuration.value_start[i];
             }
 
-            if(this.position_safe_int[i] === undefined) {
-                this.position_safe_int.push( this.get_position_from_value(this.value_safe_int[i], this.range_safe_int) );
+            if(this.position[i] === undefined) {
+                this.position.push( this.get_position_from_value(this.value[i], this.range) );
             } else {
-                this.position_safe_int[i] =  this.get_position_from_value(this.value_safe_int[i], this.range_safe_int);
+                this.position[i] =  this.get_position_from_value(this.value[i], this.range);
             }
-        };
-
-        this.TO_THUMBLER_POSITION = this.TO_SAVE_INTEGER / 1e3;
-        this.TO_CONNECT_UPDATE = this.TO_SAVE_INTEGER / 1e2;
-    }
-
-    set_position(thumbler_state: T_Thumbler_Data) {
-        if(this.position_safe_int[thumbler_state.index] === undefined) {
-            this.position_safe_int.push(thumbler_state.position_safe_int);
-        } else {
-            this.position_safe_int[thumbler_state.index] = thumbler_state.position_safe_int;
         }
+
     }
 
-    get_position_from_value(value: number, range: T_Range) {
+    set_new_position(thumbler_state: T_Thumbler_Data) {
 
-        let result: number =  ( ( value - range[0] ) / ( range[1] - range[0] ) ) * this.TO_SAVE_INTEGER;
+        let i: number;
+
+        if(this.position[thumbler_state.index] === undefined) {
+            this.position.push(thumbler_state.position);
+        } else {
+            this.position[thumbler_state.index] = thumbler_state.position;
+        
+        }
+
+        this.index_of_active_thumbler = thumbler_state.index;
+        i = this.index_of_active_thumbler;
+
+        this.value[i] = this.get_value_from_position(this.position[i], this.range);
+
+        this.callback_list.forEach((callback: I_Model_State) => {
+            callback({
+                position: this.position,
+                value: this.value,
+                index: this.index_of_active_thumbler
+            });
+        })
+    }
+
+    on_change_model(callback: I_Model_State) {
+        this.callback_list.push(callback);
+    }
+
+    get_position_from_value(value: number, range: T_Range): number {
+
+        let result: number = ( value - range[0] ) / ( range[1] - range[0] );
 
         return result;
+    }
 
+    get_value_from_position(position: number, range: T_Range): number {
+
+        let result: number  = (position * (range[1] - range[0])) + range[0];
+
+        return Math.round(result);
     }
 }

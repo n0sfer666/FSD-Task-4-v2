@@ -4,19 +4,19 @@ export class Thumbler extends Helper {
 
     element: HTMLElement;
 
-    constructor( private position_safe_int: number, private orientation: T_Orientation, private index: number ) {
+    constructor( private position: number, private orientation: T_Orientation, private index: number ) {
         super();
 
         this.element = this.get_div_element_with_class('thumbler', this.orientation);
-        this.set_new_position(position_safe_int);
+        this.set_new_position(position);
 
     }
 
-    set_new_position(position_safe_int: number) {
+    set_new_position(position: number) {
 
         let liter: string = this.orientation === "horizontal" ? 'X' : 'Y';
 
-        let style: string = `transform: translate${liter}(${ (position_safe_int / this.TO_THUMBLER_POSITION) }%);`;
+        let style: string = `transform: translate${liter}(${ (position * this.TO_THUMBLER_POSITION) }%);`;
         // console.log(style);
         this.element.setAttribute('style', style);
 
@@ -49,7 +49,7 @@ export class Thumbler extends Helper {
 
                 let new_position: number,
                     new_position_in_percent: number,
-                    position_safe_int: number;
+                    position: number;
                 
                 if(that.orientation === 'horizontal') {
                     new_position = event.clientX - shift - container.getBoundingClientRect().left;
@@ -60,16 +60,16 @@ export class Thumbler extends Helper {
                 }
 
                 
-                position_safe_int = new_position_in_percent * that.TO_SAVE_INTEGER;
+                position = new_position_in_percent;
 
-                if(position_safe_int > that.TO_SAVE_INTEGER) {
-                    position_safe_int = that.TO_SAVE_INTEGER;
+                if(position > 1) {
+                    position = 1;
                 }
-                if(position_safe_int < 0) {
-                    position_safe_int = 0;
+                if(position < 0) {
+                    position = 0;
                 }
 
-                callback({ position_safe_int: position_safe_int,
+                callback({ position: position,
                            index: that.index });
             }
 

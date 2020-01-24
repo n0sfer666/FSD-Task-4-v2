@@ -111,8 +111,10 @@ var Presenter = (function () {
         this.view = view;
         this.model = model;
         view.on_thumbler_move(function (thumbler_data) {
-            console.log(thumbler_data);
-            model.set_position(thumbler_data);
+            model.set_new_position(thumbler_data);
+        });
+        model.on_change_model(function (model_state) {
+            view.update(model_state);
         });
     }
     return Presenter;
@@ -135,50 +137,67 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Model = (function () {
     function Model(configuration) {
         this.configuration = configuration;
-        this.TO_SAVE_INTEGER = 1e20;
-        this.value_safe_int = [0];
-        this.range_safe_int = [0, 0];
-        this.step_safe_int = 0;
-        this.position_safe_int = [0];
-        this.step_safe_int = this.configuration.value_step * this.TO_SAVE_INTEGER;
-        for (var i = 0; i < this.range_safe_int.length; i++) {
-            if (this.range_safe_int[i] === undefined) {
-                this.range_safe_int.push(this.configuration.value_range[i] * this.TO_SAVE_INTEGER);
+        this.value = [0];
+        this.range = [0, 0];
+        this.step = 0;
+        this.position = [0];
+        this.index_of_active_thumbler = 0;
+        this.callback_list = [];
+        this.step = this.configuration.value_step;
+        for (var i = 0; i < this.configuration.value_range.length; i++) {
+            if (this.range[i] === undefined) {
+                this.range.push(this.configuration.value_range[i]);
             }
             else {
-                this.range_safe_int[i] = this.configuration.value_range[i] * this.TO_SAVE_INTEGER;
+                this.range[i] = this.configuration.value_range[i];
             }
         }
         ;
-        for (var i = 0; i < this.value_safe_int.length; i++) {
-            if (this.value_safe_int[i] === undefined) {
-                this.value_safe_int.push(this.configuration.value_start[i] * this.TO_SAVE_INTEGER);
+        for (var i = 0; i < this.configuration.value_start.length; i++) {
+            if (this.value[i] === undefined) {
+                this.value.push(this.configuration.value_start[i]);
             }
             else {
-                this.value_safe_int[i] = this.configuration.value_start[i] * this.TO_SAVE_INTEGER;
+                this.value[i] = this.configuration.value_start[i];
             }
-            if (this.position_safe_int[i] === undefined) {
-                this.position_safe_int.push(this.get_position_from_value(this.value_safe_int[i], this.range_safe_int));
+            if (this.position[i] === undefined) {
+                this.position.push(this.get_position_from_value(this.value[i], this.range));
             }
             else {
-                this.position_safe_int[i] = this.get_position_from_value(this.value_safe_int[i], this.range_safe_int);
+                this.position[i] = this.get_position_from_value(this.value[i], this.range);
             }
         }
-        ;
-        this.TO_THUMBLER_POSITION = this.TO_SAVE_INTEGER / 1e3;
-        this.TO_CONNECT_UPDATE = this.TO_SAVE_INTEGER / 1e2;
     }
-    Model.prototype.set_position = function (thumbler_state) {
-        if (this.position_safe_int[thumbler_state.index] === undefined) {
-            this.position_safe_int.push(thumbler_state.position_safe_int);
+    Model.prototype.set_new_position = function (thumbler_state) {
+        var _this = this;
+        var i;
+        if (this.position[thumbler_state.index] === undefined) {
+            this.position.push(thumbler_state.position);
         }
         else {
-            this.position_safe_int[thumbler_state.index] = thumbler_state.position_safe_int;
+            this.position[thumbler_state.index] = thumbler_state.position;
         }
+        this.index_of_active_thumbler = thumbler_state.index;
+        i = this.index_of_active_thumbler;
+        this.value[i] = this.get_value_from_position(this.position[i], this.range);
+        this.callback_list.forEach(function (callback) {
+            callback({
+                position: _this.position,
+                value: _this.value,
+                index: _this.index_of_active_thumbler
+            });
+        });
+    };
+    Model.prototype.on_change_model = function (callback) {
+        this.callback_list.push(callback);
     };
     Model.prototype.get_position_from_value = function (value, range) {
-        var result = ((value - range[0]) / (range[1] - range[0])) * this.TO_SAVE_INTEGER;
+        var result = (value - range[0]) / (range[1] - range[0]);
         return result;
+    };
+    Model.prototype.get_value_from_position = function (position, range) {
+        var result = (position * (range[1] - range[0])) + range[0];
+        return Math.round(result);
     };
     return Model;
 }());
@@ -285,9 +304,9 @@ var View = (function (_super) {
         var _this = _super.call(this) || this;
         _this.container = container;
         _this.configuration = configuration;
-        _this.position_safe_int = [0];
-        _this.value_range_safe_int = [0, 0];
-        _this.value_start_safe_int = [0];
+        _this.position = [0];
+        _this.value_range = [0, 0];
+        _this.value_start = [0];
         _this.thumbler = [];
         _this.connect = [];
         _this.tooltip = [];
@@ -295,45 +314,45 @@ var View = (function (_super) {
         _this.is_connect = _this.configuration.is_connect;
         _this.orientation = _this.configuration.orientation;
         for (var i = 0; i < _this.configuration.value_range.length; i++) {
-            if (_this.value_range_safe_int[i] === undefined) {
-                _this.value_range_safe_int.push(_this.configuration.value_range[i] * _this.TO_SAVE_INTEGER);
+            if (_this.value_range[i] === undefined) {
+                _this.value_range.push(_this.configuration.value_range[i]);
             }
             else {
-                _this.value_range_safe_int[i] = _this.configuration.value_range[i] * _this.TO_SAVE_INTEGER;
+                _this.value_range[i] = _this.configuration.value_range[i];
             }
         }
         ;
         for (var i = 0; i < _this.configuration.value_start.length; i++) {
-            if (_this.value_start_safe_int[i] === undefined) {
-                _this.value_start_safe_int.push(_this.configuration.value_start[i] * _this.TO_SAVE_INTEGER);
+            if (_this.value_start[i] === undefined) {
+                _this.value_start.push(_this.configuration.value_start[i]);
             }
             else {
-                _this.value_start_safe_int[i] = _this.configuration.value_start[i] * _this.TO_SAVE_INTEGER;
+                _this.value_start[i] = _this.configuration.value_start[i];
             }
-            if (_this.position_safe_int[i] === undefined) {
-                _this.position_safe_int.push(_this.get_position_from_value(_this.value_start_safe_int[i], _this.value_range_safe_int));
+            if (_this.position[i] === undefined) {
+                _this.position.push(_this.get_position_from_value(_this.value_start[i], _this.value_range));
             }
             else {
-                _this.position_safe_int[i] = _this.get_position_from_value(_this.value_start_safe_int[i], _this.value_range_safe_int);
+                _this.position[i] = _this.get_position_from_value(_this.value_start[i], _this.value_range);
             }
         }
         ;
         _this.slider = _this.get_div_element_with_class('slider', _this.orientation);
-        for (var i = 0; i < _this.position_safe_int.length; i++) {
-            _this.thumbler.push(new Thumbler_1.Thumbler(_this.position_safe_int[i], _this.orientation, i));
+        for (var i = 0; i < _this.position.length; i++) {
+            _this.thumbler.push(new Thumbler_1.Thumbler(_this.position[i], _this.orientation, i));
         }
         if (_this.is_connect) {
-            if (_this.position_safe_int.length === 1) {
-                _this.connect.push(new Connect_1.Connect(0, _this.position_safe_int[0], _this.orientation));
+            if (_this.position.length === 1) {
+                _this.connect.push(new Connect_1.Connect(0, _this.position[0], _this.orientation));
             }
             else {
-                _this.connect.push(new Connect_1.Connect(_this.position_safe_int[0], _this.position_safe_int[1], _this.orientation));
+                _this.connect.push(new Connect_1.Connect(_this.position[0], _this.position[1], _this.orientation));
             }
             _this.slider.append(_this.connect[0].element);
         }
         if (_this.is_tooltip) {
             for (var i = 0; i < _this.thumbler.length; i++) {
-                _this.tooltip.push(new Tooltip_1.Tooltip(_this.value_start_safe_int[i], _this.orientation));
+                _this.tooltip.push(new Tooltip_1.Tooltip(_this.value_start[i], _this.orientation));
                 _this.thumbler[i].element.append(_this.tooltip[i].element);
             }
         }
@@ -346,6 +365,23 @@ var View = (function (_super) {
     View.prototype.on_thumbler_move = function (callback) {
         for (var i = 0; i < this.thumbler.length; i++) {
             this.thumbler[i].on_mouse_down_and_move(this.container, callback);
+        }
+    };
+    View.prototype.update = function (model_state) {
+        var i = model_state.index;
+        var position = model_state.position;
+        var value = model_state.value;
+        this.thumbler[i].set_new_position(position[i]);
+        if (this.is_tooltip) {
+            this.tooltip[i].set_inner_text(value[i]);
+        }
+        if (this.is_connect) {
+            if (this.position.length === 1) {
+                this.connect[0].set_connect_position(0, this.position[0]);
+            }
+            else {
+                this.connect[0].set_connect_position(this.position[0], this.position[1]);
+            }
         }
     };
     return View;
@@ -381,18 +417,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Helper_1 = __webpack_require__(/*! ./Helper */ "./src/Plugin/View/entities/Helper.ts");
 var Connect = (function (_super) {
     __extends(Connect, _super);
-    function Connect(position_start_safe_int, position_end_safe_int, orientation) {
+    function Connect(position_start, position_end, orientation) {
         var _this = _super.call(this) || this;
-        _this.position_start_safe_int = position_start_safe_int;
-        _this.position_end_safe_int = position_end_safe_int;
+        _this.position_start = position_start;
+        _this.position_end = position_end;
         _this.orientation = orientation;
         _this.element = _this.get_div_element_with_class('connect', _this.orientation);
-        _this.set_connect_position(_this.position_start_safe_int, _this.position_end_safe_int);
+        _this.set_connect_position(_this.position_start, _this.position_end);
         return _this;
     }
-    Connect.prototype.set_connect_position = function (position_start_safe_int, position_end_safe_int) {
-        var start = position_start_safe_int / this.TO_CONNECT_UPDATE;
-        var end = position_end_safe_int / this.TO_CONNECT_UPDATE;
+    Connect.prototype.set_connect_position = function (position_start, position_end) {
+        var start = position_start * this.TO_CONNECT_UPDATE;
+        var end = position_end * this.TO_CONNECT_UPDATE;
         var style = start === 0
             ? this.orientation === 'horizontal'
                 ? "width: " + end + "%;"
@@ -421,12 +457,11 @@ exports.Connect = Connect;
 Object.defineProperty(exports, "__esModule", { value: true });
 var Helper = (function () {
     function Helper() {
-        this.TO_SAVE_INTEGER = 1e20;
-        this.TO_THUMBLER_POSITION = this.TO_SAVE_INTEGER / 1e3;
-        this.TO_CONNECT_UPDATE = this.TO_SAVE_INTEGER / 1e2;
+        this.TO_THUMBLER_POSITION = 1e3;
+        this.TO_CONNECT_UPDATE = 1e2;
     }
     Helper.prototype.get_position_from_value = function (value, range) {
-        var result = ((value - range[0]) / (range[1] - range[0])) * this.TO_SAVE_INTEGER;
+        var result = ((value - range[0]) / (range[1] - range[0]));
         return result;
     };
     Helper.prototype.get_div_element_with_class = function (css_class, orientation) {
@@ -469,18 +504,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Helper_1 = __webpack_require__(/*! ./Helper */ "./src/Plugin/View/entities/Helper.ts");
 var Thumbler = (function (_super) {
     __extends(Thumbler, _super);
-    function Thumbler(position_safe_int, orientation, index) {
+    function Thumbler(position, orientation, index) {
         var _this = _super.call(this) || this;
-        _this.position_safe_int = position_safe_int;
+        _this.position = position;
         _this.orientation = orientation;
         _this.index = index;
         _this.element = _this.get_div_element_with_class('thumbler', _this.orientation);
-        _this.set_new_position(position_safe_int);
+        _this.set_new_position(position);
         return _this;
     }
-    Thumbler.prototype.set_new_position = function (position_safe_int) {
+    Thumbler.prototype.set_new_position = function (position) {
         var liter = this.orientation === "horizontal" ? 'X' : 'Y';
-        var style = "transform: translate" + liter + "(" + (position_safe_int / this.TO_THUMBLER_POSITION) + "%);";
+        var style = "transform: translate" + liter + "(" + (position * this.TO_THUMBLER_POSITION) + "%);";
         this.element.setAttribute('style', style);
     };
     Thumbler.prototype.get_shift = function (element, event) {
@@ -498,7 +533,7 @@ var Thumbler = (function (_super) {
             document.addEventListener('mousemove', on_mouse_move);
             document.addEventListener('mouseup', on_mouse_up);
             function on_mouse_move(event) {
-                var new_position, new_position_in_percent, position_safe_int;
+                var new_position, new_position_in_percent, position;
                 if (that.orientation === 'horizontal') {
                     new_position = event.clientX - shift - container.getBoundingClientRect().left;
                     new_position_in_percent = new_position / container.offsetWidth;
@@ -507,14 +542,14 @@ var Thumbler = (function (_super) {
                     new_position = event.clientY - shift - container.getBoundingClientRect().top;
                     new_position_in_percent = new_position / container.offsetHeight;
                 }
-                position_safe_int = new_position_in_percent * that.TO_SAVE_INTEGER;
-                if (position_safe_int > that.TO_SAVE_INTEGER) {
-                    position_safe_int = that.TO_SAVE_INTEGER;
+                position = new_position_in_percent;
+                if (position > 1) {
+                    position = 1;
                 }
-                if (position_safe_int < 0) {
-                    position_safe_int = 0;
+                if (position < 0) {
+                    position = 0;
                 }
-                callback({ position_safe_int: position_safe_int,
+                callback({ position: position,
                     index: that.index });
             }
             function on_mouse_up() {
@@ -556,16 +591,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var Helper_1 = __webpack_require__(/*! ./Helper */ "./src/Plugin/View/entities/Helper.ts");
 var Tooltip = (function (_super) {
     __extends(Tooltip, _super);
-    function Tooltip(value_safe_int, orientation) {
+    function Tooltip(value, orientation) {
         var _this = _super.call(this) || this;
-        _this.value_safe_int = value_safe_int;
+        _this.value = value;
         _this.orientation = orientation;
         _this.element = _this.get_div_element_with_class('tooltip', _this.orientation);
-        _this.set_inner_text(_this.value_safe_int);
+        _this.set_inner_text(_this.value);
         return _this;
     }
-    Tooltip.prototype.set_inner_text = function (value_safe_int) {
-        this.element.innerText = String(value_safe_int / this.TO_SAVE_INTEGER);
+    Tooltip.prototype.set_inner_text = function (value) {
+        this.element.innerText = String(value);
     };
     return Tooltip;
 }(Helper_1.Helper));

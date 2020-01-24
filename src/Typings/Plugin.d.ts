@@ -6,7 +6,12 @@ type T_Value = [number] | [number, number];
 type T_Position = [number] | [number, number];
 
 type T_Thumbler_Data = {
-    position_safe_int: number,
+    position: number,
+    index: number
+}
+type T_Model_Data = {
+    value: T_Value,
+    position: T_Position,
     index: number
 }
 // interfaces
@@ -32,4 +37,7 @@ interface I_Configuration_View {
 }
 interface I_Thumbler_State {
     (thumbler_state: T_Thumbler_Data): void
+}
+interface I_Model_State {
+    (model_state: T_Model_Data): void
 }

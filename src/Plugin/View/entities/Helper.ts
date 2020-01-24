@@ -1,18 +1,15 @@
 export class Helper {
 
-    readonly TO_SAVE_INTEGER: number = 1e20;
-    readonly TO_THUMBLER_POSITION: number;
-    readonly TO_CONNECT_UPDATE: number;
+    readonly TO_THUMBLER_POSITION: number = 1e3;
+    readonly TO_CONNECT_UPDATE: number = 1e2;
 
     constructor() {
 
-        this.TO_THUMBLER_POSITION = this.TO_SAVE_INTEGER / 1e3;
-        this.TO_CONNECT_UPDATE = this.TO_SAVE_INTEGER / 1e2;
     }
 
     get_position_from_value(value: number, range: T_Range): number {
 
-        let result: number =  ( ( value - range[0] ) / ( range[1] - range[0] ) ) * this.TO_SAVE_INTEGER;
+        let result: number =  ( ( value - range[0] ) / ( range[1] - range[0] ) );
 
         return result;
     }
