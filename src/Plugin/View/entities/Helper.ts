@@ -1,6 +1,6 @@
 export class Helper {
 
-    readonly TO_THUMBLER_POSITION: number = 1e3;
+    readonly TO_THUMBLER_POSITION: number = 1e4;
     readonly TO_CONNECT_UPDATE: number = 1e2;
 
     constructor() {

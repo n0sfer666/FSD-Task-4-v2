@@ -16,10 +16,8 @@ export class Thumbler extends Helper {
 
         let liter: string = this.orientation === "horizontal" ? 'X' : 'Y';
 
-        let style: string = `transform: translate${liter}(${ (position * this.TO_THUMBLER_POSITION) }%);`;
-        // console.log(style);
+        let style: string = `transform: translate${liter}(${ Math.round(position * this.TO_THUMBLER_POSITION) }%);`;
         this.element.setAttribute('style', style);
-
     }
 
     get_shift(element: HTMLElement, event: MouseEvent): number {
@@ -35,7 +33,6 @@ export class Thumbler extends Helper {
     on_mouse_down_and_move(this: Thumbler, container: HTMLElement, callback: I_Thumbler_State) {
 
         let that = this;
-
         that.element.addEventListener('mousedown', (event: MouseEvent) => {
 
             event.preventDefault();

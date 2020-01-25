@@ -13,8 +13,8 @@ export class Connect extends Helper {
 
     set_connect_position(position_start: number, position_end: number) {
 
-        let start: number = position_start * this.TO_CONNECT_UPDATE;
-        let end: number = position_end * this.TO_CONNECT_UPDATE;
+        let start: number = Math.round(position_start * this.TO_CONNECT_UPDATE);
+        let end: number = Math.round(position_end * this.TO_CONNECT_UPDATE);
 
         let style: string = start === 0
                 ? this.orientation === 'horizontal'

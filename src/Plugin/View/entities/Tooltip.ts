@@ -12,6 +12,9 @@ export class Tooltip extends Helper {
     }
 
     set_inner_text(value: number) {
-        this.element.innerText = String( value );
+        let val: number = value > 0
+                    ? Math.floor(value)
+                    : Math.ceil(value);
+        this.element.innerText = String( val );
     }
 }

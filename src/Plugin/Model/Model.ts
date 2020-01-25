@@ -2,6 +2,7 @@ export class Model {
 
 
     value: T_Value = [0];
+    value_previous: T_Value = [0];
     range: T_Range = [0, 0];
     step: number = 0;
     position: T_Position = [0];
@@ -45,8 +46,6 @@ export class Model {
 
     set_new_position(thumbler_state: T_Thumbler_Data) {
 
-        let i: number;
-
         if(this.position[thumbler_state.index] === undefined) {
             this.position.push(thumbler_state.position);
         } else {
@@ -55,10 +54,22 @@ export class Model {
         }
 
         this.index_of_active_thumbler = thumbler_state.index;
-        i = this.index_of_active_thumbler;
+        let i: number = this.index_of_active_thumbler;
 
         this.value[i] = this.get_value_from_position(this.position[i], this.range);
 
+        if(this.position.length > 1 && this.position[1]) {
+            if(this.position[0] < this.position [1] ) {
+                this.update();
+            } else {
+                return false;
+            }
+        } else {
+            this.update();
+        }
+    }
+
+    update() {
         this.callback_list.forEach((callback: I_Model_State) => {
             callback({
                 position: this.position,
@@ -83,6 +94,6 @@ export class Model {
 
         let result: number  = (position * (range[1] - range[0])) + range[0];
 
-        return Math.round(result);
+        return result;
     }
 }
