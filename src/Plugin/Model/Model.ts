@@ -50,7 +50,6 @@ export class Model {
             this.position.push(thumbler_state.position);
         } else {
             this.position[thumbler_state.index] = thumbler_state.position;
-        
         }
 
         this.index_of_active_thumbler = thumbler_state.index;

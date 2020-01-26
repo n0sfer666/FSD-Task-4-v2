@@ -34,7 +34,11 @@
     <hr>
     <div id='slider_Y_2' class="sliderY"></div>
     <script>
-        var slider_X_1 = $('#slider_X_1').SimpleRangeSlider({});
+        var slider_X_1 = $('#slider_X_1').SimpleRangeSlider({
+            range: [-5, 5],
+            start: [0],
+            tooltip: true,
+        });
 
         var Slider_X_2 = $('#slider_X_2').SimpleRangeSlider({
             range: [-20000, 20000],
@@ -44,9 +48,8 @@
 
         var slider_Y_1 = $('#slider_Y_1').SimpleRangeSlider({
             orientation: 'vertical',
-            // range: [0, 1000],
-            // start: [10, 50],
             connect: false,
+            tooltip: true,
         });
 
         var slider_Y_2 = $('#slider_Y_2').SimpleRangeSlider({
