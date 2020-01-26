@@ -12,7 +12,7 @@ module.exports = {
         library: 'SimpleRangeSlider',
         libraryTarget: 'umd',
         libraryExport: 'default',
-        filename: '[name].js',
+        filename: mode === 'development' ? '[name].js' : '[name].min.js',
         path: __dirname + '/dist',
     },
 

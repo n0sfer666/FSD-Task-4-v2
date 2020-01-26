@@ -6,10 +6,11 @@
   ],
   "scripts": {
     "test": "karma start",
-    "css": "postcss ./src/Style/style.css -o ./dist/style.css --watch -env development",
-    "css:prod": "postcss ./src/Style/style.css -o ./dist/style.min.css --env production",
-    "plugin": "webpack --mode development --watch",
-    "plugin:prod": "webpack --mode production"
+    "css:dev": "postcss ./src/Style/style.css -o ./dist/SimpleRangeSlider.css --watch -env development",
+    "css:prod": "postcss ./src/Style/style.css -o ./dist/SimpleRangeSlider.css -env development && postcss ./src/Style/style.css -o ./dist/SimpleRangeSlider.min.css --env production",
+    "plugin:dev": "webpack --config webpack.config.js --mode development --watch",
+    "plugin:prod": "webpack --config webpack.config.js --mode development && webpack --mode production",
+    "demo": "copy dist\\SimpleRangeSlider.min.css docs && webpack --config webpackfile.js --mode production --watch"
   },
   "repository": {
     "type": "git",
