@@ -15,6 +15,7 @@
     <style>
         body {
             padding: 50px;
+            margin: 0 auto;
         }
         hr {
             margin: 25px 0;
@@ -37,16 +38,19 @@
         var slider_X_1 = $('#slider_X_1').SimpleRangeSlider({
             range: [-5, 5],
             start: [0],
+            step: 2,
             tooltip: true,
         });
 
         var Slider_X_2 = $('#slider_X_2').SimpleRangeSlider({
             range: [-20000, 20000],
             start: [-5000, 10800],
+            step: 100,
             tooltip: true
         });
 
         var slider_Y_1 = $('#slider_Y_1').SimpleRangeSlider({
+            step: 10,
             orientation: 'vertical',
             connect: false,
             tooltip: true,
@@ -56,6 +60,7 @@
             orientation: 'vertical',
             range: [-200000, 200000],
             start: [-15000, 15000],
+            step: 1000,
             tooltip: true
         });
         

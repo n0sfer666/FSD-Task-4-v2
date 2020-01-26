@@ -138,7 +138,6 @@ var Model = (function () {
     function Model(configuration) {
         this.configuration = configuration;
         this.value = [0];
-        this.value_previous = [0];
         this.range = [0, 0];
         this.step = 0;
         this.position = [0];
@@ -170,15 +169,15 @@ var Model = (function () {
         }
     }
     Model.prototype.set_new_position = function (thumbler_state) {
-        if (this.position[thumbler_state.index] === undefined) {
-            this.position.push(thumbler_state.position);
-        }
-        else {
-            this.position[thumbler_state.index] = thumbler_state.position;
-        }
+        var position = thumbler_state.position;
         this.index_of_active_thumbler = thumbler_state.index;
         var i = this.index_of_active_thumbler;
-        this.value[i] = this.get_value_from_position(this.position[i], this.range);
+        var new_value = this.get_value_from_position(position, this.range);
+        var condition = [this.value[i] - this.step, this.value[i] + this.step];
+        if (new_value >= condition[1] || new_value <= condition[0]) {
+            this.value[i] = (Math.round(new_value / this.step) * this.step);
+            this.position[i] = this.get_position_from_value(this.value[i], this.range);
+        }
         if (this.position.length > 1 && this.position[1]) {
             if (this.position[0] < this.position[1]) {
                 this.update();
@@ -206,11 +205,11 @@ var Model = (function () {
     };
     Model.prototype.get_position_from_value = function (value, range) {
         var result = (value - range[0]) / (range[1] - range[0]);
-        return result;
+        return (Math.round(result * 1e4) / 1e4);
     };
     Model.prototype.get_value_from_position = function (position, range) {
         var result = (position * (range[1] - range[0])) + range[0];
-        return result;
+        return (Math.round(result));
     };
     return Model;
 }());
@@ -493,7 +492,7 @@ var Helper = (function () {
     }
     Helper.prototype.get_position_from_value = function (value, range) {
         var result = ((value - range[0]) / (range[1] - range[0]));
-        return result;
+        return (Math.round(result * 1e4) / 1e4);
     };
     Helper.prototype.get_div_element_with_class = function (css_class, orientation) {
         var str_class = 'SRS__' + css_class;

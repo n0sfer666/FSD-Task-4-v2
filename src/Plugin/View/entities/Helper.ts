@@ -11,7 +11,7 @@ export class Helper {
 
         let result: number =  ( ( value - range[0] ) / ( range[1] - range[0] ) );
 
-        return result;
+        return (Math.round(result * 1e4) / 1e4);
     }
 
     get_div_element_with_class( css_class: T_CSS_Classes, orientation: T_Orientation ): HTMLElement {
