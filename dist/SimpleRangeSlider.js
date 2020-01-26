@@ -175,8 +175,13 @@ var Model = (function () {
         var new_value = this.get_value_from_position(position, this.range);
         var condition = [this.value[i] - this.step, this.value[i] + this.step];
         if (new_value >= condition[1] || new_value <= condition[0]) {
-            this.value[i] = (Math.round(new_value / this.step) * this.step);
-            this.position[i] = this.get_position_from_value(this.value[i], this.range);
+            this.set_value_and_position(new_value, i);
+        }
+        if (new_value <= this.range[0]) {
+            this.set_value_and_position(this.range[0], i);
+        }
+        if (new_value >= this.range[1]) {
+            this.set_value_and_position(this.range[1], i);
         }
         if (this.position.length > 1 && this.position[1]) {
             if (this.position[0] < this.position[1]) {
@@ -210,6 +215,10 @@ var Model = (function () {
     Model.prototype.get_value_from_position = function (position, range) {
         var result = (position * (range[1] - range[0])) + range[0];
         return (Math.round(result));
+    };
+    Model.prototype.set_value_and_position = function (new_value, i) {
+        this.value[i] = (Math.round(new_value / this.step * 1e3) * this.step / 1e3);
+        this.position[i] = this.get_position_from_value(this.value[i], this.range);
     };
     return Model;
 }());
