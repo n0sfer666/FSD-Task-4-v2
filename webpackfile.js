@@ -1,3 +1,5 @@
+const Webpack = require('webpack');
+
 module.exports = {
     entry: {
         demo: './src/Demo/index.js',
@@ -9,4 +11,12 @@ module.exports = {
     },
 
     devtool: 'eval',
+
+    plugins: [
+        new Webpack.ProvidePlugin({
+            $: 'jquery',
+            jQuery: 'jquery',
+            'window.jQuery': 'jquery'
+        }),
+    ]
 }
