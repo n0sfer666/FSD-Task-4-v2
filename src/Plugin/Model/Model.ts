@@ -62,8 +62,8 @@ export class Model {
             this.set_value_and_position(this.range[1], i);
         }
 
-        if(this.position.length > 1 && this.position[1]) {
-            if(this.position[0] < this.position [1] ) {
+        if(this.value.length > 1 && this.value[1]) {
+            if(this.value[0] < this.value [1] ) {
                 this.update();
             } else {
                 return false;
