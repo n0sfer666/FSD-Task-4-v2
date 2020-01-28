@@ -4,7 +4,7 @@ type T_CSS_Classes = 'slider' | 'thumbler' | 'connect' | 'tooltip';
 type T_Range = [number, number];
 type T_Value = [number] | [number, number];
 type T_Position = [number] | [number, number];
-type T_Input = [HTMLElement] | [HTMLElement, HTMLElement];
+type T_Input = [HTMLInputElement] | [HTMLInputElement, HTMLInputElement];
 
 type T_Thumbler_Data = {
     position: number,

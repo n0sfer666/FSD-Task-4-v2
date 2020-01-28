@@ -3,13 +3,32 @@ import { Model } from "../Model/Model";
 
 export class Presenter {
     constructor(private view: View, private model: Model) {
-        view.on_thumbler_move((thumbler_data: T_Thumbler_Data) => {
+        this.view.on_change_view((thumbler_data: T_Thumbler_Data) => {
             // console.log(thumbler_data);
-            model.set_new_position(thumbler_data);
+            this.model.set_new_position(thumbler_data);
         });
-        model.on_change_model((model_state: T_Model_Data) => {
+        this.model.on_change_model((model_state: T_Model_Data) => {
             // console.log(model_state);
-            view.update(model_state);
-        })
+            this.view.update(model_state);
+        });
+        if(this.view.input !== undefined) {
+            for( let i = 0; i < this.view.input.length; i++ ) {
+                this.view.input[i].oninput = () => setTimeout( () => {
+                    if(this.view.input) {
+                        let position: number = this.model.get_position_from_value(
+                                Number(this.view.input[i].value),
+                                this.model.range
+                        )
+                        
+                        let input_data: T_Thumbler_Data = {
+                            position: position,
+                            index: i
+                        }
+                        console.log(input_data);
+                        this.model.set_new_position(input_data);
+                    }
+                }, 2000 );
+            }
+        }
     }
 }

@@ -85,12 +85,14 @@ export class View extends Helper {
         this.container.append(this.slider);
 
         if(this.input !== undefined) {
-            
+            for( let i = 0; i < this.input.length; i++ ) {
+                this.input[i].value = String(this.value_start[i]);
+            }
         }
     }
 
-    on_thumbler_move(callback: I_Thumbler_State) {
-        for( let i= 0; i < this.thumbler.length; i++ ) {
+    on_change_view(callback: I_Thumbler_State) {
+        for( let i = 0; i < this.thumbler.length; i++ ) {
             this.thumbler[i].on_mouse_down_and_move(this.container, callback);
         }
     }
@@ -123,6 +125,10 @@ export class View extends Helper {
 
         if(this.is_tooltip) {
             this.tooltip[i].set_inner_text(value[i]);
+        }
+
+        if(this.input !== undefined) {
+            this.input[i].value = String(value[i]);
         }
 
         if(this.is_connect) {
