@@ -45,7 +45,7 @@ export class Model {
 
     set_new_position(thumbler_state: T_Thumbler_Data) {
 
-        let position: number = thumbler_state.position;
+        let position: number = Math.round(thumbler_state.position * 1e4) / 1e4;
         this.index_of_active_thumbler = thumbler_state.index;
         let i: number = this.index_of_active_thumbler;
 
@@ -102,7 +102,8 @@ export class Model {
     }
 
     set_value_and_position(new_value: number, i: number) {
-        this.value[i] = (Math.round(new_value / this.step * 1e3) * this.step / 1e3);
+        this.value[i] = (Math.round(new_value / this.step) * this.step);
+        console.log(this.value);
         this.position[i] = this.get_position_from_value(this.value[i], this.range);
     }
 }
