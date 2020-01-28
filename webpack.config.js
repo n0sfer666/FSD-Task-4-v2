@@ -17,15 +17,14 @@ module.exports = (env, options) => {
         },
 
         mode: options.mode,
-        devtool: options.mode === 'development' ? 'eval' : '',
+        devtool: options.mode === 'development' ? 'inline-source-map' : '',
 
         module: {
             rules: [
                 {
                     test: /\.ts$/,
                     use: 'ts-loader',
-                    exclude: [/node_modules/,
-                            /\.spec.ts$/],
+                    exclude: [/node_modules/, /src\/Test/],
                 },
             ]
         }
