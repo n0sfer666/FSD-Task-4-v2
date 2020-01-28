@@ -48,6 +48,18 @@ export class Model {
         let position: number = Math.round(thumbler_state.position * 1e4) / 1e4;
         this.index_of_active_thumbler = thumbler_state.index;
         let i: number = this.index_of_active_thumbler;
+        // check for input collision and out of range
+        if(this.position.length > 1 && this.position[1]) {
+            if(i === 0) {
+                if(position >= this.position[1]) {
+                    position = this.position[1] - this.get_position_from_value(this.range[0] + this.step, this.range);
+                }
+            } else {
+                if(position <= this.position[0]) {
+                    position = this.position[0] + this.get_position_from_value(this.range[0] + this.step, this.range);
+                }
+            }
+        }
 
         let new_value: number = this.get_value_from_position(position, this.range);
         let condition: [number, number] = [this.value[i] - this.step, this.value[i] + this.step];
@@ -61,7 +73,7 @@ export class Model {
         if(new_value >= this.range[1]) {
             this.set_value_and_position(this.range[1], i);
         }
-
+        // check for collision
         if(this.value.length > 1 && this.value[1]) {
             if(this.value[0] < this.value [1] ) {
                 this.update();
