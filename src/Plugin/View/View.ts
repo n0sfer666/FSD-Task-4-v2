@@ -20,8 +20,12 @@ export class View extends Helper {
     connect: Connect[] = [];
     tooltip: Tooltip[] = [];
 
+    input?: T_Input;
+
     constructor( private container: HTMLElement, private configuration: I_Configuration_View ) {
         super();
+
+        this.input = this.configuration.input;
 
         this.is_tooltip = this.configuration.is_tooltip;
         this.is_connect = this.configuration.is_connect;
@@ -79,6 +83,10 @@ export class View extends Helper {
         }
 
         this.container.append(this.slider);
+
+        if(this.input !== undefined) {
+            
+        }
     }
 
     on_thumbler_move(callback: I_Thumbler_State) {

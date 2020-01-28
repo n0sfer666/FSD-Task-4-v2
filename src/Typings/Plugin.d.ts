@@ -4,6 +4,7 @@ type T_CSS_Classes = 'slider' | 'thumbler' | 'connect' | 'tooltip';
 type T_Range = [number, number];
 type T_Value = [number] | [number, number];
 type T_Position = [number] | [number, number];
+type T_Input = [HTMLElement] | [HTMLElement, HTMLElement];
 
 type T_Thumbler_Data = {
     position: number,
@@ -22,18 +23,20 @@ interface I_Configuration_User {
     readonly step: number;
     readonly connect: boolean;
     readonly tooltip: boolean;
+    readonly input?: T_Input;
 }
 interface I_Configuration_Model {
-    value_start: T_Value;
-    value_range: T_Range;
-    value_step:  number;
+    readonly value_start: T_Value;
+    readonly value_range: T_Range;
+    readonly value_step:  number;
 }
 interface I_Configuration_View {
-    orientation: T_Orientation,
-    value_start: T_Value;
-    value_range: T_Range;
-    is_tooltip:  boolean;
-    is_connect:  boolean;
+    readonly orientation: T_Orientation,
+    readonly value_start: T_Value;
+    readonly value_range: T_Range;
+    readonly is_tooltip:  boolean;
+    readonly is_connect:  boolean;
+    readonly input?: T_Input;
 }
 interface I_Thumbler_State {
     (thumbler_state: T_Thumbler_Data): void

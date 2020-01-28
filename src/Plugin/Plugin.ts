@@ -27,7 +27,8 @@ export class SimpleRangeSlider {
             range:       this.user_configuration.range === undefined ? default_Configuration.range : this.user_configuration.range,
             step:        this.user_configuration.step === undefined ? default_Configuration.step : this.user_configuration.step,
             connect:     this.user_configuration.connect === undefined ? default_Configuration.connect : this.user_configuration.connect,
-            tooltip:     this.user_configuration.tooltip === undefined ? default_Configuration.tooltip : this.user_configuration.tooltip
+            tooltip:     this.user_configuration.tooltip === undefined ? default_Configuration.tooltip : this.user_configuration.tooltip,
+            input:       this.user_configuration.input
         }
 
         let model_configuration: I_Configuration_Model = {
@@ -41,7 +42,8 @@ export class SimpleRangeSlider {
             value_start: complete_configuration.start,
             value_range: complete_configuration.range,
             is_tooltip:  complete_configuration.tooltip,
-            is_connect:  complete_configuration.connect
+            is_connect:  complete_configuration.connect,
+            input:       complete_configuration.input
         }
 
         this.view = new View(slider_container, view_configuration);
