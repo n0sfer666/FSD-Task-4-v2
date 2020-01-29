@@ -10,8 +10,8 @@ module.exports = function(config) {
         frameworks: ['jasmine'],
 
         // list of files / patterns to load in the browser
-        files: ['./src/Test/**/*.ts', 
-                // './src/Test/**/*.js'
+        files: ['./src/Test/**/*.spec.ts', 
+                // './src/Test/**/*.spec.js'
         ],
 
         // list of files / patterns to exclude
@@ -20,8 +20,8 @@ module.exports = function(config) {
         // preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: {
-            './src/Test/**/*.ts': ['webpack'],
-            // './src/Test/**/*.js': ['webpack'],
+            './src/Test/**/*.spec.ts': ['webpack', 'coverage'],
+            // './src/Test/**/*.spec.js': ['webpack', 'coverage'],
         },
         webpack: {
             module: webpackConfig.module,
@@ -33,7 +33,7 @@ module.exports = function(config) {
         // test results reporter to use
         // possible values: 'dots', 'progress'
         // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-        reporters: ['mocha'],
+        reporters: ['mocha', 'coverage'],
 
         // web server port
         port: 9876,

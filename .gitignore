@@ -1,3 +1,2 @@
 node_modules
-src/Test/page_for_manual_tests.html
-src/Test/index.html
+coverage
