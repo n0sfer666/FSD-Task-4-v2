@@ -1,7 +1,7 @@
 import { View } from "../View/View";
 import { Model } from "../Model/Model";
 
-export class Presenter {
+class Presenter {
     constructor(private view: View, private model: Model) {
         this.view.on_change_view((thumbler_data: T_Thumbler_Data) => {
             // console.log(thumbler_data);
@@ -33,3 +33,4 @@ export class Presenter {
         }
     }
 }
+export {Presenter};

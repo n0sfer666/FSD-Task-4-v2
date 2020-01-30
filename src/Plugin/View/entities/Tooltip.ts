@@ -1,6 +1,6 @@
 import { Helper } from './Helper';
 
-export class Tooltip extends Helper {
+class Tooltip extends Helper {
 
     element: HTMLElement;
 
@@ -18,3 +18,4 @@ export class Tooltip extends Helper {
         this.element.innerText = String( val );
     }
 }
+export {Tooltip};

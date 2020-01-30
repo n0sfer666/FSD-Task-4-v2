@@ -3,7 +3,7 @@ import { Thumbler } from './entities/Thumbler';
 import { Connect } from './entities/Connect';
 import { Tooltip } from './entities/Tooltip';
 
-export class View extends Helper {
+class View extends Helper {
 
     position: T_Position = [0];
 
@@ -140,3 +140,5 @@ export class View extends Helper {
         }
     }
 }
+
+export {View};

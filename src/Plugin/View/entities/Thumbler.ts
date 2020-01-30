@@ -1,6 +1,6 @@
 import { Helper } from "./Helper";
 
-export class Thumbler extends Helper {
+class Thumbler extends Helper {
 
     element: HTMLElement;
 
@@ -75,8 +75,6 @@ export class Thumbler extends Helper {
                 document.removeEventListener('mouseup', on_mouse_up);
             }
         })
-
     }
-
-
 }
+export {Thumbler};

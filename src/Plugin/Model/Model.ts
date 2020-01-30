@@ -1,4 +1,4 @@
-export class Model {
+class Model {
 
 
     value: T_Value = [0];
@@ -75,7 +75,7 @@ export class Model {
         }
         // check for collision
         if(this.value.length > 1 && this.value[1]) {
-            if(this.value[0] < this.value [1] ) {
+            if(this.value[0] < this.value[1] ) {
                 this.update();
             } else {
                 return false;
@@ -126,3 +126,5 @@ export class Model {
         this.position[i] = this.get_position_from_value(this.value[i], this.range);
     }
 }
+
+export {Model};

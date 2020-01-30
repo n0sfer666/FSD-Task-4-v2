@@ -2,7 +2,7 @@ import { View } from './View/View';
 import { Model } from './Model/Model';
 import { Presenter } from './Controller/Presenter';
 
-export class SimpleRangeSlider {
+class SimpleRangeSlider {
 
     view: View;
     model: Model;
@@ -50,10 +50,9 @@ export class SimpleRangeSlider {
         this.model = new Model(model_configuration);
         this.presenter = new Presenter(this.view, this.model);
 
-
     }
-
 }
+export {SimpleRangeSlider};
 
 ;(function($: JQueryStatic) {
     $.fn.extend({

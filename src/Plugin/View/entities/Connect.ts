@@ -1,6 +1,6 @@
 import { Helper } from "./Helper";
 
-export class Connect extends Helper {
+class Connect extends Helper {
     
     element: HTMLElement;
 
@@ -27,3 +27,4 @@ export class Connect extends Helper {
         this.element.setAttribute('style', style);
     }
 }
+export {Connect};

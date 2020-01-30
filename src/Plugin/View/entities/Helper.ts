@@ -1,4 +1,4 @@
-export class Helper {
+class Helper {
 
     readonly TO_THUMBLER_POSITION: number = 1e4;
     readonly TO_CONNECT_UPDATE: number = 1e2;
@@ -25,3 +25,4 @@ export class Helper {
     }
 
 }
+export {Helper};
