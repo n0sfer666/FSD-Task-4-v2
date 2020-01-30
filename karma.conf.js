@@ -1,4 +1,4 @@
-const webpackConfig = require('./webpack.config');
+const webpackConfig = require('./test.webpack.config');
 
 module.exports = function(config) {
     config.set({
@@ -20,8 +20,8 @@ module.exports = function(config) {
         // preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: {
-            './src/Test/**/*.spec.ts': ['webpack', 'coverage'],
-            // './src/Test/**/*.spec.js': ['webpack', 'coverage'],
+            './src/Test/**/*.spec.ts': ['webpack'],
+            // './src/Test/**/*.spec.js': ['webpack'],
         },
         webpack: {
             module: webpackConfig.module,
@@ -33,7 +33,7 @@ module.exports = function(config) {
         // test results reporter to use
         // possible values: 'dots', 'progress'
         // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-        reporters: ['mocha', 'coverage'],
+        reporters: ['mocha'],
 
         // web server port
         port: 9876,
