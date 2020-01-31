@@ -1,17 +1,14 @@
 import { Model } from '../../Plugin/Model/Model';
+import { random_number } from '../random_number';
 
-describe('Model', () => {
+describe(`
+Model
+`, () => {
     var model: Model = new Model({
         value_range: [-1000, 1000],
         value_start: [-500, 500],
         value_step: 10
     });
-
-    function random_number(min: number, max: number): number {
-        let tmp_min: number = Math.ceil(min);
-        let tmp_max: number = Math.floor(max);
-        return Math.floor(Math.random() * (tmp_max - tmp_min + 1)) + tmp_min;
-    };
 
     afterEach(function() {
         model.callback_list = [];
