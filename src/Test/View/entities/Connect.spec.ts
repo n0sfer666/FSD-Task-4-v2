@@ -1,4 +1,3 @@
-import { random_number } from '../../random_number';
 import { Connect } from '../../../Plugin/View/entities/Connect';
 
 describe(`
