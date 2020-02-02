@@ -3,6 +3,7 @@ import { Helper } from "./Helper";
 class Thumbler extends Helper {
 
     element: HTMLElement;
+    listening: boolean = false;
 
     constructor( private position: number, private orientation: T_Orientation, private index: number ) {
         super();
@@ -33,6 +34,8 @@ class Thumbler extends Helper {
     on_mouse_down_and_move(this: Thumbler, container: HTMLElement, callback: I_Thumbler_State) {
 
         let that = this;
+        that.listening = true;
+        
         that.element.addEventListener('mousedown', (event: MouseEvent) => {
 
             event.preventDefault();

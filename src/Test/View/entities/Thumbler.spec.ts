@@ -140,10 +140,11 @@ View -> Thumbler
                     setTimeout(() => {
                         expect(to_expect).toEqual(result);
                     }, 500);
-
-                    
                 })
             }
+        }
+        if(document.body.firstChild) {
+            document.body.firstChild.remove();
         }
     })
 })

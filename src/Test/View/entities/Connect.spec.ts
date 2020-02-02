@@ -21,7 +21,7 @@ View -> Connect
                     let start: number = Math.round(position_start * connect.TO_CONNECT_UPDATE);
                     let end: number = Math.round(position_end * connect.TO_CONNECT_UPDATE);
                     
-                    let to_expect: string = position_start === 0
+                    let to_expect: string = start === 0
                             ? orientations[j] === 'horizontal'
                                 ? `width: ${end}%;`
                                 : `height: ${end}%;`
