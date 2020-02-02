@@ -139,7 +139,7 @@ View -> Thumbler
 
                     setTimeout(() => {
                         expect(to_expect).toEqual(result);
-                    }, 1000);
+                    }, 500);
 
                     
                 })
