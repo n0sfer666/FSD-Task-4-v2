@@ -1,4 +1,5 @@
-## github docs: https://n0sfer666.github.io/FSD-Task-4-v2/
+## **github docs:** https://n0sfer666.github.io/FSD-Task-4-v2/
+## **run test:** npm i && npm run test
 ---
 ### Usage: 
 ```JavaScript
@@ -10,7 +11,8 @@
         step: number,
         connect: boolean, // stripe between two thumbler or 0 and thumbler
         tooltip: boolean, // block(s) near thumbler(s) with value
-        input: [HTMLInputElement] or [HTMLInputElement, HTMLInputElement] // you need to create one or two input with id
+        input: [HTMLInputElement] or [HTMLInputElement, HTMLInputElement] // you need to create
+                                                                    //  one or two input with id
     })
 ```
 #### Example:
@@ -36,3 +38,4 @@ var slider = $('#slider').SimpleRangeSlider({
     input: input
 });
 ```
+---
