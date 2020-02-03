@@ -3,6 +3,8 @@ import { Helper } from "./Helper";
 class Thumbler extends Helper {
 
     element: HTMLElement;
+
+    thumbler_position: number = 0;
     listening: boolean = false;
 
     constructor( private position: number, private orientation: T_Orientation, private index: number ) {
@@ -14,6 +16,7 @@ class Thumbler extends Helper {
     }
 
     set_new_position(position: number) {
+        this.thumbler_position = position;
 
         let liter: string = this.orientation === "horizontal" ? 'X' : 'Y';
 

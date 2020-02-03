@@ -3,6 +3,7 @@ import { Helper } from "./Helper";
 class Connect extends Helper {
     
     element: HTMLElement;
+    connect_position: [number, number] = [0, 0];
 
     constructor(private position_start: number, private position_end: number, private orientation: T_Orientation) {
         super();
@@ -16,6 +17,7 @@ class Connect extends Helper {
         let start: number = Math.round(position_start * this.TO_CONNECT_UPDATE);
         let end: number = Math.round(position_end * this.TO_CONNECT_UPDATE);
 
+        this.connect_position = [start, end];
         let style: string = start === 0
                 ? this.orientation === 'horizontal'
                     ? `width: ${end}%;`
