@@ -114,3 +114,35 @@ The plugin’s business logic boils down to determining the new value(s) and pos
  set_new_position(thumbler_state: T_Thumbler_Data) { ... };
  ```
 The main method of the model. It receives data from the view layer, than makes the necessary calculations and through the update() method sends new data back to the view layer (using presenter layer)
+(check for a step movement, collision of two thumblers)
+
+- **update**
+ ```Javascript
+update() { ... };
+ ```
+The method starts a callback from the callback's list to send data calculated by the set_new_position method
+ 
+- **on_change_model**
+ ```Javascript
+on_change_model(callback: I_Model_State) { ... };
+ ```
+The method adds a callback to callback's list
+ 
+- **get_position_from_value**
+ ```Javascript
+get_position_from_value(value: number, range: T_Range): number { ... };
+ ```
+The method is return a position based on value and range
+ 
+- **get_value_from_position**
+ ```Javascript
+get_value_from_position(position: number, range: T_Range): number { ... };
+ ```
+ The method is return a value based on position and range
+ 
+ - **set_value_and_position**
+ ```Javascript
+ set_value_and_position(new_value: number, i: number)
+ ```
+The method is set value and position in variables of class. If new_value bigger than (or less than) range, value equal min or max of range
+ 
