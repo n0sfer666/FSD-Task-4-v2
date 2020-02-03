@@ -105,3 +105,12 @@ interface I_Model_State {
 </p></details>
 
 </p></p></details>
+
+#### Model (Buisness Logic Layer):
+The plugin’s business logic boils down to determining the new value(s) and position(s) of the thumbler(s) based on user actions and sending the necessary data to the view layer to change through the presenter layer;
+##### Methods:
+ - **set_new_position**
+ ```Javascript
+ set_new_position(thumbler_state: T_Thumbler_Data) { ... };
+ ```
+The main method of the model. It receives data from the view layer, than makes the necessary calculations and through the update() method sends new data back to the view layer (using presenter layer)
