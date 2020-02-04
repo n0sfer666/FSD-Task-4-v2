@@ -311,3 +311,7 @@ on_mouse_down_and_move(this: Thumbler, container: HTMLElement, callback: I_Thumb
 transfers the possible position (after holding left button of mouse and move) and index of thumbler to callback
 
 </p></details>
+
+### Presenter (exchange layer)
+Transfers data between view and model.
+Presenter havn't method and variables because this is not necessary
