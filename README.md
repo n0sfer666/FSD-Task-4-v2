@@ -1,7 +1,7 @@
 ## **github docs:** https://n0sfer666.github.io/FSD-Task-4-v2/
 ## **run test:** npm i && npm run test
 ---
-### Usage: 
+## Usage: 
 ```JavaScript
     import '/path/to/SimpleRangeSlider.min.js'
     let slider = $('#container_id').SimpleRangeSlider({
@@ -15,14 +15,14 @@
                                                                     //  one or two input with id
     })
 ```
-#### Example:
-##### HTML
+### Example:
+#### HTML
 ```HTML
     <div id="slider"></div>
     <input type="text" id="input_min">
     <input type="text" id="input_max">
 ```
-##### JS
+#### JS
 ```JavaScript
 var input = [
     document.getElementById('input_min'),
@@ -39,7 +39,14 @@ var slider = $('#slider').SimpleRangeSlider({
 });
 ```
 ---
-### Architecture:
+## Terms:
+
+**Thumbler** - the main functional element of the slider (the ball that the user moves along the slider bar) \
+**Tooltip** - the block near the thumbler showing the value set by that thumbler \
+**Connect** - the colored strip between zero position and the thumbler (or between two thumblers)
+
+---
+## Architecture:
 The plugin was written in Typescript in jQuery wrapper using MVP architecture with Passive-View.
 <details><summary>Types and Interfaces:</summary>
 <p>
@@ -106,10 +113,13 @@ interface I_Model_State {
 
 </p></p></details>
 
-#### Model (Buisness Logic Layer):
-The plugin’s business logic boils down to determining the new value(s) and position(s) of the thumbler(s) based on user actions and sending the necessary data to the view layer to change through the presenter layer;
-##### Methods:
- - **set_new_position**
+### Model (Buisness Logic Layer):
+The plugin’s business logic reduce to determining the new value(s) and position(s) of the thumbler(s) based on user actions and sending the necessary data to the view layer to change through the presenter layer;
+
+<details><summary>Methods:</summary>
+<p>
+
+- **set_new_position**
  ```Javascript
  set_new_position(thumbler_state: T_Thumbler_Data) { ... };
  ```
@@ -145,4 +155,159 @@ get_value_from_position(position: number, range: T_Range): number { ... };
  set_value_and_position(new_value: number, i: number)
  ```
 The method is set value and position in variables of class. If new_value bigger than (or less than) range, value equal min or max of range
- 
+
+</p></details>
+
+<details><summary>Variables:</summary>
+<p>
+
+```Javascript
+value: T_Value 
+range: T_Range
+step: number
+position: T_Position
+
+index_of_active_thumbler: number
+
+callback_list: I_Model_State[]
+```
+
+</p></details>
+
+### View (display and user interaction layer)
+View renders the plugin, responds to user actions (generates thumbler_state) and sends data to the model. Also changes elements such as thumbler, connect, tooltip when receiving new data from the model.
+
+<details><summary>Methods:</summary>
+<p>
+
+- on_change_view
+```Javascript
+on_change_view(callback: I_Thumbler_State) { ... }
+```
+Passes callback to thumbler method on_mousedown_and_move
+
+- update
+```Javascript
+update(model_state: T_Model_Data) { ... }
+```
+Update thumbler(s), tooltips(s) and connect
+
+</p></details>
+
+<details><summary>Variables:</summary>
+<p>
+
+```Javascript
+position: T_Position
+
+value_range: T_Range
+value_start: T_Value
+
+orientation: T_Orientation;
+
+is_tooltip: boolean;
+is_connect: boolean;
+
+slider: HTMLElement;
+thumbler: Thumbler[]
+connect: Connect[]
+tooltip: Tooltip[]
+
+input?: T_Input;
+```
+
+</p></details>
+
+#### Helper class
+Contains helper methods and variables
+
+<details><summary>Methods and Variables:</summary>
+<p>
+
+```Javascript
+readonly TO_THUMBLER_POSITION: number = 1e4;
+readonly TO_CONNECT_UPDATE: number = 1e2;
+```
+
+- get_position_from_value
+```Javascript
+get_position_from_value(value: number, range: T_Range): number { ... }
+```
+Return position from value and range
+
+- get_div_element_with_class
+```Javascript
+get_div_element_with_class( css_class: T_CSS_Classes, orientation: T_Orientation ): HTMLElement
+```
+Return HTML element with correct class from orientation and type of element
+
+</p></details>
+
+#### Connect class (extends Helper)
+creates Connect entinty
+
+<details><summary>Methods and Variables:</summary>
+<p>
+
+```Javascript
+element: HTMLElement
+connect_position: [number, number]
+```
+
+- set_connect_position
+```Javascript
+set_connect_position(position_start: number, position_end: number) { ... }
+```
+
+</p></details>
+
+#### Tooltip class (extends Helper)
+creates Tooltip entinty
+
+<details><summary>Methods and Variables:</summary>
+<p>
+
+```Javascript
+element: HTMLElement
+tooltip_value: number
+```
+
+- set_inner_text
+```Javascript
+set_inner_text(value: number) { ... }
+```
+set Tooltip HTML element inner text
+
+</p></details>
+
+#### Thumbler class (extends Helper)
+creates Thumbler entinty
+
+<details><summary>Methods and Variables:</summary>
+<p>
+
+```Javascript
+element: HTMLElement;
+
+thumbler_position: number = 0;
+listening: boolean = false;
+```
+
+- set_new_position
+```Javascript
+set_new_position(position: number) { ... }
+```
+
+- get_shift
+```Javascript
+get_shift(element: HTMLElement, event: MouseEvent): number { ... }
+```
+return the difference between coordinates of the user mouse click and the coordinates of left (or top) thumbler bound
+
+- on_mouse_down_and_move
+```Javascript
+on_mouse_down_and_move(this: Thumbler, container: HTMLElement, callback: I_Thumbler_State) { ...
+```
+transfers the possible position (after holding left button of mouse and move) and index of thumbler to callback
+
+</p></details>
