@@ -10,8 +10,15 @@ class Helper {
     get_position_from_value(value: number, range: T_Range): number {
 
         let result: number =  ( ( value - range[0] ) / ( range[1] - range[0] ) );
+        result = Math.round(result * 1e4) / 1e4;
 
-        return (Math.round(result * 1e4) / 1e4);
+        if( result < 0 ) {
+            result = 0;
+        }
+        if( result > 1 ) {
+            result = 1
+        }
+        return result;
     }
 
     get_div_element_with_class( css_class: T_CSS_Classes, orientation: T_Orientation ): HTMLElement {

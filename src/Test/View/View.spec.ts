@@ -105,7 +105,6 @@ View
                     }
                     let expect_connect: boolean = test_connect_position[0] === view.connect[0].connect_position[0] &&
                                                   test_connect_position[1] === view.connect[0].connect_position[1];
-                    console.log(expect_connect);
 
                     let to_expect: boolean = expect_change_class && expect_thumbler && expect_tooltip && expect_connect;
                     expect(to_expect).toEqual(true);
