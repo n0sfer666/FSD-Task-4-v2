@@ -174,7 +174,7 @@ callback_list: I_Model_State[]
 
 </p></details>
 
-### View (display and user interaction layer)
+### View (Display and User Interaction Layer)
 View renders the plugin, responds to user actions (generates thumbler_state) and sends data to the model. Also changes elements such as thumbler, connect, tooltip when receiving new data from the model.
 
 <details><summary>Methods:</summary>
@@ -312,6 +312,6 @@ transfers the possible position (after holding left button of mouse and move) an
 
 </p></details>
 
-### Presenter (exchange layer)
+### Presenter (Exchange Layer)
 Transfers data between view and model.
 Presenter havn't method and variables because this is not necessary
