@@ -111,7 +111,14 @@ interface I_Model_State {
 
 </p></details>
 
-</p></p></details>
+</p></details>
+
+<details><summary>UML diagram</summary>
+<p>
+
+![UML](/img/SRS.png)
+
+</p></details>
 
 ### Model (Buisness Logic Layer):
 The plugin’s business logic reduce to determining the new value(s) and position(s) of the thumbler(s) based on user actions and sending the necessary data to the view layer to change through the presenter layer;
