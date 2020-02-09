@@ -4,6 +4,8 @@
         "Petr",
         "browserslist",
         "devtool",
+        "isnan",
+        "linebreak",
         "preprocessors",
         "rangeslider",
         "simplerangeslider",
