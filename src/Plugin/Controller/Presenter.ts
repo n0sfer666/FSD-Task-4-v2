@@ -11,19 +11,19 @@ class Presenter {
       // console.log(model_state);
       this.view.update(model_state);
     });
-    if (this.view.input !== undefined) {
-      for (let i = 0; i < this.view.input.length; i++) {
+    if(this.view.input !== undefined) {
+      for( let i = 0; i < this.view.input.length; i++ ) {
         this.view.input[i].addEventListener('keydown', (event: KeyboardEvent) => {
-          if (event.keyCode === 9 || event.keyCode === 13) {
-            if (this.view.input) {
-              const position: number = this.model.get_position_from_value(
+          if(event.keyCode === 9 || event.keyCode === 13) {
+            if(this.view.input) {
+              let position: number = this.model.get_position_from_value(
                 Number(this.view.input[i].value),
-                this.model.range,
+                this.model.range
               );
-
-              const input_data: T_Thumbler_Data = {
-                position,
-                index: i,
+                            
+              let input_data: T_Thumbler_Data = {
+                position: position,
+                index: i
               };
               this.model.set_new_position(input_data);
             }
@@ -33,4 +33,4 @@ class Presenter {
     }
   }
 }
-export { Presenter };
+export {Presenter};

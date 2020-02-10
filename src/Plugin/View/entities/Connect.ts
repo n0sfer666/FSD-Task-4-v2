@@ -1,8 +1,8 @@
 import { Helper } from './Helper';
 
 class Connect extends Helper {
+    
     element: HTMLElement;
-
     connect_position: [number, number] = [0, 0];
 
     constructor(private position_start: number, private position_end: number, private orientation: T_Orientation) {
@@ -13,11 +13,12 @@ class Connect extends Helper {
     }
 
     set_connect_position(position_start: number, position_end: number) {
-      const start: number = Math.round(position_start * this.TO_CONNECT_UPDATE);
-      const end: number = Math.round(position_end * this.TO_CONNECT_UPDATE);
+
+      let start: number = Math.round(position_start * this.TO_CONNECT_UPDATE);
+      let end: number = Math.round(position_end * this.TO_CONNECT_UPDATE);
 
       this.connect_position = [start, end];
-      const style: string = start === 0
+      let style: string = start === 0
         ? this.orientation === 'horizontal'
           ? `width: ${end}%;`
           : `height: ${end}%;`
@@ -28,4 +29,4 @@ class Connect extends Helper {
       this.element.setAttribute('style', style);
     }
 }
-export { Connect };
+export {Connect};
