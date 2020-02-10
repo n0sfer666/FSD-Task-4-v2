@@ -10,7 +10,9 @@
     "css:prod": "postcss ./src/Style/style.css -o ./dist/SimpleRangeSlider.css -env development && postcss ./src/Style/style.css -o ./dist/SimpleRangeSlider.min.css --env production",
     "plugin:dev": "webpack --config webpack.config.js --mode development --watch",
     "plugin:prod": "webpack --config webpack.config.js --mode development && webpack --mode production",
-    "demo": "copy dist\\SimpleRangeSlider.min.css docs && webpack --config webpackfile.js --mode development --watch"
+    "demo": "copy dist\\SimpleRangeSlider.min.css docs && webpack --config webpackfile.js --mode development --watch",
+    "eslint": "eslint src\\plugin\\**\\*.ts --fix",
+    "eslint:test": "eslint src\\test\\**\\*.ts --fix"
   },
   "repository": {
     "type": "git",
