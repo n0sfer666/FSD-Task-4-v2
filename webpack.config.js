@@ -15,7 +15,11 @@ module.exports = (env, options) => {
             filename: options.mode === 'development' ? '[name].js' : '[name].min.js',
             path: __dirname + '/dist',
         },
-
+        devServer: {
+            contentBase: __dirname + '/docs',
+            compress: true,
+            port: 9090 
+        },
         mode: options.mode,
         devtool: options.mode === 'development' ? 'inline-source-map' : '',
 
