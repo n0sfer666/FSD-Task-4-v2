@@ -18,7 +18,8 @@ View
 
     it('listener(s) was created', () => {            
       let test_callback: I_Thumbler_State = function(thumbler_state: T_Thumbler_Data) {
-        let test: string = 'test';
+        let test: T_Thumbler_Data = thumbler_state;
+        test.index = thumbler_state.index;
       };
 
       let view: View = new View(test_container, test_config);

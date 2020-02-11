@@ -76,7 +76,8 @@ Model
 
   describe('on_change_model(callback: I_Model_State)', () => {
     let test_function: I_Model_State = function(model_state: T_Model_Data) {
-      let test: string = 'test';
+      let test: T_Model_Data = model_state;
+      test.index = model_state.index;
     };
     it('callback is pushed to callback_list', () => {
       let to_expect: I_Model_State[] = [test_function];
@@ -91,6 +92,8 @@ Model
   describe('update()', () => {
     let result: boolean = false;
     let test_function: I_Model_State = function(model_state: T_Model_Data) {
+      let test: T_Model_Data = model_state;
+      test.index = model_state.index;
       result = true;
     };
     it('callback was executed', () => {

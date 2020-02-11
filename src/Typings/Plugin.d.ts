@@ -7,7 +7,8 @@ type T_Position = [number] | [number, number];
 type T_Input = [HTMLInputElement] | [HTMLInputElement, HTMLInputElement];
 
 type T_Thumbler_Data = {
-    position: number,
+    position?: number,
+    value?: number,
     index: number
 }
 type T_Model_Data = {

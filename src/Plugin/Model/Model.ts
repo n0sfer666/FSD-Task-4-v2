@@ -18,62 +18,45 @@ class Model {
 
       this.step = this.configuration.value_step;
 
-      for( let i= 0; i < this.configuration.value_range.length; i++ ) {
-
-        if(this.range[i] === undefined) {
-          this.range.push(this.configuration.value_range[i]);
-        } else {
-          this.range[i] = this.configuration.value_range[i];
-        }
-
-      }
-
-      for( let i= 0; i < this.configuration.value_start.length; i++ ) {
-
-        if(this.value[i] === undefined) {
-          this.value.push(this.configuration.value_start[i]);
-        } else {
-          this.value[i] = this.configuration.value_start[i];
-        }
-
-        if(this.position[i] === undefined) {
-          this.position.push( this.get_position_from_value(this.value[i], this.range) );
-        } else {
-          this.position[i] =  this.get_position_from_value(this.value[i], this.range);
-        }
-      }
-
+      this.init();
     }
 
     set_new_position(thumbler_state: T_Thumbler_Data) {
 
-      let position: number = Math.round(thumbler_state.position * this.TO_NORMALIZE_POSITION) / this.TO_NORMALIZE_POSITION;
-      this.index_of_active_thumbler = thumbler_state.index;
-      let i: number = this.index_of_active_thumbler;
-      // check for input collision and out of range
-      if(this.position.length > 1 && this.position[1]) {
-        if(i === 0) {
-          if(position >= this.position[1]) {
-            position = this.position[1] - this.get_position_from_value(this.range[0] + this.step, this.range);
+      let index: number = thumbler_state.index;
+      this.index_of_active_thumbler = index;
+
+      let position: number = this.position[index];
+      let new_value: number = this.value[index];
+
+      if(thumbler_state.position !== undefined) {  
+        position = Math.round(thumbler_state.position * this.TO_NORMALIZE_POSITION) / this.TO_NORMALIZE_POSITION;
+        new_value = this.get_value_from_position(position, this.range);
+      } else if(thumbler_state.value !== undefined) {
+        new_value = thumbler_state.value;
+
+        if(index === 0 && this.value[1]) {
+          if(new_value > this.value[1] - this.step) {
+            new_value = this.value[1] - this.step;
           }
-        } else {
-          if(position <= this.position[0]) {
-            position = this.position[0] + this.get_position_from_value(this.range[0] + this.step, this.range);
+        }
+        if(index === 1) {
+          if(new_value < this.value[0] + this.step) {
+            new_value = this.value[0] + this.step;
           }
         }
       }
 
-      let new_value: number = this.get_value_from_position(position, this.range);
-      let condition: [number, number] = [this.value[i] - this.step, this.value[i] + this.step];
+      let condition: [number, number] = [this.value[index] - this.step, this.value[index] + this.step];
 
       if(new_value >= condition[1] || new_value <= condition[0]) {
-        this.set_value_and_position(new_value, i);
+        this.set_value_and_position(new_value, index);
       }
       if(new_value <= this.range[0]) {
-        this.set_value_and_position(this.range[0], i);
+        this.set_value_and_position(this.range[0], index);
       }
       if(new_value >= this.range[1]) {
-        this.set_value_and_position(this.range[1], i);
+        this.set_value_and_position(this.range[1], index);
       }
       // check for collision
       if(this.value.length > 1 && this.value[1]) {
@@ -126,6 +109,33 @@ class Model {
         this.value[i] = this.range[0];
       }
       this.position[i] = this.get_position_from_value(this.value[i], this.range);
+    }
+
+    init() {
+      for( let i= 0; i < this.configuration.value_range.length; i++ ) {
+
+        if(this.range[i] === undefined) {
+          this.range.push(this.configuration.value_range[i]);
+        } else {
+          this.range[i] = this.configuration.value_range[i];
+        }
+
+      }
+
+      for( let i= 0; i < this.configuration.value_start.length; i++ ) {
+
+        if(this.value[i] === undefined) {
+          this.value.push(this.configuration.value_start[i]);
+        } else {
+          this.value[i] = this.configuration.value_start[i];
+        }
+
+        if(this.position[i] === undefined) {
+          this.position.push( this.get_position_from_value(this.value[i], this.range) );
+        } else {
+          this.position[i] =  this.get_position_from_value(this.value[i], this.range);
+        }
+      }
     }
 }
 

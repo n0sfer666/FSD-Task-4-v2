@@ -2,6 +2,7 @@ import { Helper } from './entities/Helper';
 import { Thumbler } from './entities/Thumbler';
 import { Connect } from './entities/Connect';
 import { Tooltip } from './entities/Tooltip';
+import { Input } from './entities/Input';
 
 class View extends Helper {
 
@@ -20,12 +21,11 @@ class View extends Helper {
     connect: Connect[] = [];
     tooltip: Tooltip[] = [];
 
-    input?: T_Input;
+    input?: Input[] = [];
 
     constructor( private container: HTMLElement, private configuration: I_Configuration_View ) {
       super();
 
-      this.input = this.configuration.input;
       this.is_tooltip = this.configuration.is_tooltip;
       this.is_connect = this.configuration.is_connect;
       this.orientation = this.configuration.orientation;
@@ -38,6 +38,11 @@ class View extends Helper {
     on_change_view(callback: I_Thumbler_State) {
       for( let i = 0; i < this.thumbler.length; i++ ) {
         this.thumbler[i].on_mouse_down_and_move(this.container, callback);
+      }
+      if( this.input !== undefined) {
+        for( let i = 0; i < this.input.length; i++ ) {
+          this.input[i].on_keydown_or_mouseout(callback);
+        }
       }
     }
     
@@ -72,7 +77,7 @@ class View extends Helper {
       }
 
       if(this.input !== undefined) {
-        this.input[i].value = String(value[i]);
+        this.input[i].element.value = String(value[i]);
       }
 
       if(this.is_connect) {
@@ -135,9 +140,13 @@ class View extends Helper {
 
       this.container.append(this.slider);
 
-      if(this.input !== undefined) {
-        for( let i = 0; i < this.input.length; i++ ) {
-          this.input[i].value = String(this.value_start[i]);
+      if(this.configuration.input !== undefined) {
+        for( let i = 0; i < this.configuration.input.length; i++ ) {
+          this.input?.push(new Input(
+              this.configuration.input[i],
+              this.configuration.value_start[i],
+              i
+            ));
         }
       }
     }
