@@ -18,7 +18,7 @@ class SimpleRangeSlider {
         range:       [0, 100],
         step:        1,
         connect:     true,
-        tooltip:     false
+        tooltip:     true
       };
 
       let complete_configuration: I_Configuration_User = {

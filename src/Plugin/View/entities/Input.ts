@@ -1,9 +1,12 @@
 import { Helper } from "./Helper";
+import { Tooltip } from "./Tooltip";
 
 class Input extends Helper {
-  constructor(public element: HTMLInputElement, public value: number, public index: number) {
+  constructor(private type: T_Input_Type, public element: HTMLInputElement, public value?: number, public index?: number) {
     super();
-    this.element.value = String(this.value);
+    if(type === 'value') {
+      this.element.value = String(this.value);
+    }
   }
   on_keydown_or_mouseout(this: Input, callback: I_Thumbler_State) {
     let that = this;
@@ -21,21 +24,23 @@ class Input extends Helper {
     }
     function bubbling() {
       let value: number = Number(that.element.value);
-      callback({
-        value: value,
-        index: that.index
-      });
+      if(that.index) {
+        callback({
+          value: value,
+          index: that.index
+        });
+      }
     }
   }
-  on_switch_check(this: Input, callback: I_Tooltip_Switch[]) {
+  on_switch_check(this: Input, tooltip: Tooltip[]) {
     let that = this;
 
     that.element.addEventListener('change', function() {
-      for( let i = 0; i < callback.length; i++) {
+      for( let i = 0; i < tooltip.length; i++) {
         if(that.element.checked) {
-          callback[i](true);
+          tooltip[i].switch_hidden(true);
         } else {
-          callback[i](false);
+          tooltip[i].switch_hidden(false);
         }
       }
     })

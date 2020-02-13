@@ -21,11 +21,12 @@ class Tooltip extends Helper {
       this.tooltip_value = val;            
       this.element.innerText = String( val );
     }
-    switch_hidden(is_visible: boolean) {
+    switch_hidden(this: Tooltip, is_visible: boolean) {
+      let that: Tooltip = this;
       if(is_visible) {
-        this.element.hidden = false;
+        that.element.hidden = false;
       } else {
-        this.element.hidden = true;
+        that.element.hidden = true;
       }
     }
 }
