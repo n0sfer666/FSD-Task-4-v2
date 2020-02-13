@@ -21,7 +21,7 @@ class View extends Helper {
     connect: Connect[] = [];
     tooltip: Tooltip[] = [];
 
-    input?: Input[] = [];
+    input: Input[] = [];
 
     constructor( private container: HTMLElement, private configuration: I_Configuration_View ) {
       super();
@@ -39,7 +39,7 @@ class View extends Helper {
       for( let i = 0; i < this.thumbler.length; i++ ) {
         this.thumbler[i].on_mouse_down_and_move(this.container, callback);
       }
-      if( this.input !== undefined) {
+      if( this.input[0] !== undefined) {
         for( let i = 0; i < this.input.length; i++ ) {
           this.input[i].on_keydown_or_mouseout(callback);
         }
@@ -76,7 +76,7 @@ class View extends Helper {
         this.tooltip[i].set_inner_text(value[i]);
       }
 
-      if(this.input !== undefined) {
+      if(this.input[0] !== undefined) {
         this.input[i].element.value = String(value[i]);
       }
 
@@ -140,9 +140,9 @@ class View extends Helper {
 
       this.container.append(this.slider);
 
-      if(this.configuration.input !== undefined) {
+      if(this.configuration.input) {
         for( let i = 0; i < this.configuration.input.length; i++ ) {
-          this.input?.push(new Input(
+          this.input.push(new Input(
               this.configuration.input[i],
               this.configuration.value_start[i],
               i
