@@ -27,5 +27,18 @@ class Input extends Helper {
       });
     }
   }
+  on_switch_check(this: Input, callback: I_Tooltip_Switch[]) {
+    let that = this;
+
+    that.element.addEventListener('change', function() {
+      for( let i = 0; i < callback.length; i++) {
+        if(that.element.checked) {
+          callback[i](true);
+        } else {
+          callback[i](false);
+        }
+      }
+    })
+  }
 }
 export { Input };

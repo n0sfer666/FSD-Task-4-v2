@@ -45,3 +45,6 @@ interface I_Thumbler_State {
 interface I_Model_State {
     (model_state: T_Model_Data): void
 }
+interface I_Tooltip_Switch {
+    (is_visible: boolean): void
+}
