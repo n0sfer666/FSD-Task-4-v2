@@ -27,7 +27,36 @@ class Model {
       this.index_of_active_thumbler = index;
 
       let position: number = this.position[index];
-      let new_value: number = this.value[index];
+      let new_value: number = this.get_new_value(thumbler_state);
+// TODO check_condition(new_value: number) {
+      let condition: [number, number] = [this.value[index] - this.step, this.value[index] + this.step];
+
+      if(new_value >= condition[1] || new_value <= condition[0]) {
+        this.set_value_and_position(new_value, index);
+      }
+      if(new_value <= this.range[0]) {
+        this.set_value_and_position(this.range[0], index);
+      }
+      if(new_value >= this.range[1]) {
+        this.set_value_and_position(this.range[1], index);
+      }
+// TODO }
+      // check for collision
+      if(this.value.length > 1 && this.value[1]) {
+        if(this.value[0] < this.value[1] ) {
+          this.update();
+        } else {
+          return false;
+        }
+      } else {
+        this.update();
+      }
+    }
+
+    get_new_value(thumbler_state: T_Thumbler_Data): number {
+      let index: number = thumbler_state.index;
+      let new_value: number = this.value[index]; 
+      let position: number;
 
       if(thumbler_state.position !== undefined) {  
         position = Math.round(thumbler_state.position * this.TO_NORMALIZE_POSITION) / this.TO_NORMALIZE_POSITION;
@@ -46,28 +75,7 @@ class Model {
           }
         }
       }
-
-      let condition: [number, number] = [this.value[index] - this.step, this.value[index] + this.step];
-
-      if(new_value >= condition[1] || new_value <= condition[0]) {
-        this.set_value_and_position(new_value, index);
-      }
-      if(new_value <= this.range[0]) {
-        this.set_value_and_position(this.range[0], index);
-      }
-      if(new_value >= this.range[1]) {
-        this.set_value_and_position(this.range[1], index);
-      }
-      // check for collision
-      if(this.value.length > 1 && this.value[1]) {
-        if(this.value[0] < this.value[1] ) {
-          this.update();
-        } else {
-          return false;
-        }
-      } else {
-        this.update();
-      }
+      return new_value;
     }
 
     update() {
