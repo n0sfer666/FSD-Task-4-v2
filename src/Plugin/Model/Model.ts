@@ -26,21 +26,9 @@ class Model {
       let index: number = thumbler_state.index;
       this.index_of_active_thumbler = index;
 
-      let position: number = this.position[index];
       let new_value: number = this.get_new_value(thumbler_state);
-// TODO check_condition(new_value: number) {
-      let condition: [number, number] = [this.value[index] - this.step, this.value[index] + this.step];
 
-      if(new_value >= condition[1] || new_value <= condition[0]) {
-        this.set_value_and_position(new_value, index);
-      }
-      if(new_value <= this.range[0]) {
-        this.set_value_and_position(this.range[0], index);
-      }
-      if(new_value >= this.range[1]) {
-        this.set_value_and_position(this.range[1], index);
-      }
-// TODO }
+      this.check_on_step_movement_to_set_val_and_pos(new_value, index);
       // check for collision
       if(this.value.length > 1 && this.value[1]) {
         if(this.value[0] < this.value[1] ) {
@@ -76,6 +64,20 @@ class Model {
         }
       }
       return new_value;
+    }
+
+    check_on_step_movement_to_set_val_and_pos(new_value: number, index: number) {
+      let condition: [number, number] = [this.value[index] - this.step, this.value[index] + this.step];
+
+      if(new_value >= condition[1] || new_value <= condition[0]) {
+        this.set_value_and_position(new_value, index);
+      }
+      if(new_value <= this.range[0]) {
+        this.set_value_and_position(this.range[0], index);
+      }
+      if(new_value >= this.range[1]) {
+        this.set_value_and_position(this.range[1], index);
+      }
     }
 
     update() {
