@@ -104,31 +104,27 @@ Model
   });
 
   describe('set_new_position(thumbler_state: T_Thumbler_Data)', () => {
-    for( let i = 0; i < 10; i++ ) {
-      let thumbler_state: T_Thumbler_Data = {
-        position: (random_number(0, 10000) / 10000),
-        index: random_number(0, 1)
-      };
-
-      let result: T_Model_Data;
-
-      let test_function: I_Model_State = function(model_state: T_Model_Data) {
-        result = model_state;
-      };
-
-      it(`thumbler_state = { pos: ${thumbler_state.position}, index: ${thumbler_state.index} } was set correct`, () => {
-        model.on_change_model(test_function);
-        model.set_new_position(thumbler_state);
-
-        let to_expect: T_Model_Data = {
-          position: model.position,
-          value: model.value,
-          index: model.index_of_active_thumbler
-        };
-
-        expect(to_expect).toEqual(result);
-      });
-    }
+    it('get_new_value() was called', () => {
+      spyOn(model, 'get_new_value');
+      model.set_new_position({position: 0.5, index: 0});
+      setTimeout(() => {
+        expect(model.get_new_value).toHaveBeenCalled();
+      }, 50);
+    });
+    it('check_on_step...() was called', () => {
+      spyOn(model, 'check_on_step_movement_to_set_val_and_pos');
+      model.set_new_position({position: 0.5, index: 0});
+      setTimeout(() => {
+        expect(model.check_on_step_movement_to_set_val_and_pos).toHaveBeenCalled();
+      }, 50);
+    });
+    it('update() was called', () => {
+      spyOn(model, 'update');
+      model.set_new_position({position: 0.5, index: 0});
+      setTimeout(() => {
+        expect(model.update).toHaveBeenCalled();
+      }, 50);
+    });
   });
 });
 
