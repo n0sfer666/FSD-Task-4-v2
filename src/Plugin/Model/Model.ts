@@ -112,12 +112,7 @@ class Model {
       this.value[i] = new_value > 0
         ? (Math.ceil(new_value / this.step) * this.step)
         : (Math.floor(new_value / this.step) * this.step);
-      if(this.value[i] > this.range[1]) {
-        this.value[i] = this.range[1];
-      }
-      if(this.value[i] < this.range[0]) {
-        this.value[i] = this.range[0];
-      }
+        
       this.position[i] = this.get_position_from_value(this.value[i], this.range);
     }
 

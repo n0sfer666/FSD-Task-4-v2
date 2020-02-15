@@ -39,7 +39,7 @@ View
     }
   });
 
-  describe('update(model_state: T_Model_Data)', () => {
+  describe('update(model_state: T_Model_Data) and set_active_thumbler()', () => {
     let test_container: HTMLElement = document.createElement('div');
     document.body.append(test_container);
     let orientations: T_Orientation[] = ['horizontal', 'vertical'];
@@ -86,31 +86,31 @@ View
 
           let expect_change_class: boolean = i === 0
             ? view.thumbler[0].element.classList.contains('SRS__thumbler_active') &&
-                            !view.thumbler[1].element.classList.contains('SRS__thumbler_active') &&
-                            view.tooltip[0].element.classList.contains('SRS__tooltip_active') &&
-                            !view.tooltip[1].element.classList.contains('SRS__tooltip_active')
+              !view.thumbler[1].element.classList.contains('SRS__thumbler_active') &&
+              view.tooltip[0].element.classList.contains('SRS__tooltip_active') &&
+              !view.tooltip[1].element.classList.contains('SRS__tooltip_active')
             : view.thumbler[1].element.classList.contains('SRS__thumbler_active') &&
-                            !view.thumbler[0].element.classList.contains('SRS__thumbler_active') &&
-                            view.tooltip[1].element.classList.contains('SRS__tooltip_active') &&
-                            !view.tooltip[0].element.classList.contains('SRS__tooltip_active');
-                    
-                    
+              !view.thumbler[0].element.classList.contains('SRS__thumbler_active') &&
+              view.tooltip[1].element.classList.contains('SRS__tooltip_active') &&
+              !view.tooltip[0].element.classList.contains('SRS__tooltip_active');
+          
           let expect_thumbler: boolean = test_position[i] === view.thumbler[i].thumbler_position;
-                    
+          
           let expect_tooltip: boolean = test_value[i] === view.tooltip[i].tooltip_value;
-                   
+
           let test_connect_position: [number, number] = [0, 0];
           if(test_position[1]) { 
             test_connect_position = [Math.round(test_position[0] * view.connect[0].TO_CONNECT_UPDATE),
               Math.round(test_position[1] * view.connect[0].TO_CONNECT_UPDATE)];
           }
-          let expect_connect: boolean = test_connect_position[0] === view.connect[0].connect_position[0] &&
-                                                  test_connect_position[1] === view.connect[0].connect_position[1];
+          let expect_connect: boolean = 
+            test_connect_position[0] === view.connect[0].connect_position[0] &&
+            test_connect_position[1] === view.connect[0].connect_position[1];
 
           let to_expect: boolean = expect_change_class && expect_thumbler && expect_tooltip && expect_connect;
           expect(to_expect).toEqual(true);
         });
       }
-    }
+    };
   });
 });

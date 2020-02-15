@@ -55,25 +55,8 @@ class View extends Helper {
     let position: T_Position = model_state.position;
     let value: T_Value = model_state.value;
 
-    if(position.length > 1) {
+    this.set_active_thumbler(position, i);
 
-      if(i === 0) {
-        this.thumbler[0].element.classList.add('SRS__thumbler_active');
-        this.thumbler[1].element.classList.remove('SRS__thumbler_active');
-        if(this.is_tooltip) {
-          this.tooltip[0].element.classList.add('SRS__tooltip_active');
-          this.tooltip[1].element.classList.remove('SRS__tooltip_active');
-        }
-      } else {
-        this.thumbler[1].element.classList.add('SRS__thumbler_active');
-        this.thumbler[0].element.classList.remove('SRS__thumbler_active');
-        if(this.is_tooltip) {
-          this.tooltip[1].element.classList.add('SRS__tooltip_active');
-          this.tooltip[0].element.classList.remove('SRS__tooltip_active');
-        }
-      }
-
-    }
     this.thumbler[i].set_new_position(position[i]);
 
     if(this.is_tooltip) {
@@ -89,6 +72,27 @@ class View extends Helper {
         this.connect[0].set_connect_position(0, position[0]);
       } else if(position[1]) {
         this.connect[0].set_connect_position(position[0], position[1]);
+      }
+    }
+  }
+
+  set_active_thumbler(position: T_Position, index: number) {
+    if(position.length > 1) {
+
+      if(index === 0) {
+        this.thumbler[0].element.classList.add('SRS__thumbler_active');
+        this.thumbler[1].element.classList.remove('SRS__thumbler_active');
+        if(this.is_tooltip) {
+          this.tooltip[0].element.classList.add('SRS__tooltip_active');
+          this.tooltip[1].element.classList.remove('SRS__tooltip_active');
+        }
+      } else {
+        this.thumbler[1].element.classList.add('SRS__thumbler_active');
+        this.thumbler[0].element.classList.remove('SRS__thumbler_active');
+        if(this.is_tooltip) {
+          this.tooltip[1].element.classList.add('SRS__tooltip_active');
+          this.tooltip[0].element.classList.remove('SRS__tooltip_active');
+        }
       }
     }
   }
