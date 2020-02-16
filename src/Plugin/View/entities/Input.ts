@@ -11,15 +11,21 @@ class Input extends Helper {
   on_keydown_or_mouseout(this: Input, callback: I_Thumbler_State) {
     let that = this;
 
+    if(that.type !== 'value') {
+      return false;
+    }
+
     that.element.addEventListener('keydown', on_keydown);
     that.element.addEventListener('mouseout', on_mouseout);
 
     function on_keydown(event: KeyboardEvent) {
-      if(event.keyCode === 9 || event.keyCode === 13) {
+      if(event.key === "Tab" || event.key === "Enter") {
         bubbling();
       }
     }
-    function on_mouseout() {
+    function on_mouseout(event: MouseEvent) {
+      console.log(event);
+      
       bubbling();
     }
     function bubbling() {
@@ -29,12 +35,20 @@ class Input extends Helper {
           value: value,
           index: that.index
         });
+      } else {
+        callback({
+          value: value,
+          index: 0
+        })
       }
     }
   }
   on_switch_check(this: Input, tooltip: Tooltip[]) {
     let that = this;
 
+    if(that.type !== 'tooltip') {
+      return false;
+    }
     that.element.addEventListener('change', function() {
       for( let i = 0; i < tooltip.length; i++) {
         if(that.element.checked) {

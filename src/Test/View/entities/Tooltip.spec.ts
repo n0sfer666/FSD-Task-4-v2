@@ -16,6 +16,18 @@ View -> Tooltip
     
         expect(to_expect).toEqual(tooltip.element.innerText);
       });
-    }
+    };
+  });
+  describe('switch_hidden(is_visible: boolean)', () => {
+    it('tooltip not hidden when is_visible true', () => {
+      tooltip.element.hidden = true;
+      tooltip.switch_hidden(true);
+      expect(tooltip.element.hidden).toBe(false);
+    });
+    it('tooltip hidden when is_visible false', () => {
+      tooltip.element.hidden = false;
+      tooltip.switch_hidden(false);
+      expect(tooltip.element.hidden).toBe(true);
+    });
   });
 });

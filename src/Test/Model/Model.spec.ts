@@ -101,31 +101,29 @@ Model
     it('callback was executed', () => {
       model.on_change_model(test_function);
       model.update();
+
       expect(true).toEqual(result);
+      
     });
   });
 
   describe('set_new_position(thumbler_state: T_Thumbler_Data)', () => {
     it('get_new_value() was called', () => {
-      spyOn(model, 'get_new_value');
+      spyOn(model, 'get_new_value').and.callThrough();
       model.set_new_position({position: 0.5, index: 0});
-      setTimeout(() => {
-        expect(model.get_new_value).toHaveBeenCalled();
-      }, 100);
+      expect(model.get_new_value).toHaveBeenCalled();
     });
     it('check_on_step...() was called', () => {
-      spyOn(model, 'check_on_step_movement_to_set_val_and_pos');
+      spyOn(model, 'check_on_step_movement_to_set_val_and_pos').and.callThrough();
       model.set_new_position({position: 0.5, index: 0});
-      setTimeout(() => {
-        expect(model.check_on_step_movement_to_set_val_and_pos).toHaveBeenCalled();
-      }, 50);
+
+      expect(model.check_on_step_movement_to_set_val_and_pos).toHaveBeenCalled();
     });
     it('update() was called', () => {
-      spyOn(model, 'update');
+      spyOn(model, 'update').and.callThrough();
       model.set_new_position({position: 0.5, index: 0});
-      setTimeout(() => {
-        expect(model.update).toHaveBeenCalled();
-      }, 50);
+
+      expect(model.update).toHaveBeenCalled();
     });
   });
 
@@ -167,7 +165,7 @@ Model
       let condition: [number, number] = [model.value[test_index] - model.step, model.value[test_index] + model.step];
 
       it(`value: ${test_value}, index: ${test_index}`, () => {
-        spyOn(model, 'set_value_and_position');
+        spyOn(model, 'set_value_and_position').and.callThrough();
         model.check_on_step_movement_to_set_val_and_pos(test_new_value, test_index);
 
         let test_param: number = 0;
