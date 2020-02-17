@@ -2,6 +2,7 @@ module.exports = (env, options) => {
     return {
         entry: {
             SimpleRangeSlider: './src/Plugin/Plugin.ts',
+            demoPanel: './src/Demo_Panel/Panel.ts'
         },
 
         resolve: {

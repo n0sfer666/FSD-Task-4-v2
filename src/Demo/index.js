@@ -1,16 +1,25 @@
 import { SimpleRangeSlider } from '../../dist/SimpleRangeSlider';
+import { Demo_Panel } from '../../dist/demoPanel';
 
 $(document).ready(function() {
     // console.log('ready!');
-    var input_x_1 = [document.getElementById('input_x_1_min')];
+    var input_text_x_1 = [
+      document.getElementById('input_x_1_min'),
+      document.getElementById('input_x_1_max')
+    ];
     var input_check_x_1 = [document.getElementById('input_check_x_1')];
+    var input_x_1 = {
+      value: input_text_x_1,
+      tooltip: input_check_x_1
+    }
 
-    var slider_x_1 = $('#slider_x_1').SimpleRangeSlider({
-        input: {
-            value: input_x_1,
-            tooltip: input_check_x_1
-        }
-    });
+    var demo_panel = $('#demo1').Demo_Panel($('#slider_x_1'), input_x_1);
+    // var slider_x_1 = $('#slider_x_1').SimpleRangeSlider({
+    //     input: {
+    //         value: input_x_1,
+    //         tooltip: input_check_x_1
+    //     }
+    // });
     
     var input_x_2 = [
         document.getElementById('input_x_2_min'),
