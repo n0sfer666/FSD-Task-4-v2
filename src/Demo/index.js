@@ -2,7 +2,7 @@ import { SimpleRangeSlider } from '../../dist/SimpleRangeSlider';
 
 $(document).ready(function() {
     // console.log('ready!');
-    var input_x_1 = [document.getElementById('input_x_1')];
+    var input_x_1 = [document.getElementById('input_x_1_min')];
     var input_check_x_1 = [document.getElementById('input_check_x_1')];
 
     var slider_x_1 = $('#slider_x_1').SimpleRangeSlider({
@@ -29,7 +29,7 @@ $(document).ready(function() {
         }
     });
 
-    var input_y_1 = [document.getElementById('input_y_1')];
+    var input_y_1 = [document.getElementById('input_y_1_min')];
     var input_check_y_1 = [document.getElementById('input_check_y_1')];
 
     var slider_y_1 = $('#slider_y_1').SimpleRangeSlider({

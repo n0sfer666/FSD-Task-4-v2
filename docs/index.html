@@ -10,10 +10,8 @@
 </head>
 <body>
     <style>
-        .slider_horizontal {
+        .slider {
             width: 300px;
-        }
-        .slider_vertical {
             height: 300px;
         }
         .block-container {
@@ -38,10 +36,11 @@
 
     <section class="block-container">
 
-        <div class="slider_horizontal" id="slider_x_1"></div>
+        <div class="slider" id="slider_x_1"></div>
         
         <aside>
-            <input type="text" class="input" id="input_x_1">
+            <input type="text" class="input" id="input_x_1_min">
+            <input type="text" class="input" id="input_x_1_max">
             <span>press Tab or Enter (or mouseout)</span>
             <br>
             <input type="checkbox" id='input_check_x_1' checked>
@@ -55,7 +54,7 @@
 
     <section class="block-container">
 
-        <div class="slider_horizontal" id="slider_x_2"></div>
+        <div class="slider" id="slider_x_2"></div>
         
         <aside>
             <input type="text" class="input" id="input_x_2_min">
@@ -73,10 +72,11 @@
 
     <section class="block-container">
 
-        <div class="slider_vertical" id="slider_y_1"></div>
+        <div class="slider" id="slider_y_1"></div>
         
         <aside>
-            <input type="text" class="input" id="input_y_1">
+            <input type="text" class="input" id="input_y_1_min">
+            <input type="text" class="input" id="input_y_1_max">
             <span>press Tab or Enter (or mouseout)</span>
             <br>
             <input type="checkbox" id='input_check_y_1' checked>
@@ -90,7 +90,7 @@
 
     <section class="block-container">
 
-        <div class="slider_vertical" id="slider_y_2"></div>
+        <div class="slider" id="slider_y_2"></div>
         
         <aside>
             <input type="text" class="input" id="input_y_2_min">

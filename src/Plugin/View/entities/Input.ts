@@ -5,7 +5,9 @@ class Input extends Helper {
   constructor(private type: T_Input_Type, public element: HTMLInputElement, public value?: number, public index?: number) {
     super();
     if(type === 'value') {
-      this.element.value = String(this.value);
+      if(this.value !== undefined) {
+        this.element.value = String(this.value);
+      }
     }
   }
   on_keydown_or_mouseout(this: Input, callback: I_Thumbler_State) {
@@ -23,9 +25,7 @@ class Input extends Helper {
         bubbling();
       }
     }
-    function on_mouseout(event: MouseEvent) {
-      console.log(event);
-      
+    function on_mouseout() {      
       bubbling();
     }
     function bubbling() {
