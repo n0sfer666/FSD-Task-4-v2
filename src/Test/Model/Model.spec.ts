@@ -54,6 +54,13 @@ Model
           ? (Math.ceil(new_value / model.step) * model.step)
           : (Math.floor(new_value / model.step) * model.step);
 
+        if(value < model.range[0]) {
+          value = model.range[0];
+        }
+        if(value > model.range[1]) {
+          value = model.range[1];
+        }
+
         let position: number = (value - model.range[0]) / (model.range[1] - model.range[0]);
         position *= model.TO_NORMALIZE_POSITION;
         position = Math.round(position);
@@ -171,12 +178,6 @@ Model
         let test_param: number = 0;
         if(test_new_value >= condition[1] || test_new_value <= condition[0]) {
           test_param = test_new_value;
-        }
-        if(test_new_value <= model.range[0]) {
-          test_param = model.range[0];
-        } 
-        if(test_new_value >= model.range[1]) {
-          test_param = model.range[1];
         }
 
         expect(model.set_value_and_position).toHaveBeenCalledWith(test_param, test_index);

@@ -72,12 +72,6 @@ class Model {
       if(new_value >= condition[1] || new_value <= condition[0]) {
         this.set_value_and_position(new_value, index);
       }
-      if(new_value <= this.range[0]) {
-        this.set_value_and_position(this.range[0], index);
-      }
-      if(new_value >= this.range[1]) {
-        this.set_value_and_position(this.range[1], index);
-      }
     }
 
     update() {
@@ -112,6 +106,18 @@ class Model {
       this.value[i] = new_value > 0
         ? (Math.ceil(new_value / this.step) * this.step)
         : (Math.floor(new_value / this.step) * this.step);
+
+      if(i === 0) {
+        if(this.value[0] < this.range[0]) {
+          this.value[0] = this.range[0]
+        }
+      }
+
+      if(i === 1 && this.value[1] !== undefined) {
+        if(this.value[1] > this.range[1]) {
+          this.value[i] = this.range[1]
+        }
+      }
         
       this.position[i] = this.get_position_from_value(this.value[i], this.range);
     }

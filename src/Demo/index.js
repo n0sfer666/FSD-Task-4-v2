@@ -14,12 +14,6 @@ $(document).ready(function() {
     }
 
     var demo_panel = $('#demo1').Demo_Panel($('#slider_x_1'), input_x_1);
-    // var slider_x_1 = $('#slider_x_1').SimpleRangeSlider({
-    //     input: {
-    //         value: input_x_1,
-    //         tooltip: input_check_x_1
-    //     }
-    // });
     
     var input_x_2 = [
         document.getElementById('input_x_2_min'),
@@ -53,7 +47,7 @@ $(document).ready(function() {
             tooltip: input_check_y_1
         }
     });
-
+    
     var input_y_2 = [
         document.getElementById('input_y_2_min'),
         document.getElementById('input_y_2_max')
