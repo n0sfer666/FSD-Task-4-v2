@@ -13,4 +13,4 @@ class Presenter {
     });
   }
 }
-export {Presenter};
+export { Presenter };
