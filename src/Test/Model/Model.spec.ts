@@ -20,31 +20,31 @@ Model
     model.callback_list = [];
   });
 
-  describe('get_position_from_value(value: number, range: T_Range): number', () => {
+  describe('getPosition_from_value(value: number, range: tRange): number', () => {
     for( let i = 0; i < 10; i++) {
       let value: number = random_number(model.range[0], model.range[1]);
       it(`value: ${value} on range: [${model.range[0]}, ${model.range[1]}]`, () => {
         let to_expect: number = Math.round( ( (value - model.range[0]) / (model.range[1] - model.range[0])) * 1e4) / 1e4; 
-        let result: number = model.get_position_from_value(value, model.range);
+        let result: number = model.getPosition_from_value(value, model.range);
 
         expect(to_expect).toEqual(result);
       });
     }
   });
 
-  describe('get_value_from_position(position: number, range: T_Range): number', () => {
+  describe('getValue_from_position(position: number, range: tRange): number', () => {
     for( let i = 0; i < 10; i++ ) {
       let position: number = random_number(0, 10000) / 10000;
       it(`position: ${position} on range: [${model.range[0]}, ${model.range[1]}]`, () => {
         let to_expect: number = Math.round( (position * (model.range[1] - model.range[0])) + model.range[0] ); 
-        let result: number = model.get_value_from_position(position, model.range);
+        let result: number = model.getValue_from_position(position, model.range);
 
         expect(to_expect).toEqual(result);
       });
     }
   });
 
-  describe('set_value_and_position(new_value: number, i: number)', () => {
+  describe('setValue_and_position(new_value: number, i: number)', () => {
     for( let i = 0; i < 10; i++ ) {
       let new_value: number = random_number(model.range[0], model.range[1]);
       let i: number = random_number(0, 1);
@@ -71,7 +71,7 @@ Model
           position: position
         };
 
-        model.set_value_and_position(new_value, i);
+        model.setValue_and_position(new_value, i);
 
         let result: object = {
           value: model.value[i],
@@ -83,16 +83,16 @@ Model
     }
   });
 
-  describe('on_change_model(callback: I_Model_State)', () => {
-    let test_function: I_Model_State = function(model_state: T_Model_Data) {
-      let test: T_Model_Data = model_state;
+  describe('on_change_model(callback: iModelCallback)', () => {
+    let test_function: iModelCallback = function(model_state: tModelData) {
+      let test: tModelData = model_state;
       test.index = model_state.index;
     };
     it('callback is pushed to callback_list', () => {
-      let to_expect: I_Model_State[] = [test_function];
+      let to_expect: iModelCallback[] = [test_function];
 
       model.on_change_model(test_function);
-      let result: I_Model_State[] = model.callback_list;
+      let result: iModelCallback[] = model.callback_list;
 
       expect(to_expect).toEqual(result);
     });
@@ -100,8 +100,8 @@ Model
 
   describe('update()', () => {
     let result: boolean = false;
-    let test_function: I_Model_State = function(model_state: T_Model_Data) {
-      let test: T_Model_Data = model_state;
+    let test_function: iModelCallback = function(model_state: tModelData) {
+      let test: tModelData = model_state;
       test.index = model_state.index;
       result = true;
     };
@@ -114,7 +114,7 @@ Model
     });
   });
 
-  describe('set_new_position(thumbler_state: T_Thumbler_Data)', () => {
+  describe('set_new_position(thumbler_state: tTumblerData)', () => {
     it('get_new_value() was called', () => {
       spyOn(model, 'get_new_value').and.callThrough();
       model.set_new_position({position: 0.5, index: 0});
@@ -134,12 +134,12 @@ Model
     });
   });
 
-  describe('get_new_value(thumbler_state: T_Thumbler_Data)', () => {
-    let test_value: number = random_number(model.range[0], model.range[1]);
+  describe('get_new_value(thumbler_state: tTumblerData)', () => {
+    let testValue: number = random_number(model.range[0], model.range[1]);
     let test_index: number = random_number(0, 1);
-    it(`value: ${test_value}, index: ${test_index}`, () => {
-      let to_expect: number = model.get_new_value({value: test_value, index: test_index});
-      let result: number = test_value;
+    it(`value: ${testValue}, index: ${test_index}`, () => {
+      let to_expect: number = model.get_new_value({value: testValue, index: test_index});
+      let result: number = testValue;
       if(test_index === 0 && model.value[1]) {
         if(result > model.value[1] - model.step) {
           result = model.value[1] - model.step;
@@ -152,12 +152,12 @@ Model
       }
       expect(to_expect).toEqual(result);
     })
-    let test_position: number = Math.random();
+    let testPosition: number = Math.random();
     test_index = random_number(0, 1);
-    it(`position: ${test_position}, index: ${test_index}`, () => {
-      let to_expect: number = model.get_new_value({position: test_position, index: test_index});
-      let position: number = Math.round(test_position * model.TO_NORMALIZE_POSITION) / model.TO_NORMALIZE_POSITION;
-      let result: number = model.get_value_from_position(position, model.range);
+    it(`position: ${testPosition}, index: ${test_index}`, () => {
+      let to_expect: number = model.get_new_value({position: testPosition, index: test_index});
+      let position: number = Math.round(testPosition * model.TO_NORMALIZE_POSITION) / model.TO_NORMALIZE_POSITION;
+      let result: number = model.getValue_from_position(position, model.range);
 
       expect(to_expect).toEqual(result);
     });
@@ -165,14 +165,14 @@ Model
 
   describe('check_on_step_movement_to_set_val_and_pos(..)', () => {
     for( let i = 0; i < 10; i++ ) {
-      let test_value: number = random_number(model.range[0] * 10, model.range[1] * 10);
+      let testValue: number = random_number(model.range[0] * 10, model.range[1] * 10);
       let test_index: number = random_number(0, 1);
-      let test_new_value: number = model.get_new_value({value: test_value, index: test_index});
+      let test_new_value: number = model.get_new_value({value: testValue, index: test_index});
 
       let condition: [number, number] = [model.value[test_index] - model.step, model.value[test_index] + model.step];
 
-      it(`value: ${test_value}, index: ${test_index}`, () => {
-        spyOn(model, 'set_value_and_position').and.callThrough();
+      it(`value: ${testValue}, index: ${test_index}`, () => {
+        spyOn(model, 'setValue_and_position').and.callThrough();
         model.check_on_step_movement_to_set_val_and_pos(test_new_value, test_index);
 
         let test_param: number = 0;
@@ -180,7 +180,7 @@ Model
           test_param = test_new_value;
         }
 
-        expect(model.set_value_and_position).toHaveBeenCalledWith(test_param, test_index);
+        expect(model.setValue_and_position).toHaveBeenCalledWith(test_param, test_index);
       })
     }
   })

@@ -34,11 +34,11 @@ class Demo_Panel {
     let template_inputs: HTMLInputElement[] = [
       this.template.range_input_min,
       this.template.range_input_max,
-      this.template.start_input_min,
-      this.template.start_input_max,
+      this.template.startConfigInput_min,
+      this.template.startConfigInput_max,
       this.template.step_input,
       this.template.orientation_input,
-      this.template.connect_input
+      this.template.connectConfigInput
     ]
     for( let i = 0; i < template_inputs.length; i++ ) {
       this.on_change_input(template_inputs[i]);
@@ -76,25 +76,25 @@ class Demo_Panel {
           ? Number(that.template.range_input_max.value)
           : that.defaultConfig.range[1],
       ]
-      let start: T_DEMO_Start = that.template.start_input_max.value !== ''
+      let start: T_DEMO_Start = that.template.startConfigInput_max.value !== ''
         ? [
-          that.template.start_input_min.value !== ''
-            ? Number(that.template.start_input_min.value)
+          that.template.startConfigInput_min.value !== ''
+            ? Number(that.template.startConfigInput_min.value)
             : that.defaultConfig.start[0],
-          Number(that.template.start_input_max.value)
+          Number(that.template.startConfigInput_max.value)
         ]
         : [
-          that.template.start_input_min.value !== ''
-            ? Number(that.template.start_input_min.value)
+          that.template.startConfigInput_min.value !== ''
+            ? Number(that.template.startConfigInput_min.value)
             : that.defaultConfig.start[0]
         ]
       let step: number = that.template.step_input.value !== ''
         ? Number(that.template.step_input.value)
         : that.defaultConfig.step;
-      let orientation: T_Orientation = that.template.orientation_input.checked
+      let orientation: tOrientation = that.template.orientation_input.checked
         ? 'horizontal'
         : 'vertical';
-      let connect: boolean = that.template.connect_input.checked
+      let connect: boolean = that.template.connectConfigInput.checked
         ? true
         : false;
 

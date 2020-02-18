@@ -7,7 +7,7 @@ class Helper {
 
     }
 
-    get_position_from_value(value: number, range: T_Range): number {
+    getPosition_from_value(value: number, range: tRange): number {
       let result: number = ((value - range[0]) / (range[1] - range[0]));
       result = Math.round(result * this.TO_THUMBLER_POSITION) / this.TO_THUMBLER_POSITION;
 
@@ -20,12 +20,12 @@ class Helper {
       return result;
     }
 
-    get_div_element_with_class(css_class: T_CSS_Classes, orientation: T_Orientation): HTMLElement {
+    get_div_element_with_class(css_class: tCssClasses, orientation: tOrientation): HTMLElement {
       const str_class: string = `SRS__${css_class}`;
-      const css_class_without_orientation: string = `${str_class} ${str_class}_`;
+      const css_class_withoutOrientation: string = `${str_class} ${str_class}_`;
 
       const element: HTMLElement = document.createElement('div');
-      element.setAttribute('class', (css_class_without_orientation + orientation));
+      element.setAttribute('class', (css_class_withoutOrientation + orientation));
 
       return element;
     }

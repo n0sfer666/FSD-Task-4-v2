@@ -5,7 +5,7 @@ class Tooltip extends Helper {
 
     tooltip_value: number = 0;
 
-    constructor(private value: number, private orientation: T_Orientation) {
+    constructor(private value: number, private orientation: tOrientation) {
       super();
 
       this.element = this.get_div_element_with_class('tooltip', this.orientation);

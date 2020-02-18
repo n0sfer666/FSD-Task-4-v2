@@ -61,23 +61,23 @@ The plugin was written in Typescript in jQuery wrapper using MVP architecture wi
 <p>
 
 ```Javascript
-type T_Orientation = 'horizontal' | 'vertical';
-type T_CSS_Classes = 'slider' | 'thumbler' | 'connect' | 'tooltip';
-type T_Range = [number, number];
-type T_Value = [number] | [number, number];
-type T_Position = [number] | [number, number];
-type T_Input = {
+type tOrientation = 'horizontal' | 'vertical';
+type tCssClasses = 'slider' | 'thumbler' | 'connect' | 'tooltip';
+type tRange = [number, number];
+type tValue = [number] | [number, number];
+type tPosition = [number] | [number, number];
+type tConfigInput = {
     value?: [HTMLInputElement] | [HTMLInputElement, HTMLInputElement],
     tooltip?: [HTMLInputElement]
 }
 
-type T_Thumbler_Data = {
+type tTumblerData = {
     position: number,
     index: number
 }
-type T_Model_Data = {
-    value: T_Value,
-    position: T_Position,
+type tModelData = {
+    value: tValue,
+    position: tPosition,
     index: number
 }
 ```
@@ -88,37 +88,35 @@ type T_Model_Data = {
 <p>
 
 ```Javascript
-interface I_Configuration_User {
-    readonly orientation: T_Orientation; 
-    readonly start: T_Value;
-    readonly range: T_Range;
+interface iConfigUser {
+    readonly orientation: tOrientation; 
+    readonly start: tValue;
+    readonly range: tRange;
     readonly step: number;
     readonly connect: boolean;
     readonly tooltip: boolean;
-    readonly input?: T_Input;
+    readonly input?: tConfigInput;
 }
-interface I_Configuration_Model {
-    readonly value_start: T_Value;
-    readonly value_range: T_Range;
+interface iConfigModel {
+    readonly value_start: tValue;
+    readonly value_range: tRange;
     readonly value_step:  number;
 }
-interface I_Configuration_View {
-    readonly orientation: T_Orientation,
-    readonly value_start: T_Value;
-    readonly value_range: T_Range;
+interface iConfigView {
+    readonly orientation: tOrientation,
+    readonly value_start: tValue;
+    readonly value_range: tRange;
     readonly is_tooltip:  boolean;
     readonly is_connect:  boolean;
-    readonly input?: T_Input;
+    readonly input?: tConfigInput;
 }
-interface I_Thumbler_State {
-    (thumbler_state: T_Thumbler_Data): void
+interface iTumblerCallback {
+    (thumbler_state: tTumblerData): void
 }
-interface I_Model_State {
-    (model_state: T_Model_Data): void
+interface iModelCallback {
+    (model_state: tModelData): void
 }
-interface I_Tooltip_Switch {
-    (is_visible: boolean): void
-}
+
 ```
 
 </p></details>
@@ -140,7 +138,7 @@ The plugin’s business logic reduce to determining the new value(s) and positio
 
 - **set_new_position**
  ```Javascript
- set_new_position(thumbler_state: T_Thumbler_Data) { ... };
+ set_new_position(thumbler_state: tTumblerData) { ... };
  ```
 The main method of the model. It receives data from the view layer, than makes the necessary calculations and through the update() method sends new data back to the view layer (using presenter layer)
 (check for a step movement, collision of two tumblers)
@@ -153,25 +151,25 @@ The method starts a callback from the callback's list to send data calculated by
  
 - **on_change_model**
  ```Javascript
-on_change_model(callback: I_Model_State) { ... };
+on_change_model(callback: iModelCallback) { ... };
  ```
 The method adds a callback to callback's list
  
-- **get_position_from_value**
+- **getPosition_from_value**
  ```Javascript
-get_position_from_value(value: number, range: T_Range): number { ... };
+getPosition_from_value(value: number, range: tRange): number { ... };
  ```
 The method is return a position based on value and range
  
-- **get_value_from_position**
+- **getValue_from_position**
  ```Javascript
-get_value_from_position(position: number, range: T_Range): number { ... };
+getValue_from_position(position: number, range: tRange): number { ... };
  ```
  The method is return a value based on position and range
  
- - **set_value_and_position**
+ - **setValue_and_position**
  ```Javascript
- set_value_and_position(new_value: number, i: number)
+ setValue_and_position(new_value: number, i: number)
  ```
 The method is set value and position in variables of class. If new_value bigger than (or less than) range, value equal min or max of range
 
@@ -181,14 +179,14 @@ The method is set value and position in variables of class. If new_value bigger 
 <p>
 
 ```Javascript
-value: T_Value 
-range: T_Range
+value: tValue 
+range: tRange
 step: number
-position: T_Position
+position: tPosition
 
 index_of_active_thumbler: number
 
-callback_list: I_Model_State[]
+callback_list: iModelCallback[]
 ```
 
 </p></details>
@@ -201,13 +199,13 @@ View renders the plugin, responds to user actions (generates thumbler_state) and
 
 - on_change_view
 ```Javascript
-on_change_view(callback: I_Thumbler_State) { ... }
+on_change_view(callback: iTumblerCallback) { ... }
 ```
 Passes callback to thumbler method on_mousedown_and_move
 
 - update
 ```Javascript
-update(model_state: T_Model_Data) { ... }
+update(model_state: tModelData) { ... }
 ```
 Update thumbler(s), tooltips(s) and connect
 
@@ -217,12 +215,12 @@ Update thumbler(s), tooltips(s) and connect
 <p>
 
 ```Javascript
-position: T_Position
+position: tPosition
 
-value_range: T_Range
-value_start: T_Value
+value_range: tRange
+value_start: tValue
 
-orientation: T_Orientation;
+orientation: tOrientation;
 
 is_tooltip: boolean;
 is_connect: boolean;
@@ -232,7 +230,7 @@ thumbler: Thumbler[]
 connect: Connect[]
 tooltip: Tooltip[]
 
-input?: T_Input;
+input?: tConfigInput;
 ```
 
 </p></details>
@@ -248,15 +246,15 @@ readonly TO_THUMBLER_POSITION: number = 1e4;
 readonly TO_CONNECT_UPDATE: number = 1e2;
 ```
 
-- get_position_from_value
+- getPosition_from_value
 ```Javascript
-get_position_from_value(value: number, range: T_Range): number { ... }
+getPosition_from_value(value: number, range: tRange): number { ... }
 ```
 Return position from value and range
 
 - get_div_element_with_class
 ```Javascript
-get_div_element_with_class( css_class: T_CSS_Classes, orientation: T_Orientation ): HTMLElement
+get_div_element_with_class( css_class: tCssClasses, orientation: tOrientation ): HTMLElement
 ```
 Return HTML element with correct class from orientation and type of element
 
@@ -270,12 +268,12 @@ creates Connect entity
 
 ```Javascript
 element: HTMLElement
-connect_position: [number, number]
+connectPosition: [number, number]
 ```
 
-- set_connect_position
+- set_connectPosition
 ```Javascript
-set_connect_position(position_start: number, position_end: number) { ... }
+set_connectPosition(position_start: number, position_end: number) { ... }
 ```
 
 </p></details>
@@ -331,7 +329,7 @@ return the difference between coordinates of the user mouse click and the coordi
 
 - on_mouse_down_and_move
 ```Javascript
-on_mouse_down_and_move(this: Thumbler, container: HTMLElement, callback: I_Thumbler_State) { ... }
+on_mouse_down_and_move(this: Thumbler, container: HTMLElement, callback: iTumblerCallback) { ... }
 ```
 transfers the possible position (after holding left button of mouse and move) and index of thumbler to callback
 
@@ -350,7 +348,7 @@ type: 'value' | 'tooltip';
 
 - on_keydown_or_mouseout
 ```Javascript
-on_keydown_or_mouseout(this: Input, callback: I_Thumbler_State) { ... }
+on_keydown_or_mouseout(this: Input, callback: iTumblerCallback) { ... }
 ```
 creates two listeners (keydown and mouseout) or return false if type not equal value. Listeners are run callback with value of input
 

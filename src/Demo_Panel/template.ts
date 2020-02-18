@@ -2,14 +2,14 @@ class Template {
   range_input_min: HTMLInputElement;
   range_input_max: HTMLInputElement;
 
-  start_input_min: HTMLInputElement;
-  start_input_max: HTMLInputElement;
+  startConfigInput_min: HTMLInputElement;
+  startConfigInput_max: HTMLInputElement;
 
   step_input: HTMLInputElement;
 
   orientation_input: HTMLInputElement;
 
-  connect_input: HTMLInputElement;
+  connectConfigInput: HTMLInputElement;
 
   demo_panel: HTMLElement;
   constructor() {
@@ -27,14 +27,14 @@ class Template {
     // start line
     let start_text: HTMLElement = document.createElement('span');
       start_text.innerText = 'Start: ';
-    this.start_input_min = document.createElement('input');
-      this.start_input_min.setAttribute('type', 'text');
-      this.start_input_min.value = '-50';
-    this.start_input_max = document.createElement('input');
-      this.start_input_max.setAttribute('type', 'text');
-      this.start_input_max.value = '50';
+    this.startConfigInput_min = document.createElement('input');
+      this.startConfigInput_min.setAttribute('type', 'text');
+      this.startConfigInput_min.value = '-50';
+    this.startConfigInput_max = document.createElement('input');
+      this.startConfigInput_max.setAttribute('type', 'text');
+      this.startConfigInput_max.value = '50';
     let start_line = document.createElement('div');
-      start_line.append(start_text, this.start_input_min, this.start_input_max);
+      start_line.append(start_text, this.startConfigInput_min, this.startConfigInput_max);
     // step line
     let step_text: HTMLElement = document.createElement('span');
       step_text.innerText = 'Step: ';
@@ -54,11 +54,11 @@ class Template {
     // connect line
     let connect_text: HTMLElement = document.createElement('span');
       connect_text.innerText = 'Connect on/off: ';
-    this.connect_input = document.createElement('input');
-      this.connect_input.setAttribute('type', 'checkbox');
-      this.connect_input.checked = true;
+    this.connectConfigInput = document.createElement('input');
+      this.connectConfigInput.setAttribute('type', 'checkbox');
+      this.connectConfigInput.checked = true;
     let connect_line: HTMLElement = document.createElement('div');
-      connect_line.append(connect_text, this.connect_input);
+      connect_line.append(connect_text, this.connectConfigInput);
 
     this.demo_panel = document.createElement('div');
       this.demo_panel.append(range_line, start_line, step_line, orientation_line, connect_line);

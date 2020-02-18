@@ -9,10 +9,10 @@ class SimpleRangeSlider {
 
     presenter: Presenter;
 
-    constructor(private container: JQuery, private user_configuration: I_Configuration_User) {
+    constructor(private container: JQuery, private user_configuration: iConfigUser) {
       const slider_container: HTMLElement = this.container.get(0);
 
-      const default_Configuration: I_Configuration_User = {
+      const default_Configuration: iConfigUser = {
         orientation: 'horizontal',
         start: [10],
         range: [0, 100],
@@ -21,7 +21,7 @@ class SimpleRangeSlider {
         tooltip: true,
       };
 
-      const complete_configuration: I_Configuration_User = {
+      const complete_configuration: iConfigUser = {
         orientation: this.user_configuration.orientation === undefined ? default_Configuration.orientation : this.user_configuration.orientation,
         start: this.user_configuration.start === undefined ? default_Configuration.start : this.user_configuration.start,
         range: this.user_configuration.range === undefined ? default_Configuration.range : this.user_configuration.range,
@@ -31,13 +31,13 @@ class SimpleRangeSlider {
         input: this.user_configuration.input,
       };
 
-      const model_configuration: I_Configuration_Model = {
+      const model_configuration: iConfigModel = {
         value_start: complete_configuration.start,
         value_range: complete_configuration.range,
         value_step: complete_configuration.step,
       };
 
-      const view_configuration: I_Configuration_View = {
+      const view_configuration: iConfigView = {
         orientation: complete_configuration.orientation,
         value_start: complete_configuration.start,
         value_range: complete_configuration.range,
@@ -55,8 +55,8 @@ export { SimpleRangeSlider };
 
 (function ($: JQueryStatic) {
   $.fn.extend({
-    SimpleRangeSlider(user_configuration: I_Configuration_User) {
-      return new SimpleRangeSlider(<JQuery> this, <I_Configuration_User> user_configuration);
+    SimpleRangeSlider(user_configuration: iConfigUser) {
+      return new SimpleRangeSlider(<JQuery> this, <iConfigUser> user_configuration);
     },
   });
 }(jQuery));

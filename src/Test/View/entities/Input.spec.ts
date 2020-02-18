@@ -5,15 +5,15 @@ import { Tooltip } from '../../../Plugin/View/entities/Tooltip';
 describe(`
 View -> Input
 `, () => {
-  let test_value_input: HTMLInputElement = document.createElement('input');
+  let testValue_input: HTMLInputElement = document.createElement('input');
   let test_tooltip_input: HTMLInputElement = document.createElement('input');
-  document.body.append(test_value_input, test_tooltip_input);
+  document.body.append(testValue_input, test_tooltip_input);
   describe('on_keydown_or_mouseout', () => {
     let value: number = random_number(0, 100);
-    let input_value: Input = new Input('value', test_value_input, value);
+    let inputValue: Input = new Input('value', testValue_input, value);
 
     let result: boolean = false;
-      let test_callback: I_Thumbler_State = function(thumbler_state: T_Thumbler_Data) {
+      let test_callback: iTumblerCallback = function(thumbler_state: tTumblerData) {
         let test = thumbler_state.index;
         result = true;
       };
@@ -25,7 +25,7 @@ View -> Input
           cancelable: true,
           key: "Tab"
         });
-        input_value.on_keydown_or_mouseout(test_callback);
+        inputValue.on_keydown_or_mouseout(test_callback);
         document.dispatchEvent(test_keyboardEvent_tab);
 
         setTimeout(() => {
@@ -41,7 +41,7 @@ View -> Input
           cancelable: true,
           key: "Enter"
         });
-        input_value.on_keydown_or_mouseout(test_callback);
+        inputValue.on_keydown_or_mouseout(test_callback);
         document.dispatchEvent(test_keyboardEvent_enter);
         setTimeout(() => {
           expect(result).toEqual(true);
@@ -53,8 +53,8 @@ View -> Input
       it('callback bubbling if mouseout', (done: DoneFn) => {
         result = false;
         let test_mouseEvent_mouseout: MouseEvent = new MouseEvent('mouseout');
-        input_value.on_keydown_or_mouseout(test_callback);
-        input_value.element.dispatchEvent(test_mouseEvent_mouseout);
+        inputValue.on_keydown_or_mouseout(test_callback);
+        inputValue.element.dispatchEvent(test_mouseEvent_mouseout);
         setTimeout(() => {
           expect(result).toEqual(true);
         }, 200);

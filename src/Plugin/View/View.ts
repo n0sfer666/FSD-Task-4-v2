@@ -5,13 +5,13 @@ import { Tooltip } from './entities/Tooltip';
 import { Input } from './entities/Input';
 
 class View extends Helper {
-  position: T_Position = [0];
+  position: tPosition = [0];
 
-  value_range: T_Range = [0, 0];
+  value_range: tRange = [0, 0];
 
-  value_start: T_Value = [0];
+  value_start: tValue = [0];
 
-  orientation: T_Orientation;
+  orientation: tOrientation;
 
   is_tooltip: boolean;
 
@@ -25,11 +25,11 @@ class View extends Helper {
 
   tooltip: Tooltip[] = [];
 
-  input_value: Input[] = [];
+  inputValue: Input[] = [];
 
   input_tooltip?: Input;
 
-  constructor(private container: HTMLElement, private configuration: I_Configuration_View) {
+  constructor(private container: HTMLElement, private configuration: iConfigView) {
     super();
 
     this.is_tooltip = this.configuration.is_tooltip;
@@ -41,13 +41,13 @@ class View extends Helper {
     this.init();
   }
 
-  on_change_view(callback: I_Thumbler_State) {
+  on_change_view(callback: iTumblerCallback) {
     for (let i = 0; i < this.thumbler.length; i++) {
       this.thumbler[i].on_mouse_down_and_move(this.container, callback);
     }
-    if (this.input_value[0] !== undefined) {
-      for (let i = 0; i < this.input_value.length; i++) {
-        this.input_value[i].on_keydown_or_mouseout(callback);
+    if (this.inputValue[0] !== undefined) {
+      for (let i = 0; i < this.inputValue.length; i++) {
+        this.inputValue[i].on_keydown_or_mouseout(callback);
       }
     }
     if (this.input_tooltip && this.is_tooltip) {
@@ -55,7 +55,7 @@ class View extends Helper {
     }
   }
 
-  update(model_state: T_Model_Data) {
+  update(model_state: tModelData) {
     const i: number = model_state.index;
     const { position } = model_state;
     const { value } = model_state;
@@ -68,20 +68,20 @@ class View extends Helper {
       this.tooltip[i].set_inner_text(value[i]);
     }
 
-    if (this.input_value[0] !== undefined) {
-      this.input_value[i].element.value = String(value[i]);
+    if (this.inputValue[0] !== undefined) {
+      this.inputValue[i].element.value = String(value[i]);
     }
 
     if (this.is_connect) {
       if (this.position.length === 1) {
-        this.connect[0].set_connect_position(0, position[0]);
+        this.connect[0].set_connectPosition(0, position[0]);
       } else if (position[1]) {
-        this.connect[0].set_connect_position(position[0], position[1]);
+        this.connect[0].set_connectPosition(position[0], position[1]);
       }
     }
   }
 
-  set_active_thumbler(position: T_Position, index: number) {
+  set_active_thumbler(position: tPosition, index: number) {
     if (position.length > 1) {
       if (index === 0) {
         this.thumbler[0].element.classList.add('SRS__thumbler_active');
@@ -118,9 +118,9 @@ class View extends Helper {
       }
 
       if (this.position[i] === undefined) {
-        this.position.push(this.get_position_from_value(this.value_start[i], this.value_range));
+        this.position.push(this.getPosition_from_value(this.value_start[i], this.value_range));
       } else {
-        this.position[i] = this.get_position_from_value(this.value_start[i], this.value_range);
+        this.position[i] = this.getPosition_from_value(this.value_start[i], this.value_range);
       }
     }
 
@@ -153,7 +153,7 @@ class View extends Helper {
 
     if (this.configuration.input !== undefined && this.configuration.input.value !== undefined) {
       for (let i = 0; i < this.configuration.input.value.length; i++) {
-        this.input_value.push(new Input(
+        this.inputValue.push(new Input(
           'value',
           this.configuration.input.value[i],
           this.configuration.value_start[i],

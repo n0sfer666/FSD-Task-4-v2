@@ -2,7 +2,7 @@ import { Helper } from './Helper';
 import { Tooltip } from './Tooltip';
 
 class Input extends Helper {
-  constructor(private type: T_Input_Type, public element: HTMLInputElement, public value?: number, public index?: number) {
+  constructor(private type: tInputType, public element: HTMLInputElement, public value?: number, public index?: number) {
     super();
     if (type === 'value') {
       if (this.value !== undefined) {
@@ -11,7 +11,7 @@ class Input extends Helper {
     }
   }
 
-  on_keydown_or_mouseout(this: Input, callback: I_Thumbler_State) {
+  on_keydown_or_mouseout(this: Input, callback: iTumblerCallback) {
     const that = this;
 
     if (that.type !== 'value') {

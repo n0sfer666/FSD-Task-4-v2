@@ -1,54 +1,51 @@
 // types
-type T_Orientation = 'horizontal' | 'vertical';
-type T_CSS_Classes = 'slider' | 'thumbler' | 'connect' | 'tooltip';
-type T_Range = [number, number];
-type T_Value = [number] | [number, number];
-type T_Position = [number] | [number, number];
-type T_Input_Type = 'value' | 'tooltip'
-type T_Input = {
+type tOrientation = 'horizontal' | 'vertical';
+type tCssClasses = 'slider' | 'thumbler' | 'connect' | 'tooltip';
+type tRange = [number, number];
+type tValue = [number] | [number, number];
+type tPosition = [number] | [number, number];
+type tInputType = 'value' | 'tooltip'
+type tConfigInput = {
     value?: [HTMLInputElement] | [HTMLInputElement, HTMLInputElement],
     tooltip?: [HTMLInputElement]
 }
 
-type T_Thumbler_Data = {
+type tTumblerData = {
     position?: number,
     value?: number,
     index: number
 }
-type T_Model_Data = {
-    value: T_Value,
-    position: T_Position,
+type tModelData = {
+    value: tValue,
+    position: tPosition,
     index: number
 }
 // interfaces
-interface I_Configuration_User {
-    readonly orientation: T_Orientation; 
-    readonly start: T_Value;
-    readonly range: T_Range;
+interface iConfigUser {
+    readonly orientation: tOrientation; 
+    readonly start: tValue;
+    readonly range: tRange;
     readonly step: number;
     readonly connect: boolean;
     readonly tooltip: boolean;
-    readonly input?: T_Input;
+    readonly input?: tConfigInput;
 }
-interface I_Configuration_Model {
-    readonly value_start: T_Value;
-    readonly value_range: T_Range;
+interface iConfigModel {
+    readonly value_start: tValue;
+    readonly value_range: tRange;
     readonly value_step:  number;
 }
-interface I_Configuration_View {
-    readonly orientation: T_Orientation,
-    readonly value_start: T_Value;
-    readonly value_range: T_Range;
+interface iConfigView {
+    readonly orientation: tOrientation,
+    readonly value_start: tValue;
+    readonly value_range: tRange;
     readonly is_tooltip:  boolean;
     readonly is_connect:  boolean;
-    readonly input?: T_Input;
+    readonly input?: tConfigInput;
 }
-interface I_Thumbler_State {
-    (thumbler_state: T_Thumbler_Data): void
+interface iTumblerCallback {
+    (thumbler_state: tTumblerData): void
 }
-interface I_Model_State {
-    (model_state: T_Model_Data): void
-}
-interface I_Tooltip_Switch {
-    (is_visible: boolean): void
+interface iModelCallback {
+    (model_state: tModelData): void
 }

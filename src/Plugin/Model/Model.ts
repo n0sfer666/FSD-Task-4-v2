@@ -1,19 +1,19 @@
 class Model {
-    value: T_Value = [0];
+    value: tValue = [0];
 
-    range: T_Range = [0, 0];
+    range: tRange = [0, 0];
 
     step: number = 0;
 
-    position: T_Position = [0];
+    position: tPosition = [0];
 
     index_of_active_thumbler: number = 0;
 
-    callback_list: I_Model_State[];
+    callback_list: iModelCallback[];
 
     readonly TO_NORMALIZE_POSITION: number = 1e4;
 
-    constructor(private configuration: I_Configuration_Model) {
+    constructor(private configuration: iConfigModel) {
       this.callback_list = [];
 
       this.step = this.configuration.value_step;
@@ -21,7 +21,7 @@ class Model {
       this.init();
     }
 
-    set_new_position(thumbler_state: T_Thumbler_Data) {
+    set_new_position(thumbler_state: tTumblerData) {
       const { index } = thumbler_state;
       this.index_of_active_thumbler = index;
 
@@ -40,14 +40,14 @@ class Model {
       }
     }
 
-    get_new_value(thumbler_state: T_Thumbler_Data): number {
+    get_new_value(thumbler_state: tTumblerData): number {
       const { index } = thumbler_state;
       let new_value: number = this.value[index];
       let position: number;
 
       if (thumbler_state.position !== undefined) {
         position = Math.round(thumbler_state.position * this.TO_NORMALIZE_POSITION) / this.TO_NORMALIZE_POSITION;
-        new_value = this.get_value_from_position(position, this.range);
+        new_value = this.getValue_from_position(position, this.range);
       } else if (thumbler_state.value !== undefined) {
         new_value = thumbler_state.value;
 
@@ -69,12 +69,12 @@ class Model {
       const condition: [number, number] = [this.value[index] - this.step, this.value[index] + this.step];
 
       if (new_value >= condition[1] || new_value <= condition[0]) {
-        this.set_value_and_position(new_value, index);
+        this.setValue_and_position(new_value, index);
       }
     }
 
     update() {
-      this.callback_list.forEach((callback: I_Model_State) => {
+      this.callback_list.forEach((callback: iModelCallback) => {
         callback({
           position: this.position,
           value: this.value,
@@ -83,23 +83,23 @@ class Model {
       });
     }
 
-    on_change_model(callback: I_Model_State) {
+    on_change_model(callback: iModelCallback) {
       this.callback_list.push(callback);
     }
 
-    get_position_from_value(value: number, range: T_Range): number {
+    getPosition_from_value(value: number, range: tRange): number {
       const result: number = (value - range[0]) / (range[1] - range[0]);
 
       return (Math.round(result * this.TO_NORMALIZE_POSITION) / this.TO_NORMALIZE_POSITION);
     }
 
-    get_value_from_position(position: number, range: T_Range): number {
+    getValue_from_position(position: number, range: tRange): number {
       const result: number = (position * (range[1] - range[0])) + range[0];
 
       return (Math.round(result));
     }
 
-    set_value_and_position(new_value: number, i: number) {
+    setValue_and_position(new_value: number, i: number) {
       this.value[i] = new_value > 0
         ? (Math.ceil(new_value / this.step) * this.step)
         : (Math.floor(new_value / this.step) * this.step);
@@ -116,7 +116,7 @@ class Model {
         }
       }
 
-      this.position[i] = this.get_position_from_value(this.value[i], this.range);
+      this.position[i] = this.getPosition_from_value(this.value[i], this.range);
     }
 
     init() {
@@ -136,9 +136,9 @@ class Model {
         }
 
         if (this.position[i] === undefined) {
-          this.position.push(this.get_position_from_value(this.value[i], this.range));
+          this.position.push(this.getPosition_from_value(this.value[i], this.range));
         } else {
-          this.position[i] = this.get_position_from_value(this.value[i], this.range);
+          this.position[i] = this.getPosition_from_value(this.value[i], this.range);
         }
       }
     }

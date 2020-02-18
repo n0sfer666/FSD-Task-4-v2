@@ -4,8 +4,8 @@ describe(`
 View -> Connect
 `, () => {
 
-  describe('set_connect_position(position_start: number, position_end: number)', () => {
-    let orientations: T_Orientation[] = ['horizontal', 'vertical'];
+  describe('set_connectPosition(position_start: number, position_end: number)', () => {
+    let orientations: tOrientation[] = ['horizontal', 'vertical'];
     for( let i =  0; i < 10; i++ ) {
       for( let j = 0; j < orientations.length; j++ ) {
         let connect: Connect = new Connect(0, 0, orientations[j]);
@@ -29,7 +29,7 @@ View -> Connect
               ? `left: ${start}%; width: ${(end - start)}%;`
               : `top: ${start}%; height: ${(end - start)}%;`;
 
-          connect.set_connect_position(position_start, position_end);
+          connect.set_connectPosition(position_start, position_end);
           let result: string;
                     
           result = connect.element.getAttribute('style')!;

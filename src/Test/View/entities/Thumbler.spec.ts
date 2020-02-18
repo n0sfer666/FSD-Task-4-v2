@@ -5,7 +5,7 @@ describe(`
 View -> Thumbler
 `, () => {
   describe('set_new_position(position: number)', () => {
-    let orientations: T_Orientation[] = ['horizontal', 'vertical'];
+    let orientations: tOrientation[] = ['horizontal', 'vertical'];
     for( let i = 0; i < 10; i++ ) {
       for( let j = 0; j < orientations.length; j++ ) {
         let position: number = Math.random();
@@ -26,7 +26,7 @@ View -> Thumbler
   });
 
   describe('get_shift(element: HTMLElement, event: MouseEvent): number', () => {
-    let orientations: T_Orientation[] = ['horizontal', 'vertical'];
+    let orientations: tOrientation[] = ['horizontal', 'vertical'];
 
     let test_container: HTMLElement = document.createElement('div');
     document.body.setAttribute('style', 'margin: 0; padding: 0;');
@@ -66,8 +66,8 @@ View -> Thumbler
     }
   });
 
-  describe('on_mouse_down_and_move(this: Thumbler, container: HTMLElement, callback: I_Thumbler_State)', () => {
-    let orientations: T_Orientation[] = ['horizontal', 'vertical'];
+  describe('on_mouse_down_and_move(this: Thumbler, container: HTMLElement, callback: iTumblerCallback)', () => {
+    let orientations: tOrientation[] = ['horizontal', 'vertical'];
 
     document.body.setAttribute('style', 'margin: 0; padding: 0;');
     let test_container: HTMLElement = document.createElement('div');
@@ -79,12 +79,12 @@ View -> Thumbler
         let position: number = Math.random();
         let thumbler: Thumbler = new Thumbler(position, orientations[j], index);
                 
-        let result: T_Thumbler_Data = { 
+        let result: tTumblerData = { 
           position: 0,
           index: 0
         };
 
-        let test_callback: I_Thumbler_State = function(thumbler_state: T_Thumbler_Data) {
+        let test_callback: iTumblerCallback = function(thumbler_state: tTumblerData) {
           result.position = thumbler_state.position,
           result.index = thumbler_state.index;
         };
@@ -111,7 +111,7 @@ View -> Thumbler
         });
 
         it(`orientation: ${orientations[j]}, container.getBound...: ${margin}, event_client(mousedown): ${value_event_mousedown}, event_client(mousemove): ${value_event_mousemove}`, () => {
-          let to_expect: T_Thumbler_Data = {
+          let to_expect: tTumblerData = {
             position: 0,
             index: 0,
           };

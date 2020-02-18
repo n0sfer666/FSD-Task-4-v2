@@ -7,7 +7,7 @@ class Thumbler extends Helper {
 
     listening: boolean = false;
 
-    constructor(private position: number, private orientation: T_Orientation, private index: number) {
+    constructor(private position: number, private orientation: tOrientation, private index: number) {
       super();
 
       this.element = this.get_div_element_with_class('thumbler', this.orientation);
@@ -31,7 +31,7 @@ class Thumbler extends Helper {
       return result;
     }
 
-    on_mouse_down_and_move(this: Thumbler, container: HTMLElement, callback: I_Thumbler_State) {
+    on_mouse_down_and_move(this: Thumbler, container: HTMLElement, callback: iTumblerCallback) {
       const that = this;
       that.listening = true;
 
