@@ -11,8 +11,10 @@
         step: number,
         connect: boolean, // stripe between two thumbler or 0 and thumbler
         tooltip: boolean, // block(s) near thumbler(s) with value
-        input: [HTMLInputElement] or [HTMLInputElement, HTMLInputElement] // you need to create
-                                                                    //  one or two input with id
+        input: { // value: input(text), tooltip: input(checkbox)
+            value: [HTMLInputElement] | [HTMLInputElement, HTMLInputElement],
+            tooltip: [HTMLInputElement]
+        }
     })
 ```
 ### Example:
@@ -21,13 +23,17 @@
     <div id="slider"></div>
     <input type="text" id="input_min">
     <input type="text" id="input_max">
+    <input type="checkbox" id="input_check">
 ```
 #### JS
 ```JavaScript
-var input = [
-    document.getElementById('input_min'),
-    document.getElementById('input_max')
-]
+var input = {
+    value: [
+        document.getElementById('input_min'),
+        document.getElementById('input_max')
+        ],
+    tooltip: [document.getElementById('input_check')]
+}
 
 var slider = $('#slider').SimpleRangeSlider({
     range: [-100, 100],
@@ -43,7 +49,7 @@ var slider = $('#slider').SimpleRangeSlider({
 
 **Thumbler** - the main functional element of the slider (the ball that the user moves along the slider bar) \
 **Tooltip** - the block near the thumbler showing the value set by that thumbler \
-**Connect** - the colored strip between zero position and the thumbler (or between two thumblers)
+**Connect** - the colored strip between zero position and the thumbler (or between two tumblers)
 
 ---
 ## Architecture:
@@ -60,7 +66,10 @@ type T_CSS_Classes = 'slider' | 'thumbler' | 'connect' | 'tooltip';
 type T_Range = [number, number];
 type T_Value = [number] | [number, number];
 type T_Position = [number] | [number, number];
-type T_Input = [HTMLInputElement] | [HTMLInputElement, HTMLInputElement];
+type T_Input = {
+    value?: [HTMLInputElement] | [HTMLInputElement, HTMLInputElement],
+    tooltip?: [HTMLInputElement]
+}
 
 type T_Thumbler_Data = {
     position: number,
@@ -107,6 +116,9 @@ interface I_Thumbler_State {
 interface I_Model_State {
     (model_state: T_Model_Data): void
 }
+interface I_Tooltip_Switch {
+    (is_visible: boolean): void
+}
 ```
 
 </p></details>
@@ -120,7 +132,7 @@ interface I_Model_State {
 
 </p></details>
 
-### Model (Buisness Logic Layer):
+### Model (Business Logic Layer):
 The plugin’s business logic reduce to determining the new value(s) and position(s) of the thumbler(s) based on user actions and sending the necessary data to the view layer to change through the presenter layer;
 
 <details><summary>Methods:</summary>
@@ -131,7 +143,7 @@ The plugin’s business logic reduce to determining the new value(s) and positio
  set_new_position(thumbler_state: T_Thumbler_Data) { ... };
  ```
 The main method of the model. It receives data from the view layer, than makes the necessary calculations and through the update() method sends new data back to the view layer (using presenter layer)
-(check for a step movement, collision of two thumblers)
+(check for a step movement, collision of two tumblers)
 
 - **update**
  ```Javascript
@@ -251,7 +263,7 @@ Return HTML element with correct class from orientation and type of element
 </p></details>
 
 #### Connect class (extends Helper)
-creates Connect entinty
+creates Connect entity
 
 <details><summary>Methods and Variables:</summary>
 <p>
@@ -269,7 +281,7 @@ set_connect_position(position_start: number, position_end: number) { ... }
 </p></details>
 
 #### Tooltip class (extends Helper)
-creates Tooltip entinty
+creates Tooltip entity
 
 <details><summary>Methods and Variables:</summary>
 <p>
@@ -285,10 +297,16 @@ set_inner_text(value: number) { ... }
 ```
 set Tooltip HTML element inner text
 
+- switch_hidden
+```Javascript
+switch_hidden(this: Tooltip, is_visible: boolean) { ... }
+```
+set element.hidden = true, if is_visible === false and vice versa
+
 </p></details>
 
 #### Thumbler class (extends Helper)
-creates Thumbler entinty
+creates Thumbler entity
 
 <details><summary>Methods and Variables:</summary>
 <p>
@@ -313,12 +331,37 @@ return the difference between coordinates of the user mouse click and the coordi
 
 - on_mouse_down_and_move
 ```Javascript
-on_mouse_down_and_move(this: Thumbler, container: HTMLElement, callback: I_Thumbler_State) { ...
+on_mouse_down_and_move(this: Thumbler, container: HTMLElement, callback: I_Thumbler_State) { ... }
 ```
 transfers the possible position (after holding left button of mouse and move) and index of thumbler to callback
 
 </p></details>
 
+#### Input class (extends Helper)
+creates Input entity
+
+<details><summary>Methods and Variables:</summary>
+<p>
+
+```Javascript
+element: HTMLInputElement;
+type: 'value' | 'tooltip';
+```
+
+- on_keydown_or_mouseout
+```Javascript
+on_keydown_or_mouseout(this: Input, callback: I_Thumbler_State) { ... }
+```
+creates two listeners (keydown and mouseout) or return false if type not equal value. Listeners are run callback with value of input
+
+- on_switch_check
+```Javascript
+on_switch_check(this: Input, tooltip: Tooltip[]) { ... }
+```
+creates listener (change) or return false of type not equal tooltip. Listener are run tooltip.switch(false) if input element not checked and vice versa (for all tooltips).
+
+</p></details>
+
 ### Presenter (Exchange Layer)
 Transfers data between view and model.
-Presenter havn't method and variables because this is not necessary
+Presenter have not method and variables because this is not necessary
