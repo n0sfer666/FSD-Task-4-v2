@@ -48,17 +48,17 @@ class Demo_Panel {
   on_change_input(this: Demo_Panel, input: HTMLInputElement) {
     let that = this;
 
-    input.addEventListener('keydown', on_keydown);
-    input.addEventListener('mouseout', on_mouseout);
+    input.addEventListener('keydown', onKeydown);
+    input.addEventListener('mouseout', onMouseout);
     input.addEventListener('change', on_change);
 
-    function on_keydown(event: KeyboardEvent) {
+    function onKeydown(event: KeyboardEvent) {
       if(event.key === "Tab" || event.key === "Enter") {
         action();
       }
     }
 
-    function on_mouseout() {
+    function onMouseout() {
       action();
     }
 

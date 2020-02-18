@@ -3,27 +3,25 @@ import { Helper } from './Helper';
 class Tooltip extends Helper {
     element: HTMLElement;
 
-    tooltip_value: number = 0;
-
-    constructor(private value: number, private orientation: tOrientation) {
+    constructor(public value: number, private orientation: tOrientation) {
       super();
 
-      this.element = this.get_div_element_with_class('tooltip', this.orientation);
-      this.set_inner_text(this.value);
+      this.element = this.getDivElementWithClass('tooltip', this.orientation);
+      this.setInnerText(this.value);
     }
 
-    set_inner_text(value: number) {
+    setInnerText(value: number) {
       const val: number = value > 0
         ? Math.floor(value)
         : Math.ceil(value);
 
-      this.tooltip_value = val;
+      this.value = val;
       this.element.innerText = String(val);
     }
 
-    switch_hidden(this: Tooltip, is_visible: boolean) {
+    switchHidden(this: Tooltip, isVisible: boolean) {
       const that: Tooltip = this;
-      if (is_visible) {
+      if (isVisible) {
         that.element.hidden = false;
       } else {
         that.element.hidden = true;

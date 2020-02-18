@@ -7,25 +7,25 @@ class Model {
 
     position: tPosition = [0];
 
-    index_of_active_thumbler: number = 0;
+    activeIndex: number = 0;
 
-    callback_list: iModelCallback[];
+    callbackList: iModelCallback[];
 
     readonly TO_NORMALIZE_POSITION: number = 1e4;
 
-    constructor(private configuration: iConfigModel) {
-      this.callback_list = [];
+    constructor(private config: iConfigModel) {
+      this.callbackList = [];
 
-      this.step = this.configuration.value_step;
+      this.step = this.config.step;
 
       this.init();
     }
 
-    set_new_position(thumbler_state: tTumblerData) {
-      const { index } = thumbler_state;
-      this.index_of_active_thumbler = index;
+    setNewPosition(tumblerData: tTumblerData) {
+      const { index } = tumblerData;
+      this.activeIndex = index;
 
-      const new_value: number = this.get_new_value(thumbler_state);
+      const new_value: number = this.get_new_value(tumblerData);
 
       this.check_on_step_movement_to_set_val_and_pos(new_value, index);
       // check for collision
@@ -40,16 +40,16 @@ class Model {
       }
     }
 
-    get_new_value(thumbler_state: tTumblerData): number {
-      const { index } = thumbler_state;
+    get_new_value(tumblerData: tTumblerData): number {
+      const { index } = tumblerData;
       let new_value: number = this.value[index];
       let position: number;
 
-      if (thumbler_state.position !== undefined) {
-        position = Math.round(thumbler_state.position * this.TO_NORMALIZE_POSITION) / this.TO_NORMALIZE_POSITION;
+      if (tumblerData.position !== undefined) {
+        position = Math.round(tumblerData.position * this.TO_NORMALIZE_POSITION) / this.TO_NORMALIZE_POSITION;
         new_value = this.getValue_from_position(position, this.range);
-      } else if (thumbler_state.value !== undefined) {
-        new_value = thumbler_state.value;
+      } else if (tumblerData.value !== undefined) {
+        new_value = tumblerData.value;
 
         if (index === 0 && this.value[1]) {
           if (new_value > this.value[1] - this.step) {
@@ -74,20 +74,20 @@ class Model {
     }
 
     update() {
-      this.callback_list.forEach((callback: iModelCallback) => {
+      this.callbackList.forEach((callback: iModelCallback) => {
         callback({
           position: this.position,
           value: this.value,
-          index: this.index_of_active_thumbler,
+          index: this.activeIndex,
         });
       });
     }
 
     on_change_model(callback: iModelCallback) {
-      this.callback_list.push(callback);
+      this.callbackList.push(callback);
     }
 
-    getPosition_from_value(value: number, range: tRange): number {
+    getPositionFromValue(value: number, range: tRange): number {
       const result: number = (value - range[0]) / (range[1] - range[0]);
 
       return (Math.round(result * this.TO_NORMALIZE_POSITION) / this.TO_NORMALIZE_POSITION);
@@ -116,29 +116,29 @@ class Model {
         }
       }
 
-      this.position[i] = this.getPosition_from_value(this.value[i], this.range);
+      this.position[i] = this.getPositionFromValue(this.value[i], this.range);
     }
 
     init() {
-      for (let i = 0; i < this.configuration.value_range.length; i++) {
+      for (let i = 0; i < this.config.range.length; i++) {
         if (this.range[i] === undefined) {
-          this.range.push(this.configuration.value_range[i]);
+          this.range.push(this.config.range[i]);
         } else {
-          this.range[i] = this.configuration.value_range[i];
+          this.range[i] = this.config.range[i];
         }
       }
 
-      for (let i = 0; i < this.configuration.value_start.length; i++) {
+      for (let i = 0; i < this.config.start.length; i++) {
         if (this.value[i] === undefined) {
-          this.value.push(this.configuration.value_start[i]);
+          this.value.push(this.config.start[i]);
         } else {
-          this.value[i] = this.configuration.value_start[i];
+          this.value[i] = this.config.start[i];
         }
 
         if (this.position[i] === undefined) {
-          this.position.push(this.getPosition_from_value(this.value[i], this.range));
+          this.position.push(this.getPositionFromValue(this.value[i], this.range));
         } else {
-          this.position[i] = this.getPosition_from_value(this.value[i], this.range);
+          this.position[i] = this.getPositionFromValue(this.value[i], this.range);
         }
       }
     }

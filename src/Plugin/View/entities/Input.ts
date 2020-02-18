@@ -11,25 +11,25 @@ class Input extends Helper {
     }
   }
 
-  on_keydown_or_mouseout(this: Input, callback: iTumblerCallback) {
+  onKeydownOrMouseout(this: Input, callback: iTumblerCallback) {
     const that = this;
 
     if (that.type !== 'value') {
       return false;
     }
 
-    that.element.addEventListener('keydown', on_keydown);
-    that.element.addEventListener('mouseout', on_mouseout);
+    that.element.addEventListener('keydown', onKeydown);
+    that.element.addEventListener('mouseout', onMouseout);
 
-    function on_keydown(event: KeyboardEvent) {
+    function onKeydown(event: KeyboardEvent) {
       if (event.key === 'Tab' || event.key === 'Enter') {
-        bubbling();
+        action();
       }
     }
-    function on_mouseout() {
-      bubbling();
+    function onMouseout() {
+      action();
     }
-    function bubbling() {
+    function action() {
       const value: number = Number(that.element.value);
       if (that.index) {
         callback({
@@ -45,7 +45,7 @@ class Input extends Helper {
     }
   }
 
-  on_switch_check(this: Input, tooltip: Tooltip[]) {
+  onSwitchCheck(this: Input, tooltip: Tooltip[]) {
     const that = this;
 
     if (that.type !== 'tooltip') {
@@ -54,9 +54,9 @@ class Input extends Helper {
     that.element.addEventListener('change', () => {
       for (let i = 0; i < tooltip.length; i++) {
         if (that.element.checked) {
-          tooltip[i].switch_hidden(true);
+          tooltip[i].switchHidden(true);
         } else {
-          tooltip[i].switch_hidden(false);
+          tooltip[i].switchHidden(false);
         }
       }
     });

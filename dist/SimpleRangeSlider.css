@@ -27,7 +27,7 @@
 
         }
 
-.SRS__thumbler{
+.SRS__tumbler{
 
         position:absolute;
         z-index:9;
@@ -38,21 +38,21 @@
 
     }
 
-.SRS__thumbler_horizontal{
+.SRS__tumbler_horizontal{
 
             width:1%;
             height:100%;
 
         }
 
-.SRS__thumbler_vertical{
+.SRS__tumbler_vertical{
 
             width:100%;
             height:1%;
 
         }
 
-.SRS__thumbler:after{
+.SRS__tumbler:after{
 
             content:'';
             position:absolute;
@@ -77,26 +77,26 @@
 
         }
 
-.SRS__thumbler_active{
+.SRS__tumbler_active{
 
             z-index:10;
 
         }
 
-.SRS__thumbler_active:after{
+.SRS__tumbler_active:after{
 
                 z-index:11;
 
             }
 
-.SRS__thumbler_horizontal:after{
+.SRS__tumbler_horizontal:after{
 
             top:-6px;
             left:calc( -16px / 2 )
 
         }
 
-.SRS__thumbler_vertical:after{
+.SRS__tumbler_vertical:after{
 
             left:-6px;
             top:calc( -16px / 2 )

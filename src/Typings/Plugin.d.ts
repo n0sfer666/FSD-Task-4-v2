@@ -1,6 +1,6 @@
 // types
 type tOrientation = 'horizontal' | 'vertical';
-type tCssClasses = 'slider' | 'thumbler' | 'connect' | 'tooltip';
+type tCssClasses = 'slider' | 'tumbler' | 'connect' | 'tooltip';
 type tRange = [number, number];
 type tValue = [number] | [number, number];
 type tPosition = [number] | [number, number];
@@ -31,21 +31,21 @@ interface iConfigUser {
     readonly input?: tConfigInput;
 }
 interface iConfigModel {
-    readonly value_start: tValue;
-    readonly value_range: tRange;
-    readonly value_step:  number;
+    readonly start: tValue;
+    readonly range: tRange;
+    readonly step:  number;
 }
 interface iConfigView {
     readonly orientation: tOrientation,
-    readonly value_start: tValue;
-    readonly value_range: tRange;
-    readonly is_tooltip:  boolean;
-    readonly is_connect:  boolean;
+    readonly start: tValue;
+    readonly range: tRange;
+    readonly isTooltip:  boolean;
+    readonly isConnect:  boolean;
     readonly input?: tConfigInput;
 }
 interface iTumblerCallback {
-    (thumbler_state: tTumblerData): void
+    (tumblerData: tTumblerData): void
 }
 interface iModelCallback {
-    (model_state: tModelData): void
+    (modelData: tModelData): void
 }

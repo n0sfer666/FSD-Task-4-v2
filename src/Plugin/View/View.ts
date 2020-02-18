@@ -1,5 +1,5 @@
 import { Helper } from './entities/Helper';
-import { Thumbler } from './entities/Thumbler';
+import { Tumbler } from './entities/Tumbler';
 import { Connect } from './entities/Connect';
 import { Tooltip } from './entities/Tooltip';
 import { Input } from './entities/Input';
@@ -7,19 +7,19 @@ import { Input } from './entities/Input';
 class View extends Helper {
   position: tPosition = [0];
 
-  value_range: tRange = [0, 0];
+  range: tRange = [0, 0];
 
-  value_start: tValue = [0];
+  start: tValue = [0];
 
   orientation: tOrientation;
 
-  is_tooltip: boolean;
+  isTooltip: boolean;
 
-  is_connect: boolean;
+  isConnect: boolean;
 
   slider: HTMLElement;
 
-  thumbler: Thumbler[] = [];
+  tumbler: Tumbler[] = [];
 
   connect: Connect[] = [];
 
@@ -27,73 +27,73 @@ class View extends Helper {
 
   inputValue: Input[] = [];
 
-  input_tooltip?: Input;
+  inputTooltip?: Input;
 
-  constructor(private container: HTMLElement, private configuration: iConfigView) {
+  constructor(private container: HTMLElement, private config: iConfigView) {
     super();
 
-    this.is_tooltip = this.configuration.is_tooltip;
-    this.is_connect = this.configuration.is_connect;
-    this.orientation = this.configuration.orientation;
+    this.isTooltip = this.config.isTooltip;
+    this.isConnect = this.config.isConnect;
+    this.orientation = this.config.orientation;
 
-    this.slider = this.get_div_element_with_class('slider', this.orientation);
+    this.slider = this.getDivElementWithClass('slider', this.orientation);
 
     this.init();
   }
 
-  on_change_view(callback: iTumblerCallback) {
-    for (let i = 0; i < this.thumbler.length; i++) {
-      this.thumbler[i].on_mouse_down_and_move(this.container, callback);
+  onChangeView(callback: iTumblerCallback) {
+    for (let i = 0; i < this.tumbler.length; i++) {
+      this.tumbler[i].onMousedownAndMove(this.container, callback);
     }
     if (this.inputValue[0] !== undefined) {
       for (let i = 0; i < this.inputValue.length; i++) {
-        this.inputValue[i].on_keydown_or_mouseout(callback);
+        this.inputValue[i].onKeydownOrMouseout(callback);
       }
     }
-    if (this.input_tooltip && this.is_tooltip) {
-      this.input_tooltip.on_switch_check(this.tooltip);
+    if (this.inputTooltip && this.isTooltip) {
+      this.inputTooltip.onSwitchCheck(this.tooltip);
     }
   }
 
-  update(model_state: tModelData) {
-    const i: number = model_state.index;
-    const { position } = model_state;
-    const { value } = model_state;
+  update(modelData: tModelData) {
+    const i: number = modelData.index;
+    const { position } = modelData;
+    const { value } = modelData;
 
-    this.set_active_thumbler(position, i);
+    this.setActivetumbler(position, i);
 
-    this.thumbler[i].set_new_position(position[i]);
+    this.tumbler[i].setNewPosition(position[i]);
 
-    if (this.is_tooltip) {
-      this.tooltip[i].set_inner_text(value[i]);
+    if (this.isTooltip) {
+      this.tooltip[i].setInnerText(value[i]);
     }
 
     if (this.inputValue[0] !== undefined) {
       this.inputValue[i].element.value = String(value[i]);
     }
 
-    if (this.is_connect) {
+    if (this.isConnect) {
       if (this.position.length === 1) {
-        this.connect[0].set_connectPosition(0, position[0]);
+        this.connect[0].setPosition(0, position[0]);
       } else if (position[1]) {
-        this.connect[0].set_connectPosition(position[0], position[1]);
+        this.connect[0].setPosition(position[0], position[1]);
       }
     }
   }
 
-  set_active_thumbler(position: tPosition, index: number) {
+  setActivetumbler(position: tPosition, index: number) {
     if (position.length > 1) {
       if (index === 0) {
-        this.thumbler[0].element.classList.add('SRS__thumbler_active');
-        this.thumbler[1].element.classList.remove('SRS__thumbler_active');
-        if (this.is_tooltip) {
+        this.tumbler[0].element.classList.add('SRS__tumbler_active');
+        this.tumbler[1].element.classList.remove('SRS__tumbler_active');
+        if (this.isTooltip) {
           this.tooltip[0].element.classList.add('SRS__tooltip_active');
           this.tooltip[1].element.classList.remove('SRS__tooltip_active');
         }
       } else {
-        this.thumbler[1].element.classList.add('SRS__thumbler_active');
-        this.thumbler[0].element.classList.remove('SRS__thumbler_active');
-        if (this.is_tooltip) {
+        this.tumbler[1].element.classList.add('SRS__tumbler_active');
+        this.tumbler[0].element.classList.remove('SRS__tumbler_active');
+        if (this.isTooltip) {
           this.tooltip[1].element.classList.add('SRS__tooltip_active');
           this.tooltip[0].element.classList.remove('SRS__tooltip_active');
         }
@@ -102,33 +102,33 @@ class View extends Helper {
   }
 
   init() {
-    for (let i = 0; i < this.configuration.value_range.length; i++) {
-      if (this.value_range[i] === undefined) {
-        this.value_range.push(this.configuration.value_range[i]);
+    for (let i = 0; i < this.config.range.length; i++) {
+      if (this.range[i] === undefined) {
+        this.range.push(this.config.range[i]);
       } else {
-        this.value_range[i] = this.configuration.value_range[i];
+        this.range[i] = this.config.range[i];
       }
     }
 
-    for (let i = 0; i < this.configuration.value_start.length; i++) {
-      if (this.value_start[i] === undefined) {
-        this.value_start.push(this.configuration.value_start[i]);
+    for (let i = 0; i < this.config.start.length; i++) {
+      if (this.start[i] === undefined) {
+        this.start.push(this.config.start[i]);
       } else {
-        this.value_start[i] = this.configuration.value_start[i];
+        this.start[i] = this.config.start[i];
       }
 
       if (this.position[i] === undefined) {
-        this.position.push(this.getPosition_from_value(this.value_start[i], this.value_range));
+        this.position.push(this.getPositionFromValue(this.start[i], this.range));
       } else {
-        this.position[i] = this.getPosition_from_value(this.value_start[i], this.value_range);
+        this.position[i] = this.getPositionFromValue(this.start[i], this.range);
       }
     }
 
     for (let i = 0; i < this.position.length; i++) {
-      this.thumbler.push(new Thumbler(this.position[i], this.orientation, i));
+      this.tumbler.push(new Tumbler(this.position[i], this.orientation, i));
     }
 
-    if (this.is_connect) {
+    if (this.isConnect) {
       if (this.position.length === 1) {
         this.connect.push(new Connect(0, this.position[0], this.orientation));
       } else {
@@ -137,35 +137,35 @@ class View extends Helper {
       this.slider.append(this.connect[0].element);
     }
 
-    if (this.is_tooltip) {
-      for (let i = 0; i < this.thumbler.length; i++) {
-        this.tooltip.push(new Tooltip(this.value_start[i], this.orientation));
+    if (this.isTooltip) {
+      for (let i = 0; i < this.tumbler.length; i++) {
+        this.tooltip.push(new Tooltip(this.start[i], this.orientation));
 
-        this.thumbler[i].element.append(this.tooltip[i].element);
+        this.tumbler[i].element.append(this.tooltip[i].element);
       }
     }
 
-    for (let i = 0; i < this.thumbler.length; i++) {
-      this.slider.append(this.thumbler[i].element);
+    for (let i = 0; i < this.tumbler.length; i++) {
+      this.slider.append(this.tumbler[i].element);
     }
 
     this.container.append(this.slider);
 
-    if (this.configuration.input !== undefined && this.configuration.input.value !== undefined) {
-      for (let i = 0; i < this.configuration.input.value.length; i++) {
+    if (this.config.input !== undefined && this.config.input.value !== undefined) {
+      for (let i = 0; i < this.config.input.value.length; i++) {
         this.inputValue.push(new Input(
           'value',
-          this.configuration.input.value[i],
-          this.configuration.value_start[i],
+          this.config.input.value[i],
+          this.config.start[i],
           i,
         ));
       }
     }
 
-    if (this.configuration.input && this.configuration.input.tooltip) {
-      this.input_tooltip = new Input(
+    if (this.config.input && this.config.input.tooltip) {
+      this.inputTooltip = new Input(
         'tooltip',
-        this.configuration.input.tooltip[0],
+        this.config.input.tooltip[0],
       );
     }
   }

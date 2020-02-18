@@ -6,27 +6,27 @@ View -> Tooltip
 `, () => {
   let tooltip: Tooltip = new Tooltip(0, 'horizontal');
 
-  describe('set_inner_text(value: number)', () => {
+  describe('setInnerText(value: number)', () => {
     for( let i = 0; i < 10; i++) {
       let value: number = random_number(-10000, 10000);
       it(`value: ${value}`, () => {
         let to_expect: string = String(value);
     
-        tooltip.set_inner_text(value);
+        tooltip.setInnerText(value);
     
         expect(to_expect).toEqual(tooltip.element.innerText);
       });
     };
   });
-  describe('switch_hidden(is_visible: boolean)', () => {
-    it('tooltip not hidden when is_visible true', () => {
+  describe('switchHidden(isVisible: boolean)', () => {
+    it('tooltip not hidden when isVisible true', () => {
       tooltip.element.hidden = true;
-      tooltip.switch_hidden(true);
+      tooltip.switchHidden(true);
       expect(tooltip.element.hidden).toBe(false);
     });
-    it('tooltip hidden when is_visible false', () => {
+    it('tooltip hidden when isVisible false', () => {
       tooltip.element.hidden = false;
-      tooltip.switch_hidden(false);
+      tooltip.switchHidden(false);
       expect(tooltip.element.hidden).toBe(true);
     });
   });

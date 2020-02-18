@@ -7,10 +7,10 @@
     let slider = $('#container_id').SimpleRangeSlider({
         orientation: 'horizontal' or 'vertical',
         range: [number, number], // [min value, max value]
-        start: [number] or [number, number], // for one or two thumbler(s) !cannot out of range!
+        start: [number] or [number, number], // for one or two tumbler(s) !cannot out of range!
         step: number,
-        connect: boolean, // stripe between two thumbler or 0 and thumbler
-        tooltip: boolean, // block(s) near thumbler(s) with value
+        connect: boolean, // stripe between two tumbler or 0 and tumbler
+        tooltip: boolean, // block(s) near tumbler(s) with value
         input: { // value: input(text), tooltip: input(checkbox)
             value: [HTMLInputElement] | [HTMLInputElement, HTMLInputElement],
             tooltip: [HTMLInputElement]
@@ -47,9 +47,9 @@ var slider = $('#slider').SimpleRangeSlider({
 ---
 ## Terms:
 
-**Thumbler** - the main functional element of the slider (the ball that the user moves along the slider bar) \
-**Tooltip** - the block near the thumbler showing the value set by that thumbler \
-**Connect** - the colored strip between zero position and the thumbler (or between two tumblers)
+**Tumbler** - the main functional element of the slider (the ball that the user moves along the slider bar) \
+**Tooltip** - the block near the tumbler showing the value set by that tumbler \
+**Connect** - the colored strip between zero position and the tumbler (or between two tumblers)
 
 ---
 ## Architecture:
@@ -62,7 +62,7 @@ The plugin was written in Typescript in jQuery wrapper using MVP architecture wi
 
 ```Javascript
 type tOrientation = 'horizontal' | 'vertical';
-type tCssClasses = 'slider' | 'thumbler' | 'connect' | 'tooltip';
+type tCssClasses = 'slider' | 'tumbler' | 'connect' | 'tooltip';
 type tRange = [number, number];
 type tValue = [number] | [number, number];
 type tPosition = [number] | [number, number];
@@ -98,23 +98,23 @@ interface iConfigUser {
     readonly input?: tConfigInput;
 }
 interface iConfigModel {
-    readonly value_start: tValue;
-    readonly value_range: tRange;
-    readonly value_step:  number;
+    readonly start: tValue;
+    readonly range: tRange;
+    readonly step:  number;
 }
 interface iConfigView {
     readonly orientation: tOrientation,
-    readonly value_start: tValue;
-    readonly value_range: tRange;
-    readonly is_tooltip:  boolean;
-    readonly is_connect:  boolean;
+    readonly start: tValue;
+    readonly range: tRange;
+    readonly isTooltip:  boolean;
+    readonly isConnect:  boolean;
     readonly input?: tConfigInput;
 }
 interface iTumblerCallback {
-    (thumbler_state: tTumblerData): void
+    (tumblerData: tTumblerData): void
 }
 interface iModelCallback {
-    (model_state: tModelData): void
+    (modelData: tModelData): void
 }
 
 ```
@@ -131,14 +131,14 @@ interface iModelCallback {
 </p></details>
 
 ### Model (Business Logic Layer):
-The plugin’s business logic reduce to determining the new value(s) and position(s) of the thumbler(s) based on user actions and sending the necessary data to the view layer to change through the presenter layer;
+The plugin’s business logic reduce to determining the new value(s) and position(s) of the tumbler(s) based on user actions and sending the necessary data to the view layer to change through the presenter layer;
 
 <details><summary>Methods:</summary>
 <p>
 
-- **set_new_position**
+- **setNewPosition**
  ```Javascript
- set_new_position(thumbler_state: tTumblerData) { ... };
+ setNewPosition(tumblerData: tTumblerData) { ... };
  ```
 The main method of the model. It receives data from the view layer, than makes the necessary calculations and through the update() method sends new data back to the view layer (using presenter layer)
 (check for a step movement, collision of two tumblers)
@@ -147,7 +147,7 @@ The main method of the model. It receives data from the view layer, than makes t
  ```Javascript
 update() { ... };
  ```
-The method starts a callback from the callback's list to send data calculated by the set_new_position method
+The method starts a callback from the callback's list to send data calculated by the setNewPosition method
  
 - **on_change_model**
  ```Javascript
@@ -155,9 +155,9 @@ on_change_model(callback: iModelCallback) { ... };
  ```
 The method adds a callback to callback's list
  
-- **getPosition_from_value**
+- **getPositionFromValue**
  ```Javascript
-getPosition_from_value(value: number, range: tRange): number { ... };
+getPositionFromValue(value: number, range: tRange): number { ... };
  ```
 The method is return a position based on value and range
  
@@ -184,30 +184,30 @@ range: tRange
 step: number
 position: tPosition
 
-index_of_active_thumbler: number
+activeIndex: number
 
-callback_list: iModelCallback[]
+callbackList: iModelCallback[]
 ```
 
 </p></details>
 
 ### View (Display and User Interaction Layer)
-View renders the plugin, responds to user actions (generates thumbler_state) and sends data to the model. Also changes elements such as thumbler, connect, tooltip when receiving new data from the model.
+View renders the plugin, responds to user actions (generates tumblerData) and sends data to the model. Also changes elements such as tumbler, connect, tooltip when receiving new data from the model.
 
 <details><summary>Methods:</summary>
 <p>
 
-- on_change_view
+- onChangeView
 ```Javascript
-on_change_view(callback: iTumblerCallback) { ... }
+onChangeView(callback: iTumblerCallback) { ... }
 ```
-Passes callback to thumbler method on_mousedown_and_move
+Passes callback to tumbler method on_mousedown_and_move
 
 - update
 ```Javascript
-update(model_state: tModelData) { ... }
+update(modelData: tModelData) { ... }
 ```
-Update thumbler(s), tooltips(s) and connect
+Update tumbler(s), tooltips(s) and connect
 
 </p></details>
 
@@ -217,16 +217,16 @@ Update thumbler(s), tooltips(s) and connect
 ```Javascript
 position: tPosition
 
-value_range: tRange
-value_start: tValue
+range: tRange
+start: tValue
 
 orientation: tOrientation;
 
-is_tooltip: boolean;
-is_connect: boolean;
+isTooltip: boolean;
+isConnect: boolean;
 
 slider: HTMLElement;
-thumbler: Thumbler[]
+tumbler: Tumbler[]
 connect: Connect[]
 tooltip: Tooltip[]
 
@@ -242,19 +242,19 @@ Contains helper methods and variables
 <p>
 
 ```Javascript
-readonly TO_THUMBLER_POSITION: number = 1e4;
+readonly TO_TUMBLER_POSITION: number = 1e4;
 readonly TO_CONNECT_UPDATE: number = 1e2;
 ```
 
-- getPosition_from_value
+- getPositionFromValue
 ```Javascript
-getPosition_from_value(value: number, range: tRange): number { ... }
+getPositionFromValue(value: number, range: tRange): number { ... }
 ```
 Return position from value and range
 
-- get_div_element_with_class
+- getDivElementWithClass
 ```Javascript
-get_div_element_with_class( css_class: tCssClasses, orientation: tOrientation ): HTMLElement
+getDivElementWithClass( cssClass: tCssClasses, orientation: tOrientation ): HTMLElement
 ```
 Return HTML element with correct class from orientation and type of element
 
@@ -268,12 +268,12 @@ creates Connect entity
 
 ```Javascript
 element: HTMLElement
-connectPosition: [number, number]
+position: [number, number]
 ```
 
-- set_connectPosition
+- setPosition
 ```Javascript
-set_connectPosition(position_start: number, position_end: number) { ... }
+setPosition(startPosition: number, endPosition: number) { ... }
 ```
 
 </p></details>
@@ -286,25 +286,25 @@ creates Tooltip entity
 
 ```Javascript
 element: HTMLElement
-tooltip_value: number
+value: number
 ```
 
-- set_inner_text
+- setInnerText
 ```Javascript
-set_inner_text(value: number) { ... }
+setInnerText(value: number) { ... }
 ```
 set Tooltip HTML element inner text
 
-- switch_hidden
+- switchHidden
 ```Javascript
-switch_hidden(this: Tooltip, is_visible: boolean) { ... }
+switchHidden(this: Tooltip, isVisible: boolean) { ... }
 ```
-set element.hidden = true, if is_visible === false and vice versa
+set element.hidden = true, if isVisible === false and vice versa
 
 </p></details>
 
-#### Thumbler class (extends Helper)
-creates Thumbler entity
+#### Tumbler class (extends Helper)
+creates tumbler entity
 
 <details><summary>Methods and Variables:</summary>
 <p>
@@ -312,26 +312,26 @@ creates Thumbler entity
 ```Javascript
 element: HTMLElement;
 
-thumbler_position: number = 0;
+position: number = 0;
 listening: boolean = false;
 ```
 
-- set_new_position
+- setNewPosition
 ```Javascript
-set_new_position(position: number) { ... }
+setNewPosition(position: number) { ... }
 ```
 
-- get_shift
+- getShift
 ```Javascript
-get_shift(element: HTMLElement, event: MouseEvent): number { ... }
+getShift(element: HTMLElement, event: MouseEvent): number { ... }
 ```
-return the difference between coordinates of the user mouse click and the coordinates of left (or top) thumbler bound
+return the difference between coordinates of the user mouse click and the coordinates of left (or top) tumbler bound
 
-- on_mouse_down_and_move
+- onMousedownAndMove
 ```Javascript
-on_mouse_down_and_move(this: Thumbler, container: HTMLElement, callback: iTumblerCallback) { ... }
+onMousedownAndMove(this: Tumbler, container: HTMLElement, callback: iTumblerCallback) { ... }
 ```
-transfers the possible position (after holding left button of mouse and move) and index of thumbler to callback
+transfers the possible position (after holding left button of mouse and move) and index of tumbler to callback
 
 </p></details>
 
@@ -346,15 +346,15 @@ element: HTMLInputElement;
 type: 'value' | 'tooltip';
 ```
 
-- on_keydown_or_mouseout
+- onKeydownOrMouseout
 ```Javascript
-on_keydown_or_mouseout(this: Input, callback: iTumblerCallback) { ... }
+onKeydownOrMouseout(this: Input, callback: iTumblerCallback) { ... }
 ```
 creates two listeners (keydown and mouseout) or return false if type not equal value. Listeners are run callback with value of input
 
-- on_switch_check
+- onSwitchCheck
 ```Javascript
-on_switch_check(this: Input, tooltip: Tooltip[]) { ... }
+onSwitchCheck(this: Input, tooltip: Tooltip[]) { ... }
 ```
 creates listener (change) or return false of type not equal tooltip. Listener are run tooltip.switch(false) if input element not checked and vice versa (for all tooltips).
 

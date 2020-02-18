@@ -8,24 +8,24 @@ View -> Input
   let testValue_input: HTMLInputElement = document.createElement('input');
   let test_tooltip_input: HTMLInputElement = document.createElement('input');
   document.body.append(testValue_input, test_tooltip_input);
-  describe('on_keydown_or_mouseout', () => {
+  describe('onKeydownOrMouseout', () => {
     let value: number = random_number(0, 100);
     let inputValue: Input = new Input('value', testValue_input, value);
 
     let result: boolean = false;
-      let test_callback: iTumblerCallback = function(thumbler_state: tTumblerData) {
-        let test = thumbler_state.index;
+      let test_callback: iTumblerCallback = function(tumblerData: tTumblerData) {
+        let test = tumblerData.index;
         result = true;
       };
     describe('keydown', () => {
-      it('callback bubbling if press Tab', (done: DoneFn) => {
+      it('callback action if press Tab', (done: DoneFn) => {
         result = false;
         let test_keyboardEvent_tab: KeyboardEvent = new KeyboardEvent('keydown', {
           bubbles: true,
           cancelable: true,
           key: "Tab"
         });
-        inputValue.on_keydown_or_mouseout(test_callback);
+        inputValue.onKeydownOrMouseout(test_callback);
         document.dispatchEvent(test_keyboardEvent_tab);
 
         setTimeout(() => {
@@ -34,14 +34,14 @@ View -> Input
         }, 500);
         done();
       });
-      it('callback bubbling if press Enter', (done: DoneFn) => {
+      it('callback action if press Enter', (done: DoneFn) => {
         result = false;
         let test_keyboardEvent_enter: KeyboardEvent = new KeyboardEvent('keydown', {
           bubbles: true,
           cancelable: true,
           key: "Enter"
         });
-        inputValue.on_keydown_or_mouseout(test_callback);
+        inputValue.onKeydownOrMouseout(test_callback);
         document.dispatchEvent(test_keyboardEvent_enter);
         setTimeout(() => {
           expect(result).toEqual(true);
@@ -50,10 +50,10 @@ View -> Input
       });
     });
     describe('mouseout', () => {
-      it('callback bubbling if mouseout', (done: DoneFn) => {
+      it('callback action if mouseout', (done: DoneFn) => {
         result = false;
         let test_mouseEvent_mouseout: MouseEvent = new MouseEvent('mouseout');
-        inputValue.on_keydown_or_mouseout(test_callback);
+        inputValue.onKeydownOrMouseout(test_callback);
         inputValue.element.dispatchEvent(test_mouseEvent_mouseout);
         setTimeout(() => {
           expect(result).toEqual(true);
@@ -62,27 +62,27 @@ View -> Input
       });
     });
   });
-  describe('on_switch_check', () => {
-    let input_tooltip: Input = new Input('tooltip', test_tooltip_input);
+  describe('onSwitchCheck', () => {
+    let inputTooltip: Input = new Input('tooltip', test_tooltip_input);
     let value: number = random_number(0, 100);
     it('tooltip(s) hidden when input is checked', (done: DoneFn) => {
       let tooltip: Tooltip[] = [new Tooltip(value, 'horizontal')];
       let test_event: Event = new Event('change');
-      spyOn(tooltip[0], 'switch_hidden');
-      input_tooltip.on_switch_check(tooltip);
-      input_tooltip.element.checked = false;
-      input_tooltip.element.dispatchEvent(test_event);
-      expect(tooltip[0].switch_hidden).toHaveBeenCalledWith(false);
+      spyOn(tooltip[0], 'switchHidden');
+      inputTooltip.onSwitchCheck(tooltip);
+      inputTooltip.element.checked = false;
+      inputTooltip.element.dispatchEvent(test_event);
+      expect(tooltip[0].switchHidden).toHaveBeenCalledWith(false);
       done();
     });
     it('tooltip(s) not hidden when input is not checked', (done: DoneFn) => {
       let tooltip: Tooltip[] = [new Tooltip(value, 'horizontal')];
       let test_event: Event = new Event('change');
-      spyOn(tooltip[0], 'switch_hidden');
-      input_tooltip.on_switch_check(tooltip);
-      input_tooltip.element.checked = true;
-      input_tooltip.element.dispatchEvent(test_event);
-      expect(tooltip[0].switch_hidden).toHaveBeenCalledWith(true);
+      spyOn(tooltip[0], 'switchHidden');
+      inputTooltip.onSwitchCheck(tooltip);
+      inputTooltip.element.checked = true;
+      inputTooltip.element.dispatchEvent(test_event);
+      expect(tooltip[0].switchHidden).toHaveBeenCalledWith(true);
       done();
     });
   });

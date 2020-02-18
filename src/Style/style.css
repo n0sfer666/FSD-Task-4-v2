@@ -7,23 +7,23 @@ $slider_border_size: 1px;
 $slider_border_color: rgba(31, 32, 65, 0.25);
 $slider_border_radius: calc($slider_width / 2);
 
-/* Thumbler */
-$thumbler_size: 16px;
-$thumbler_background: linear-gradient(180deg, #6FCF97 0%, #66D2EA 100%);
-$thumbler_border_size: 2px;
-$thumbler_border_color: #ffffff;
-$thumbler_border_radius: 50%;
+/* tumbler */
+$tumbler_size: 16px;
+$tumbler_background: linear-gradient(180deg, #6FCF97 0%, #66D2EA 100%);
+$tumbler_border_size: 2px;
+$tumbler_border_color: #ffffff;
+$tumbler_border_radius: 50%;
 
 /* Connect */
 $connect_width: $slider_width;
 $connect_background_horizontal: linear-gradient(90deg, #6FCF97 0%, #66D2EA 100%);
-$connect_background_vertical: $thumbler_background;
+$connect_background_vertical: $tumbler_background;
 
 /* Tooltip */
 $tooltip_margin: 20px;
 $tooltip_padding: 2px;
 $tooltip_text_size: 10px;
-$tooltip_background: $thumbler_background;
+$tooltip_background: $tumbler_background;
 $tooltip_color: #ffffff;
 $tooltip_font: normal normal $tooltip_text_size/$tooltip_text_size Serif;
 
@@ -57,7 +57,7 @@ $tooltip_font: normal normal $tooltip_text_size/$tooltip_text_size Serif;
 
     }
 
-    &thumbler {
+    &tumbler {
 
         position: absolute;
         z-index: 9;
@@ -86,13 +86,13 @@ $tooltip_font: normal normal $tooltip_text_size/$tooltip_text_size Serif;
             position: absolute;
             z-index: 10;
 
-            background: $thumbler_background;
+            background: $tumbler_background;
 
-            width: $thumbler_size;
-            height: $thumbler_size;
+            width: $tumbler_size;
+            height: $tumbler_size;
 
-            border: $thumbler_border_size solid $thumbler_border_color;
-            border-radius: $thumbler_border_radius;
+            border: $tumbler_border_size solid $tumbler_border_color;
+            border-radius: $tumbler_border_radius;
             box-sizing: border-box;
 
             cursor: pointer;
@@ -115,14 +115,14 @@ $tooltip_font: normal normal $tooltip_text_size/$tooltip_text_size Serif;
         &_horizontal:after {
 
             top: -$slider_width;
-            left: calc( -$thumbler_size / 2 )
+            left: calc( -$tumbler_size / 2 )
 
         }
 
         &_vertical:after {
 
             left: -$slider_width;
-            top: calc( -$thumbler_size / 2 )
+            top: calc( -$tumbler_size / 2 )
 
         }
 

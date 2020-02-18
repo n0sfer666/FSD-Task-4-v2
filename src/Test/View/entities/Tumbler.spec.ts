@@ -1,23 +1,23 @@
-import { Thumbler } from '../../../Plugin/View/entities/Thumbler';
+import { Tumbler } from '../../../Plugin/View/entities/tumbler';
 import { random_number } from '../../random_number';
 
 describe(`
-View -> Thumbler
+View -> tumbler
 `, () => {
-  describe('set_new_position(position: number)', () => {
+  describe('setNewPosition(position: number)', () => {
     let orientations: tOrientation[] = ['horizontal', 'vertical'];
     for( let i = 0; i < 10; i++ ) {
       for( let j = 0; j < orientations.length; j++ ) {
         let position: number = Math.random();
-        let thumbler: Thumbler = new Thumbler(position, orientations[j], 0);
+        let tumbler: Tumbler = new Tumbler(position, orientations[j], 0);
                 
         it(`position: ${position}, orientation: ${orientations[j]}`, () => {
           let liter: string = orientations[j] === 'horizontal' ? 'X' : 'Y';
 
-          let to_expect: string = `transform: translate${liter}(${ Math.round(position * thumbler.TO_THUMBLER_POSITION) }%);`;
+          let to_expect: string = `transform: translate${liter}(${ Math.round(position * tumbler.TO_TUMBLER_POSITION) }%);`;
 
-          thumbler.set_new_position(position);
-          let result: string = thumbler.element.getAttribute('style')!;
+          tumbler.setNewPosition(position);
+          let result: string = tumbler.element.getAttribute('style')!;
 
           expect(to_expect).toEqual(result);
         });
@@ -25,7 +25,7 @@ View -> Thumbler
     }
   });
 
-  describe('get_shift(element: HTMLElement, event: MouseEvent): number', () => {
+  describe('getShift(element: HTMLElement, event: MouseEvent): number', () => {
     let orientations: tOrientation[] = ['horizontal', 'vertical'];
 
     let test_container: HTMLElement = document.createElement('div');
@@ -34,7 +34,7 @@ View -> Thumbler
 
     for( let i = 0; i < 10; i++ ) {
       for( let j = 0; j < orientations.length; j++ ) {
-        let thumbler: Thumbler = new Thumbler(0, orientations[j], 0);
+        let tumbler: Tumbler = new Tumbler(0, orientations[j], 0);
 
         let margin: number = random_number(5, 55);
         let event_client: number = margin + random_number(1, 15);
@@ -46,15 +46,15 @@ View -> Thumbler
           false, false, false, false, 0, null);
 
         test_container.setAttribute('style', `margin: ${margin}px;`);
-        test_container.append(thumbler.element);
+        test_container.append(tumbler.element);
         let str_for_it: string = orientations[j] === 'horizontal'
-          ? `orientation: ${orientations[j]}, getBounding...().left: ${thumbler.element.getBoundingClientRect().left}, clientX: ${event_client}`
-          : `orientation: ${orientations[j]}, getBounding...().top: ${thumbler.element.getBoundingClientRect().top}, clientY: ${event_client}`;
+          ? `orientation: ${orientations[j]}, getBounding...().left: ${tumbler.element.getBoundingClientRect().left}, clientX: ${event_client}`
+          : `orientation: ${orientations[j]}, getBounding...().top: ${tumbler.element.getBoundingClientRect().top}, clientY: ${event_client}`;
         it(str_for_it, () => {
           let to_expect: number = orientations[j] === 'horizontal'
-            ? event_test.clientX - thumbler.element.getBoundingClientRect().left
-            : event_test.clientY - thumbler.element.getBoundingClientRect().top;
-          let result: number = thumbler.get_shift(thumbler.element, event_test);
+            ? event_test.clientX - tumbler.element.getBoundingClientRect().left
+            : event_test.clientY - tumbler.element.getBoundingClientRect().top;
+          let result: number = tumbler.getShift(tumbler.element, event_test);
 
           expect(to_expect).toEqual(result);
         });
@@ -66,7 +66,7 @@ View -> Thumbler
     }
   });
 
-  describe('on_mouse_down_and_move(this: Thumbler, container: HTMLElement, callback: iTumblerCallback)', () => {
+  describe('onMousedownAndMove(this: tumbler, container: HTMLElement, callback: iTumblerCallback)', () => {
     let orientations: tOrientation[] = ['horizontal', 'vertical'];
 
     document.body.setAttribute('style', 'margin: 0; padding: 0;');
@@ -77,16 +77,16 @@ View -> Thumbler
       for( let j = 0; j < orientations.length; j++ ) {
         let index: number = random_number(0, 1);
         let position: number = Math.random();
-        let thumbler: Thumbler = new Thumbler(position, orientations[j], index);
+        let tumbler: Tumbler = new Tumbler(position, orientations[j], index);
                 
         let result: tTumblerData = { 
           position: 0,
           index: 0
         };
 
-        let test_callback: iTumblerCallback = function(thumbler_state: tTumblerData) {
-          result.position = thumbler_state.position,
-          result.index = thumbler_state.index;
+        let test_callback: iTumblerCallback = function(tumblerData: tTumblerData) {
+          result.position = tumblerData.position,
+          result.index = tumblerData.index;
         };
 
         let size_of_container: number = 300;
@@ -116,12 +116,12 @@ View -> Thumbler
             index: 0,
           };
 
-          let new_position: number, new_position_in_percent: number, position: number;
-          let shift: number = thumbler.get_shift(thumbler.element, event_mousedown_test);
-          new_position = value_event_mousemove - shift - margin;
-          new_position_in_percent = new_position / size_of_container;
+          let newPosition: number, newPositionPercent: number, position: number;
+          let shift: number = tumbler.getShift(tumbler.element, event_mousedown_test);
+          newPosition = value_event_mousemove - shift - margin;
+          newPositionPercent = newPosition / size_of_container;
 
-          position = new_position_in_percent;
+          position = newPositionPercent;
 
           if(position > 1) {
             position = 1;
@@ -133,9 +133,9 @@ View -> Thumbler
           to_expect.position = position;
           to_expect.index = index;
 
-          thumbler.on_mouse_down_and_move(test_container, test_callback);
-          thumbler.element.dispatchEvent(event_mousedown_test);
-          thumbler.element.dispatchEvent(event_mousemove_test);
+          tumbler.onMousedownAndMove(test_container, test_callback);
+          tumbler.element.dispatchEvent(event_mousedown_test);
+          tumbler.element.dispatchEvent(event_mousemove_test);
 
           setTimeout(() => {
             expect(to_expect).toEqual(result);

@@ -5,27 +5,27 @@ describe(`
 Model
 `, () => {
   var model: Model = new Model({
-    value_range: [-1000, 1000],
-    value_start: [-500, 500],
-    value_step: 10
+    range: [-1000, 1000],
+    start: [-500, 500],
+    step: 10
   });
   beforeEach(function() {
     model = new Model({
-      value_range: [-1000, 1000],
-      value_start: [-500, 500],
-      value_step: 10
+      range: [-1000, 1000],
+      start: [-500, 500],
+      step: 10
     });
   })
   afterEach(function() {
-    model.callback_list = [];
+    model.callbackList = [];
   });
 
-  describe('getPosition_from_value(value: number, range: tRange): number', () => {
+  describe('getPositionFromValue(value: number, range: tRange): number', () => {
     for( let i = 0; i < 10; i++) {
       let value: number = random_number(model.range[0], model.range[1]);
       it(`value: ${value} on range: [${model.range[0]}, ${model.range[1]}]`, () => {
         let to_expect: number = Math.round( ( (value - model.range[0]) / (model.range[1] - model.range[0])) * 1e4) / 1e4; 
-        let result: number = model.getPosition_from_value(value, model.range);
+        let result: number = model.getPositionFromValue(value, model.range);
 
         expect(to_expect).toEqual(result);
       });
@@ -84,15 +84,15 @@ Model
   });
 
   describe('on_change_model(callback: iModelCallback)', () => {
-    let test_function: iModelCallback = function(model_state: tModelData) {
-      let test: tModelData = model_state;
-      test.index = model_state.index;
+    let test_function: iModelCallback = function(modelData: tModelData) {
+      let test: tModelData = modelData;
+      test.index = modelData.index;
     };
-    it('callback is pushed to callback_list', () => {
+    it('callback is pushed to callbackList', () => {
       let to_expect: iModelCallback[] = [test_function];
 
       model.on_change_model(test_function);
-      let result: iModelCallback[] = model.callback_list;
+      let result: iModelCallback[] = model.callbackList;
 
       expect(to_expect).toEqual(result);
     });
@@ -100,9 +100,9 @@ Model
 
   describe('update()', () => {
     let result: boolean = false;
-    let test_function: iModelCallback = function(model_state: tModelData) {
-      let test: tModelData = model_state;
-      test.index = model_state.index;
+    let test_function: iModelCallback = function(modelData: tModelData) {
+      let test: tModelData = modelData;
+      test.index = modelData.index;
       result = true;
     };
     it('callback was executed', () => {
@@ -114,27 +114,27 @@ Model
     });
   });
 
-  describe('set_new_position(thumbler_state: tTumblerData)', () => {
+  describe('setNewPosition(tumblerData: tTumblerData)', () => {
     it('get_new_value() was called', () => {
       spyOn(model, 'get_new_value').and.callThrough();
-      model.set_new_position({position: 0.5, index: 0});
+      model.setNewPosition({position: 0.5, index: 0});
       expect(model.get_new_value).toHaveBeenCalled();
     });
     it('check_on_step...() was called', () => {
       spyOn(model, 'check_on_step_movement_to_set_val_and_pos').and.callThrough();
-      model.set_new_position({position: 0.5, index: 0});
+      model.setNewPosition({position: 0.5, index: 0});
 
       expect(model.check_on_step_movement_to_set_val_and_pos).toHaveBeenCalled();
     });
     it('update() was called', () => {
       spyOn(model, 'update').and.callThrough();
-      model.set_new_position({position: 0.5, index: 0});
+      model.setNewPosition({position: 0.5, index: 0});
 
       expect(model.update).toHaveBeenCalled();
     });
   });
 
-  describe('get_new_value(thumbler_state: tTumblerData)', () => {
+  describe('get_new_value(tumblerData: tTumblerData)', () => {
     let testValue: number = random_number(model.range[0], model.range[1]);
     let test_index: number = random_number(0, 1);
     it(`value: ${testValue}, index: ${test_index}`, () => {
