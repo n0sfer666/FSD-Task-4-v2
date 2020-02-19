@@ -1,48 +1,47 @@
-import { random_number } from '../../random_number';
+import { makeRandomNumber } from '../../makeRandomNumber';
 import { Input } from '../../../Plugin/View/entities/Input';
 import { Tooltip } from '../../../Plugin/View/entities/Tooltip';
 
 describe(`
 View -> Input
 `, () => {
-  let testValue_input: HTMLInputElement = document.createElement('input');
-  let test_tooltip_input: HTMLInputElement = document.createElement('input');
-  document.body.append(testValue_input, test_tooltip_input);
+  const testValueInput: HTMLInputElement = document.createElement('input');
+  const testTooltipInput: HTMLInputElement = document.createElement('input');
+  document.body.append(testValueInput, testTooltipInput);
   describe('onKeydownOrMouseout', () => {
-    let value: number = random_number(0, 100);
-    let inputValue: Input = new Input('value', testValue_input, value);
+    const value: number = makeRandomNumber(0, 100);
+    const inputValue: Input = new Input('value', testValueInput, value);
 
     let result: boolean = false;
-      let test_callback: iTumblerCallback = function(tumblerData: tTumblerData) {
-        let test = tumblerData.index;
-        result = true;
-      };
+    const testCallback: iTumblerCallback = function (tumblerData: tTumblerData) {
+      const test = tumblerData.index;
+      result = true;
+    };
     describe('keydown', () => {
       it('callback action if press Tab', (done: DoneFn) => {
         result = false;
-        let test_keyboardEvent_tab: KeyboardEvent = new KeyboardEvent('keydown', {
+        const testKeydownTab: KeyboardEvent = new KeyboardEvent('keydown', {
           bubbles: true,
           cancelable: true,
-          key: "Tab"
+          key: 'Tab',
         });
-        inputValue.onKeydownOrMouseout(test_callback);
-        document.dispatchEvent(test_keyboardEvent_tab);
+        inputValue.onKeydownOrMouseout(testCallback);
+        document.dispatchEvent(testKeydownTab);
 
         setTimeout(() => {
           expect(result).toEqual(true);
-          
-        }, 500);
+        }, 200);
         done();
       });
       it('callback action if press Enter', (done: DoneFn) => {
         result = false;
-        let test_keyboardEvent_enter: KeyboardEvent = new KeyboardEvent('keydown', {
+        const testKeydownEnter: KeyboardEvent = new KeyboardEvent('keydown', {
           bubbles: true,
           cancelable: true,
-          key: "Enter"
+          key: 'Enter',
         });
-        inputValue.onKeydownOrMouseout(test_callback);
-        document.dispatchEvent(test_keyboardEvent_enter);
+        inputValue.onKeydownOrMouseout(testCallback);
+        document.dispatchEvent(testKeydownEnter);
         setTimeout(() => {
           expect(result).toEqual(true);
         }, 200);
@@ -52,9 +51,9 @@ View -> Input
     describe('mouseout', () => {
       it('callback action if mouseout', (done: DoneFn) => {
         result = false;
-        let test_mouseEvent_mouseout: MouseEvent = new MouseEvent('mouseout');
-        inputValue.onKeydownOrMouseout(test_callback);
-        inputValue.element.dispatchEvent(test_mouseEvent_mouseout);
+        const testMouseout: MouseEvent = new MouseEvent('mouseout');
+        inputValue.onKeydownOrMouseout(testCallback);
+        inputValue.element.dispatchEvent(testMouseout);
         setTimeout(() => {
           expect(result).toEqual(true);
         }, 200);
@@ -63,27 +62,27 @@ View -> Input
     });
   });
   describe('onSwitchCheck', () => {
-    let inputTooltip: Input = new Input('tooltip', test_tooltip_input);
-    let value: number = random_number(0, 100);
+    const inputTooltip: Input = new Input('tooltip', testTooltipInput);
+    const value: number = makeRandomNumber(0, 100);
     it('tooltip(s) hidden when input is checked', (done: DoneFn) => {
-      let tooltip: Tooltip[] = [new Tooltip(value, 'horizontal')];
-      let test_event: Event = new Event('change');
+      const tooltip: Tooltip[] = [new Tooltip(value, 'horizontal')];
+      const testEvent: Event = new Event('change');
       spyOn(tooltip[0], 'switchHidden');
       inputTooltip.onSwitchCheck(tooltip);
       inputTooltip.element.checked = false;
-      inputTooltip.element.dispatchEvent(test_event);
+      inputTooltip.element.dispatchEvent(testEvent);
       expect(tooltip[0].switchHidden).toHaveBeenCalledWith(false);
       done();
     });
     it('tooltip(s) not hidden when input is not checked', (done: DoneFn) => {
-      let tooltip: Tooltip[] = [new Tooltip(value, 'horizontal')];
-      let test_event: Event = new Event('change');
+      const tooltip: Tooltip[] = [new Tooltip(value, 'horizontal')];
+      const testEvent: Event = new Event('change');
       spyOn(tooltip[0], 'switchHidden');
       inputTooltip.onSwitchCheck(tooltip);
       inputTooltip.element.checked = true;
-      inputTooltip.element.dispatchEvent(test_event);
+      inputTooltip.element.dispatchEvent(testEvent);
       expect(tooltip[0].switchHidden).toHaveBeenCalledWith(true);
       done();
     });
   });
-})
+});

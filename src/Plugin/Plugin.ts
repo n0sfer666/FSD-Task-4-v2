@@ -9,10 +9,10 @@ class SimpleRangeSlider {
 
     presenter: Presenter;
 
-    constructor(private container: JQuery, private user_config: iConfigUser) {
-      const slider_container: HTMLElement = this.container.get(0);
+    constructor(private container: JQuery, private userConfig: iConfigUser) {
+      const sliderContainer: HTMLElement = this.container.get(0);
 
-      const default_config: iConfigUser = {
+      const defaultConfig: iConfigUser = {
         orientation: 'horizontal',
         start: [10],
         range: [0, 100],
@@ -22,22 +22,34 @@ class SimpleRangeSlider {
       };
 
       const completeConfig: iConfigUser = {
-        orientation: this.user_config.orientation === undefined ? default_config.orientation : this.user_config.orientation,
-        start: this.user_config.start === undefined ? default_config.start : this.user_config.start,
-        range: this.user_config.range === undefined ? default_config.range : this.user_config.range,
-        step: this.user_config.step === undefined ? default_config.step : this.user_config.step,
-        connect: this.user_config.connect === undefined ? default_config.connect : this.user_config.connect,
-        tooltip: this.user_config.tooltip === undefined ? default_config.tooltip : this.user_config.tooltip,
-        input: this.user_config.input,
+        orientation: this.userConfig.orientation === undefined
+          ? defaultConfig.orientation
+          : this.userConfig.orientation,
+        start: this.userConfig.start === undefined
+          ? defaultConfig.start
+          : this.userConfig.start,
+        range: this.userConfig.range === undefined
+          ? defaultConfig.range
+          : this.userConfig.range,
+        step: this.userConfig.step === undefined
+          ? defaultConfig.step
+          : this.userConfig.step,
+        connect: this.userConfig.connect === undefined
+          ? defaultConfig.connect
+          : this.userConfig.connect,
+        tooltip: this.userConfig.tooltip === undefined
+          ? defaultConfig.tooltip
+          : this.userConfig.tooltip,
+        input: this.userConfig.input,
       };
 
-      const model_config: iConfigModel = {
+      const modelConfig: iConfigModel = {
         start: completeConfig.start,
         range: completeConfig.range,
         step: completeConfig.step,
       };
 
-      const view_config: iConfigView = {
+      const viewConfig: iConfigView = {
         orientation: completeConfig.orientation,
         start: completeConfig.start,
         range: completeConfig.range,
@@ -46,8 +58,8 @@ class SimpleRangeSlider {
         input: completeConfig.input,
       };
 
-      this.view = new View(slider_container, view_config);
-      this.model = new Model(model_config);
+      this.view = new View(sliderContainer, viewConfig);
+      this.model = new Model(modelConfig);
       this.presenter = new Presenter(this.view, this.model);
     }
 }
@@ -55,8 +67,8 @@ export { SimpleRangeSlider };
 
 (function ($: JQueryStatic) {
   $.fn.extend({
-    SimpleRangeSlider(user_config: iConfigUser) {
-      return new SimpleRangeSlider(<JQuery> this, <iConfigUser> user_config);
+    SimpleRangeSlider(userConfig: iConfigUser) {
+      return new SimpleRangeSlider(<JQuery> this, <iConfigUser> userConfig);
     },
   });
 }(jQuery));

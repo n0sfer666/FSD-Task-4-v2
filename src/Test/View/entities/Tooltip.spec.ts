@@ -1,22 +1,22 @@
-import { random_number } from '../../random_number';
+import { makeRandomNumber } from '../../makeRandomNumber';
 import { Tooltip } from '../../../Plugin/View/entities/Tooltip';
 
 describe(`
 View -> Tooltip
 `, () => {
-  let tooltip: Tooltip = new Tooltip(0, 'horizontal');
+  const tooltip: Tooltip = new Tooltip(0, 'horizontal');
 
   describe('setInnerText(value: number)', () => {
-    for( let i = 0; i < 10; i++) {
-      let value: number = random_number(-10000, 10000);
+    for (let i = 0; i < 10; i++) {
+      const value: number = makeRandomNumber(-10000, 10000);
       it(`value: ${value}`, () => {
-        let to_expect: string = String(value);
-    
+        const toExpect: string = String(value);
+
         tooltip.setInnerText(value);
-    
-        expect(to_expect).toEqual(tooltip.element.innerText);
+
+        expect(toExpect).toEqual(tooltip.element.innerText);
       });
-    };
+    }
   });
   describe('switchHidden(isVisible: boolean)', () => {
     it('tooltip not hidden when isVisible true', () => {

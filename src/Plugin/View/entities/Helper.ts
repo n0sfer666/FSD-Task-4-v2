@@ -3,10 +3,6 @@ class Helper {
 
     readonly TO_CONNECT_UPDATE: number = 1e2;
 
-    constructor() {
-
-    }
-
     getPositionFromValue(value: number, range: tRange): number {
       let result: number = ((value - range[0]) / (range[1] - range[0]));
       result = Math.round(result * this.TO_TUMBLER_POSITION) / this.TO_TUMBLER_POSITION;

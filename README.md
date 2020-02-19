@@ -149,9 +149,9 @@ update() { ... };
  ```
 The method starts a callback from the callback's list to send data calculated by the setNewPosition method
  
-- **on_change_model**
+- **onChangeModel**
  ```Javascript
-on_change_model(callback: iModelCallback) { ... };
+onChangeModel(callback: iModelCallback) { ... };
  ```
 The method adds a callback to callback's list
  
@@ -161,17 +161,17 @@ getPositionFromValue(value: number, range: tRange): number { ... };
  ```
 The method is return a position based on value and range
  
-- **getValue_from_position**
+- **getValueFromPosition**
  ```Javascript
-getValue_from_position(position: number, range: tRange): number { ... };
+getValueFromPosition(position: number, range: tRange): number { ... };
  ```
  The method is return a value based on position and range
  
- - **setValue_and_position**
+ - **setValueAndPosition**
  ```Javascript
- setValue_and_position(new_value: number, i: number)
+ setValueAndPosition(newValue: number, i: number)
  ```
-The method is set value and position in variables of class. If new_value bigger than (or less than) range, value equal min or max of range
+The method is set value and position in variables of class. If newValue bigger than (or less than) range, value equal min or max of range
 
 </p></details>
 

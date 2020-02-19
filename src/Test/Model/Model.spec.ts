@@ -1,63 +1,63 @@
 import { Model } from '../../Plugin/Model/Model';
-import { random_number } from '../random_number';
+import { makeRandomNumber } from '../makeRandomNumber';
 
 describe(`
 Model
 `, () => {
-  var model: Model = new Model({
+  let model: Model = new Model({
     range: [-1000, 1000],
     start: [-500, 500],
-    step: 10
+    step: 10,
   });
-  beforeEach(function() {
+  beforeEach(() => {
     model = new Model({
       range: [-1000, 1000],
       start: [-500, 500],
-      step: 10
+      step: 10,
     });
-  })
-  afterEach(function() {
+  });
+  afterEach(() => {
     model.callbackList = [];
   });
 
   describe('getPositionFromValue(value: number, range: tRange): number', () => {
-    for( let i = 0; i < 10; i++) {
-      let value: number = random_number(model.range[0], model.range[1]);
+    for (let i = 0; i < 10; i++) {
+      const value: number = makeRandomNumber(model.range[0], model.range[1]);
       it(`value: ${value} on range: [${model.range[0]}, ${model.range[1]}]`, () => {
-        let to_expect: number = Math.round( ( (value - model.range[0]) / (model.range[1] - model.range[0])) * 1e4) / 1e4; 
-        let result: number = model.getPositionFromValue(value, model.range);
+        const toExpect: number = Math.round(((value - model.range[0]) / (model.range[1] - model.range[0])) * 1e4) / 1e4;
+        const result: number = model.getPositionFromValue(value, model.range);
 
-        expect(to_expect).toEqual(result);
+        expect(toExpect).toEqual(result);
       });
     }
   });
 
-  describe('getValue_from_position(position: number, range: tRange): number', () => {
-    for( let i = 0; i < 10; i++ ) {
-      let position: number = random_number(0, 10000) / 10000;
+  describe('getValueFromPosition(position: number, range: tRange): number', () => {
+    for (let i = 0; i < 10; i++) {
+      const position: number = makeRandomNumber(0, 10000) / 10000;
       it(`position: ${position} on range: [${model.range[0]}, ${model.range[1]}]`, () => {
-        let to_expect: number = Math.round( (position * (model.range[1] - model.range[0])) + model.range[0] ); 
-        let result: number = model.getValue_from_position(position, model.range);
+        const toExpect: number = Math.round((position * (model.range[1] - model.range[0])) + model.range[0]);
+        const result: number = model.getValueFromPosition(position, model.range);
 
-        expect(to_expect).toEqual(result);
+        expect(toExpect).toEqual(result);
       });
     }
   });
 
-  describe('setValue_and_position(new_value: number, i: number)', () => {
-    for( let i = 0; i < 10; i++ ) {
-      let new_value: number = random_number(model.range[0], model.range[1]);
-      let i: number = random_number(0, 1);
+  describe('setValueAndPosition(newValue: number, i: number)', () => {
+    for (let i = 0; i < 10; i++) {
+      const newValue: number = makeRandomNumber(model.range[0], model.range[1]);
+      const i: number = makeRandomNumber(0, 1);
 
-      it(`new_value: ${new_value}, i: ${i}`, () => {
-        let value: number = new_value > 0
-          ? (Math.ceil(new_value / model.step) * model.step)
-          : (Math.floor(new_value / model.step) * model.step);
+      it(`newValue: ${newValue}, i: ${i}`, () => {
+        let value: number = newValue > 0
+          ? (Math.ceil(newValue / model.step) * model.step)
+          : (Math.floor(newValue / model.step) * model.step);
 
-        if(value < model.range[0]) {
+        if (value < model.range[0]) {
           value = model.range[0];
         }
-        if(value > model.range[1]) {
+        if (value > model.range[1]) {
           value = model.range[1];
         }
 
@@ -66,123 +66,121 @@ Model
         position = Math.round(position);
         position /= model.TO_NORMALIZE_POSITION;
 
-        let to_expect: object = {
-          value: value,
-          position: position
+        const toExpect: object = {
+          value,
+          position,
         };
 
-        model.setValue_and_position(new_value, i);
+        model.setValueAndPosition(newValue, i);
 
-        let result: object = {
+        const result: object = {
           value: model.value[i],
-          position: model.position[i]
+          position: model.position[i],
         };
 
-        expect(to_expect).toEqual(result);
+        expect(toExpect).toEqual(result);
       });
     }
   });
 
-  describe('on_change_model(callback: iModelCallback)', () => {
-    let test_function: iModelCallback = function(modelData: tModelData) {
-      let test: tModelData = modelData;
+  describe('onChangeModel(callback: iModelCallback)', () => {
+    const testCallback: iModelCallback = function (modelData: tModelData) {
+      const test: tModelData = modelData;
       test.index = modelData.index;
     };
     it('callback is pushed to callbackList', () => {
-      let to_expect: iModelCallback[] = [test_function];
+      const toExpect: iModelCallback[] = [testCallback];
 
-      model.on_change_model(test_function);
-      let result: iModelCallback[] = model.callbackList;
+      model.onChangeModel(testCallback);
+      const result: iModelCallback[] = model.callbackList;
 
-      expect(to_expect).toEqual(result);
+      expect(toExpect).toEqual(result);
     });
   });
 
   describe('update()', () => {
     let result: boolean = false;
-    let test_function: iModelCallback = function(modelData: tModelData) {
-      let test: tModelData = modelData;
+    const testCallback: iModelCallback = function (modelData: tModelData) {
+      const test: tModelData = modelData;
       test.index = modelData.index;
       result = true;
     };
     it('callback was executed', () => {
-      model.on_change_model(test_function);
+      model.onChangeModel(testCallback);
       model.update();
 
       expect(true).toEqual(result);
-      
     });
   });
 
   describe('setNewPosition(tumblerData: tTumblerData)', () => {
-    it('get_new_value() was called', () => {
-      spyOn(model, 'get_new_value').and.callThrough();
-      model.setNewPosition({position: 0.5, index: 0});
-      expect(model.get_new_value).toHaveBeenCalled();
+    it('getNewValue() was called', () => {
+      spyOn(model, 'getNewValue').and.callThrough();
+      model.setNewPosition({ position: 0.5, index: 0 });
+      expect(model.getNewValue).toHaveBeenCalled();
     });
     it('check_on_step...() was called', () => {
-      spyOn(model, 'check_on_step_movement_to_set_val_and_pos').and.callThrough();
-      model.setNewPosition({position: 0.5, index: 0});
+      spyOn(model, 'checkStepCondition').and.callThrough();
+      model.setNewPosition({ position: 0.5, index: 0 });
 
-      expect(model.check_on_step_movement_to_set_val_and_pos).toHaveBeenCalled();
+      expect(model.checkStepCondition).toHaveBeenCalled();
     });
     it('update() was called', () => {
       spyOn(model, 'update').and.callThrough();
-      model.setNewPosition({position: 0.5, index: 0});
+      model.setNewPosition({ position: 0.5, index: 0 });
 
       expect(model.update).toHaveBeenCalled();
     });
   });
 
-  describe('get_new_value(tumblerData: tTumblerData)', () => {
-    let testValue: number = random_number(model.range[0], model.range[1]);
-    let test_index: number = random_number(0, 1);
-    it(`value: ${testValue}, index: ${test_index}`, () => {
-      let to_expect: number = model.get_new_value({value: testValue, index: test_index});
+  describe('getNewValue(tumblerData: tTumblerData)', () => {
+    const testValue: number = makeRandomNumber(model.range[0], model.range[1]);
+    let testIndex: number = makeRandomNumber(0, 1);
+    it(`value: ${testValue}, index: ${testIndex}`, () => {
+      const toExpect: number = model.getNewValue({ value: testValue, index: testIndex });
       let result: number = testValue;
-      if(test_index === 0 && model.value[1]) {
-        if(result > model.value[1] - model.step) {
+      if (testIndex === 0 && model.value[1]) {
+        if (result > model.value[1] - model.step) {
           result = model.value[1] - model.step;
         }
       }
-      if(test_index === 1) {
-        if(result < model.value[0] + model.step) {
+      if (testIndex === 1) {
+        if (result < model.value[0] + model.step) {
           result = model.value[0] + model.step;
         }
       }
-      expect(to_expect).toEqual(result);
-    })
-    let testPosition: number = Math.random();
-    test_index = random_number(0, 1);
-    it(`position: ${testPosition}, index: ${test_index}`, () => {
-      let to_expect: number = model.get_new_value({position: testPosition, index: test_index});
-      let position: number = Math.round(testPosition * model.TO_NORMALIZE_POSITION) / model.TO_NORMALIZE_POSITION;
-      let result: number = model.getValue_from_position(position, model.range);
+      expect(toExpect).toEqual(result);
+    });
+    const testPosition: number = Math.random();
+    testIndex = makeRandomNumber(0, 1);
+    it(`position: ${testPosition}, index: ${testIndex}`, () => {
+      const toExpect: number = model.getNewValue({ position: testPosition, index: testIndex });
+      const position: number = Math.round(testPosition * model.TO_NORMALIZE_POSITION) / model.TO_NORMALIZE_POSITION;
+      const result: number = model.getValueFromPosition(position, model.range);
 
-      expect(to_expect).toEqual(result);
+      expect(toExpect).toEqual(result);
     });
   });
 
-  describe('check_on_step_movement_to_set_val_and_pos(..)', () => {
-    for( let i = 0; i < 10; i++ ) {
-      let testValue: number = random_number(model.range[0] * 10, model.range[1] * 10);
-      let test_index: number = random_number(0, 1);
-      let test_new_value: number = model.get_new_value({value: testValue, index: test_index});
+  describe('checkStepCondition(..)', () => {
+    for (let i = 0; i < 10; i++) {
+      const testValue: number = makeRandomNumber(model.range[0] * 10, model.range[1] * 10);
+      const testIndex: number = makeRandomNumber(0, 1);
+      const testNewValue: number = model.getNewValue({ value: testValue, index: testIndex });
 
-      let condition: [number, number] = [model.value[test_index] - model.step, model.value[test_index] + model.step];
+      const condition: [number, number] = [model.value[testIndex] - model.step, model.value[testIndex] + model.step];
 
-      it(`value: ${testValue}, index: ${test_index}`, () => {
-        spyOn(model, 'setValue_and_position').and.callThrough();
-        model.check_on_step_movement_to_set_val_and_pos(test_new_value, test_index);
+      it(`value: ${testValue}, index: ${testIndex}`, () => {
+        spyOn(model, 'setValueAndPosition').and.callThrough();
+        model.checkStepCondition(testNewValue, testIndex);
 
-        let test_param: number = 0;
-        if(test_new_value >= condition[1] || test_new_value <= condition[0]) {
-          test_param = test_new_value;
+        let testParam: number = 0;
+        if (testNewValue >= condition[1] || testNewValue <= condition[0]) {
+          testParam = testNewValue;
         }
 
-        expect(model.setValue_and_position).toHaveBeenCalledWith(test_param, test_index);
-      })
+        expect(model.setValueAndPosition).toHaveBeenCalledWith(testParam, testIndex);
+      });
     }
-  })
+  });
 });
-

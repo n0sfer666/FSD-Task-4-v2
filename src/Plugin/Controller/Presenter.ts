@@ -7,7 +7,7 @@ class Presenter {
       // console.log(tumblerData);
       this.model.setNewPosition(tumblerData);
     });
-    this.model.on_change_model((modelData: tModelData) => {
+    this.model.onChangeModel((modelData: tModelData) => {
       // console.log(modelData);
       this.view.update(modelData);
     });

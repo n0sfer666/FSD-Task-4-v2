@@ -25,9 +25,9 @@ class Model {
       const { index } = tumblerData;
       this.activeIndex = index;
 
-      const new_value: number = this.get_new_value(tumblerData);
+      const newValue: number = this.getNewValue(tumblerData);
 
-      this.check_on_step_movement_to_set_val_and_pos(new_value, index);
+      this.checkStepCondition(newValue, index);
       // check for collision
       if (this.value.length > 1 && this.value[1]) {
         if (this.value[0] < this.value[1]) {
@@ -40,36 +40,40 @@ class Model {
       }
     }
 
-    get_new_value(tumblerData: tTumblerData): number {
+    getNewValue(tumblerData: tTumblerData): number {
       const { index } = tumblerData;
-      let new_value: number = this.value[index];
+      let newValue: number = this.value[index];
       let position: number;
 
       if (tumblerData.position !== undefined) {
-        position = Math.round(tumblerData.position * this.TO_NORMALIZE_POSITION) / this.TO_NORMALIZE_POSITION;
-        new_value = this.getValue_from_position(position, this.range);
+        const tmpPosition: number = Math.round(tumblerData.position * this.TO_NORMALIZE_POSITION);
+        position = tmpPosition / this.TO_NORMALIZE_POSITION;
+        newValue = this.getValueFromPosition(position, this.range);
       } else if (tumblerData.value !== undefined) {
-        new_value = tumblerData.value;
+        newValue = tumblerData.value;
 
         if (index === 0 && this.value[1]) {
-          if (new_value > this.value[1] - this.step) {
-            new_value = this.value[1] - this.step;
+          if (newValue > this.value[1] - this.step) {
+            newValue = this.value[1] - this.step;
           }
         }
         if (index === 1) {
-          if (new_value < this.value[0] + this.step) {
-            new_value = this.value[0] + this.step;
+          if (newValue < this.value[0] + this.step) {
+            newValue = this.value[0] + this.step;
           }
         }
       }
-      return new_value;
+      return newValue;
     }
 
-    check_on_step_movement_to_set_val_and_pos(new_value: number, index: number) {
-      const condition: [number, number] = [this.value[index] - this.step, this.value[index] + this.step];
+    checkStepCondition(newValue: number, index: number) {
+      const condition: [number, number] = [
+        this.value[index] - this.step,
+        this.value[index] + this.step,
+      ];
 
-      if (new_value >= condition[1] || new_value <= condition[0]) {
-        this.setValue_and_position(new_value, index);
+      if (newValue >= condition[1] || newValue <= condition[0]) {
+        this.setValueAndPosition(newValue, index);
       }
     }
 
@@ -83,7 +87,7 @@ class Model {
       });
     }
 
-    on_change_model(callback: iModelCallback) {
+    onChangeModel(callback: iModelCallback) {
       this.callbackList.push(callback);
     }
 
@@ -93,16 +97,16 @@ class Model {
       return (Math.round(result * this.TO_NORMALIZE_POSITION) / this.TO_NORMALIZE_POSITION);
     }
 
-    getValue_from_position(position: number, range: tRange): number {
+    getValueFromPosition(position: number, range: tRange): number {
       const result: number = (position * (range[1] - range[0])) + range[0];
 
       return (Math.round(result));
     }
 
-    setValue_and_position(new_value: number, i: number) {
-      this.value[i] = new_value > 0
-        ? (Math.ceil(new_value / this.step) * this.step)
-        : (Math.floor(new_value / this.step) * this.step);
+    setValueAndPosition(newValue: number, i: number) {
+      this.value[i] = newValue > 0
+        ? (Math.ceil(newValue / this.step) * this.step)
+        : (Math.floor(newValue / this.step) * this.step);
 
       if (i === 0) {
         if (this.value[0] < this.range[0]) {

@@ -7,7 +7,7 @@ class Demo_Panel {
   range_slider:  SimpleRangeSlider;
   empty_slider: string;
 
-  defaultConfig: I_DEMO_Default_Config;
+  defaultConfig: I_DEMO_defaultConfig;
 
   constructor(private demo_panel: JQuery, private slider: JQuery, private inputs: I_DEMO_Input) {
     this.template = new Template();

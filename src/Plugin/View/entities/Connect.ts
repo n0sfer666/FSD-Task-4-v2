@@ -5,7 +5,11 @@ class Connect extends Helper {
 
     position: [number, number] = [0, 0];
 
-    constructor(private startPosition: number, private endPosition: number, private orientation: tOrientation) {
+    constructor(
+      private startPosition: number,
+      private endPosition: number,
+      private orientation: tOrientation,
+    ) {
       super();
 
       this.element = this.getDivElementWithClass('connect', this.orientation);
