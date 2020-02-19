@@ -1,3 +1,4 @@
+# Simple Range Slider
 ## **github docs:** https://n0sfer666.github.io/FSD-Task-4-v2/
 ## **run test:** npm i && npm run test
 ---
