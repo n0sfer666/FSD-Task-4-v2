@@ -3,7 +3,7 @@
         "sourceMap": true,
         "target": "es5",
         "removeComments": true,
-        "strict": true,              
+        "strict": true,
         "alwaysStrict": true, 
         // "noUnusedLocals": true,
         "noUnusedParameters": true,
@@ -13,6 +13,6 @@
     ],
     "exclude": [
         "node_modules",
-        // "**/*.spec.ts"
+        "**/*.spec.ts"
     ]
 }
