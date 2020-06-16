@@ -12,55 +12,68 @@ class SimpleRangeSlider {
     constructor(private container: JQuery, private userConfig: iConfigUser) {
       const sliderContainer: HTMLElement = this.container.get(0);
 
-      const defaultConfig: iConfigUser = {
+      const defaultConfig: iConfigUser = this.getDefaultaConfig();
+
+      const completeConfig: iConfigUser = this.getCompleteConfig(this.userConfig, defaultConfig);
+
+      const modelConfig: iConfigModel = this.getModelConfig(completeConfig);
+
+      const viewConfig: iConfigView = this.getViewConfig(completeConfig);
+      
+      this.view = new View(sliderContainer, viewConfig);
+      this.model = new Model(modelConfig);
+      this.presenter = new Presenter(this.view, this.model);
+    }
+
+    getDefaultaConfig(): iConfigUser {
+      return {
         orientation: 'horizontal',
         start: [10],
         range: [0, 100],
         step: 1,
         connect: true,
         tooltip: true,
-      };
-
-      const completeConfig: iConfigUser = {
-        orientation: this.userConfig.orientation === undefined
+      }
+    }
+    getCompleteConfig(userConfig: iConfigUser, defaultConfig: iConfigUser): iConfigUser {
+      return {
+        orientation: userConfig.orientation === undefined
           ? defaultConfig.orientation
-          : this.userConfig.orientation,
-        start: this.userConfig.start === undefined
+          : userConfig.orientation,
+        start: userConfig.start === undefined
           ? defaultConfig.start
-          : this.userConfig.start,
-        range: this.userConfig.range === undefined
+          : userConfig.start,
+        range: userConfig.range === undefined
           ? defaultConfig.range
-          : this.userConfig.range,
-        step: this.userConfig.step === undefined
+          : userConfig.range,
+        step: userConfig.step === undefined
           ? defaultConfig.step
-          : this.userConfig.step,
-        connect: this.userConfig.connect === undefined
+          : userConfig.step,
+        connect: userConfig.connect === undefined
           ? defaultConfig.connect
-          : this.userConfig.connect,
-        tooltip: this.userConfig.tooltip === undefined
+          : userConfig.connect,
+        tooltip: userConfig.tooltip === undefined
           ? defaultConfig.tooltip
-          : this.userConfig.tooltip,
-        input: this.userConfig.input,
-      };
-
-      const modelConfig: iConfigModel = {
+          : userConfig.tooltip,
+        input: userConfig.input,
+      }
+    }
+    getModelConfig(completeConfig: iConfigUser): iConfigModel {
+      return {
         start: completeConfig.start,
         range: completeConfig.range,
         step: completeConfig.step,
-      };
-
-      const viewConfig: iConfigView = {
+      }
+    }
+    getViewConfig(completeConfig: iConfigUser): iConfigView {
+      return {
         orientation: completeConfig.orientation,
         start: completeConfig.start,
         range: completeConfig.range,
         isTooltip: completeConfig.tooltip,
         isConnect: completeConfig.connect,
         input: completeConfig.input,
-      };
-
-      this.view = new View(sliderContainer, viewConfig);
-      this.model = new Model(modelConfig);
-      this.presenter = new Presenter(this.view, this.model);
+      }
     }
 }
 export { SimpleRangeSlider };
