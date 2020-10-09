@@ -16,7 +16,7 @@ class Helper {
       return result;
     }
 
-    getDivElementWithClass(cssClass: tCssClasses, orientation: tOrientation): HTMLElement {
+    static getDivElementWithClass(cssClass: tCssClasses, orientation: tOrientation): HTMLElement {
       const strClass: string = `SRS__${cssClass}`;
       const cssClassWithoutOrientation: string = `${strClass} ${strClass}_`;
 
@@ -26,4 +26,4 @@ class Helper {
       return element;
     }
 }
-export { Helper };
+export default Helper;
