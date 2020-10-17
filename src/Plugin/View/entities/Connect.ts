@@ -1,35 +1,44 @@
-import { Helper } from './Helper';
+import Helper from './Helper';
 
 class Connect extends Helper {
-    element: HTMLElement;
+  element: HTMLElement;
 
-    position: [number, number] = [0, 0];
+  position: [number, number] = [0, 0];
 
-    constructor(
-      private startPosition: number,
-      private endPosition: number,
-      private orientation: tOrientation,
-    ) {
-      super();
+  private startPosition: number;
 
-      this.element = this.getDivElementWithClass('connect', this.orientation);
-      this.setPosition(this.startPosition, this.endPosition);
+  private endPosition: number;
+
+  private orientation: tOrientation;
+
+  private style: string = '';
+
+  constructor(startPosition: number, endPosition: number, orientation: tOrientation) {
+    super();
+    this.startPosition = startPosition;
+    this.endPosition = endPosition;
+    this.orientation = orientation;
+
+    this.element = this.getDivElementWithClass('connect', this.orientation);
+    this.setPosition(this.startPosition, this.endPosition);
+  }
+
+  setPosition(startPosition: number, endPosition: number) {
+    const start: number = Math.round(startPosition * this.TO_CONNECT_UPDATE);
+    const end: number = Math.round(endPosition * this.TO_CONNECT_UPDATE);
+    this.position = [start, end];
+    if (start === 0) {
+      if (this.orientation === 'horizontal') {
+        this.style = `width: ${end}%;`;
+      } else {
+        this.style = `height: ${end}%;`;
+      }
+    } else if (this.orientation === 'horizontal') {
+      this.style = `left: ${start}%; width: ${(end - start)}%;`;
+    } else {
+      this.style = `top: ${start}%; height: ${(end - start)}%;`;
     }
-
-    setPosition(startPosition: number, endPosition: number) {
-      const start: number = Math.round(startPosition * this.TO_CONNECT_UPDATE);
-      const end: number = Math.round(endPosition * this.TO_CONNECT_UPDATE);
-
-      this.position = [start, end];
-      const style: string = start === 0
-        ? this.orientation === 'horizontal'
-          ? `width: ${end}%;`
-          : `height: ${end}%;`
-        : this.orientation === 'horizontal'
-          ? `left: ${start}%; width: ${(end - start)}%;`
-          : `top: ${start}%; height: ${(end - start)}%;`;
-
-      this.element.setAttribute('style', style);
-    }
+    this.element.setAttribute('style', this.style);
+  }
 }
-export { Connect };
+export default Connect;

@@ -1,8 +1,8 @@
-import { Helper } from './entities/Helper';
-import { Tumbler } from './entities/Tumbler';
-import { Connect } from './entities/Connect';
-import { Tooltip } from './entities/Tooltip';
-import { Input } from './entities/Input';
+import Helper from './entities/Helper';
+import Tumbler from './entities/Tumbler';
+import Connect from './entities/Connect';
+import Tooltip from './entities/Tooltip';
+import Input from './entities/Input';
 
 class View extends Helper {
   position: tPosition = [0];

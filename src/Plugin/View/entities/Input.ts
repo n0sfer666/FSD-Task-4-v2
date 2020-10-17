@@ -1,14 +1,25 @@
-import { Helper } from './Helper';
-import { Tooltip } from './Tooltip';
+import Helper from './Helper';
+import Tooltip from './Tooltip';
 
 class Input extends Helper {
-  constructor(
-    private type: tInputType,
-    public element: HTMLInputElement,
-    public value?: number,
-    public index?: number,
-  ) {
+  private type: tInputType;
+
+  public element: HTMLInputElement;
+
+  public value?: number;
+
+  public index?: number;
+
+  constructor(type: tInputType, element: HTMLInputElement, value?: number, index?: number) {
     super();
+    this.type = type;
+    this.element = element;
+    if (value) {
+      this.value = value;
+    }
+    if (index) {
+      this.index = index;
+    }
     if (type === 'value') {
       if (this.value !== undefined) {
         this.element.value = String(this.value);
@@ -67,4 +78,4 @@ class Input extends Helper {
     });
   }
 }
-export { Input };
+export default Input;

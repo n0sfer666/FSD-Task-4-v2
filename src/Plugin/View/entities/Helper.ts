@@ -16,13 +16,11 @@ class Helper {
       return result;
     }
 
-    static getDivElementWithClass(cssClass: tCssClasses, orientation: tOrientation): HTMLElement {
+    getDivElementWithClass(cssClass: tCssClasses, orientation: tOrientation): HTMLElement {
       const strClass: string = `SRS__${cssClass}`;
       const cssClassWithoutOrientation: string = `${strClass} ${strClass}_`;
-
       const element: HTMLElement = document.createElement('div');
       element.setAttribute('class', (cssClassWithoutOrientation + orientation));
-
       return element;
     }
 }

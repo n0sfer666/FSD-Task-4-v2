@@ -1,4 +1,4 @@
-import { Helper } from './Helper';
+import Helper from './Helper';
 
 class Tumbler extends Helper {
     element: HTMLElement;
@@ -77,4 +77,4 @@ class Tumbler extends Helper {
       });
     }
 }
-export { Tumbler };
+export default Tumbler;
