@@ -33,14 +33,14 @@ interface iConfigUser {
 interface iConfigModel {
     readonly start: tValue;
     readonly range: tRange;
-    readonly step:  number;
+    readonly step: number;
 }
 interface iConfigView {
     readonly orientation: tOrientation,
     readonly start: tValue;
     readonly range: tRange;
-    readonly isTooltip:  boolean;
-    readonly isConnect:  boolean;
+    readonly isTooltip: boolean;
+    readonly isConnect: boolean;
     readonly input?: tConfigInput;
 }
 interface iTumblerCallback {

@@ -6,9 +6,9 @@ class Input extends Helper {
 
   public element: HTMLInputElement;
 
-  public value?: number;
+  public value: number = 0;
 
-  public index?: number;
+  public index: number = 0;
 
   constructor(type: tInputType, element: HTMLInputElement, value?: number, index?: number) {
     super();

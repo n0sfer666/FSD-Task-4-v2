@@ -5,6 +5,7 @@ module.exports = {
   },
   extends: [
     'airbnb-base',
+    'plugin:fsd/all',
   ],
   globals: {
     Atomics: 'readonly',
@@ -22,5 +23,6 @@ module.exports = {
     'import/no-unresolved': ['warn'],
     'import/extensions': ['warn'],
     'class-methods-use-this': ['off'],
+    'no-unused-vars': ['warn'],
   },
 };
